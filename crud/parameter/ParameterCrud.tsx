@@ -1,0 +1,142 @@
+/**
+ * Copyright 2023 Arkemis S.r.l.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
+import { Form, FormField } from "@arkejs/form";
+import { Button, Dialog, Select, Spinner } from "@arkejs/ui";
+import { TBaseParameter, TResponse, TUnit } from "@arkejs/client";
+import useClient from "@/arke/useClient";
+
+export function ParameterAdd({
+  open,
+  title,
+  onClose,
+  arkeId,
+  onSubmit,
+}: {
+  open: string | boolean | undefined;
+  title: ReactNode;
+  onClose(): void;
+  arkeId?: string;
+  onSubmit(data: TResponse<TUnit>): void;
+}) {
+  const [loading, setLoading] = useState(true);
+  const [fields, setFields] = useState<TBaseParameter[]>([]);
+  const [parameterTypes, setParameterTypes] = useState<TUnit[]>([]);
+  const [selectedType, setSelectedType] = useState<TUnit | undefined>(
+    undefined
+  );
+
+  const client = useClient();
+
+  useEffect(() => {
+    if (open) {
+      setLoading(true);
+
+      client.group.getAllArke("parameter").then((res) => {
+        setParameterTypes(res.data.content.items);
+        setLoading(false);
+      });
+    }
+  }, [open, arkeId]);
+
+  const onFormSubmit = useCallback(
+    (data: Record<string, unknown>) => {
+      if (selectedType) {
+        const parsed = Object.entries(data).reduce(
+          (acc: Record<string, unknown>, [key, value]) => {
+            let parsedValue = value;
+            if (
+              fields.find((f) => f.id === key)?.type === "dict" &&
+              typeof value == "string"
+            )
+              parsedValue = JSON.parse(value);
+            acc[key] = parsedValue;
+            return acc;
+          },
+          {}
+        );
+
+        client.unit
+          .create(selectedType.id, { ...parsed, type: selectedType.id })
+          .then((res) => {
+            onSubmit(res);
+          });
+      }
+    },
+    [onSubmit, selectedType]
+  );
+
+  const onParameterTypeChange = useCallback(
+    (value: TUnit) => {
+      setSelectedType(value);
+      client.arke
+        .struct(value.id, {
+          params: {
+            exclude: [
+              "inserted_at",
+              "updated_at",
+              "parameters",
+              "persistence",
+              "arke_id",
+              "type",
+            ],
+          },
+        })
+        .then((res) => setFields(res.data.content.parameters));
+    },
+    [client]
+  );
+
+  return (
+    <Dialog open={!!open} title={title} onClose={onClose}>
+      <Select
+        value={selectedType}
+        values={parameterTypes}
+        onChange={onParameterTypeChange}
+        renderLabel={(val) => val.label as string}
+      />
+      <Form fields={fields} onSubmit={onFormSubmit} style={{ height: "100%" }}>
+        {() =>
+          loading ? (
+            <Spinner />
+          ) : (
+            <>
+              <div className="grid gap-4">
+                {fields.map((field) => (
+                  <FormField id={field.id} key={field.id} />
+                ))}
+              </div>
+              <div className="mt-4 flex  gap-4">
+                <Button className="w-full bg-neutral" onClick={onClose}>
+                  Close
+                </Button>
+                <Button
+                  disabled={loading}
+                  color="primary"
+                  className="w-full"
+                  type="submit"
+                >
+                  Confirm
+                </Button>
+              </div>
+            </>
+          )
+        }
+      </Form>
+    </Dialog>
+  );
+}

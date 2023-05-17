@@ -1,0 +1,77 @@
+/**
+ * Copyright 2023 Arkemis S.r.l.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .arke__table {
+        @apply w-full gap-2 border-separate border-spacing-y-2
+    }
+
+    .arke__table tr > td:first-child {
+        @apply rounded-l-theme
+    }
+
+    .arke__table tr > td:last-child {
+        @apply rounded-r-theme
+    }
+
+    .arke__table th svg {
+        display: inline-block;
+    }
+
+    .arke__table th, .arke__table td {
+        @apply p-2 text-left text-sm
+    }
+
+    .arke__table td {
+        @apply bg-background-300
+    }
+
+    .arke__table .arke__table__actions button {
+        @apply btn p-2 rounded-full inline-block
+    }
+
+    .tabs__list {
+        @apply bg-background-400 w-auto inline-flex gap-2 p-2 rounded-theme
+    }
+
+    .tab {
+        @apply flex-grow-0 w-[200px] bg-background-300
+    }
+
+    .tab--selected {
+        @apply bg-primary
+    }
+
+    .tab__panel {
+        @apply mt-8
+    }
+
+    .dialog {
+        @apply bg-background/30 p-0
+    }
+
+    .dialog__head {
+        @apply backdrop-blur-md bg-background/30 mb-0 py-4 px-6 border border-neutral rounded-t-theme
+    }
+
+    .dialog__body {
+        @apply bg-background p-6 border-x border-b border-neutral rounded-b-theme
+    }
+}
