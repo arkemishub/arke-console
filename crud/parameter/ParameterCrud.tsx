@@ -108,6 +108,7 @@ export function ParameterAdd({
         values={parameterTypes}
         onChange={onParameterTypeChange}
         renderLabel={(val) => val.label as string}
+        className="mb-4"
       />
       <Form fields={fields} onSubmit={onFormSubmit} style={{ height: "100%" }}>
         {() =>

@@ -74,4 +74,8 @@
     .dialog__body {
         @apply bg-background p-6 border-x border-b border-neutral rounded-b-theme
     }
+
+    .input__helperText {
+        @apply text-xs
+    }
 }

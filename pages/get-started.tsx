@@ -67,7 +67,7 @@ function GetStarted() {
             Playground
           </p>
         </div>
-        <div className="absolute bottom-0 h-[2px] w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
+        <div className="absolute bottom-0 h-[1px] w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
       </div>
       <div className="mb-12 flex grow flex-col justify-center gap-12">
         <div className="mx-auto flex gap-2">
