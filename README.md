@@ -1,38 +1,54 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Arke Console
 
-## Getting Started
+![arke_console](https://github.com/arkemishub/arke-console/assets/81776297/37776261-63f6-4046-baef-3f5886b1d999)
 
-First, run the development server:
+## Installation with Git
 
+Clone this repo and install the project dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+git clone git@github.com:arkemishub/arke-console.git
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment variables
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Create a NEXTAUTH_SECRET with:
+```bash
+openssl rand -base64 32 | pbcopy
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Create a `.env.local` file with the following variables:
+```bash
+NEXT_PUBLIC_ARKE_SERVER_URL=
+NEXTAUTH_URL=
+NEXTAUTH_SECRET=
+NEXT_PUBLIC_ARKE_PROJECT=
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### Build & Run the production server
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+```bash
+pnpm build && pnpm start
+```
 
-## Learn More
+## Installation with Docker
 
-To learn more about Next.js, take a look at the following resources:
+Pull the Docker image from the Github Container Registry
+```bash
+docker pull ghcr.io/arkemishub/arke-console:latest
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run the Docker container on 3100 port
+```bash
+docker run -p 3100:3100 ghcr.io/arkemishub/arke-console:latest
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Visit the console on http://localhost:3100
 
-## Deploy on Vercel
+## Installation with Docker Compose
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Run the Docker compose build passing the environment variables
+```bash
+docker-compose build --build-arg --build-arg NEXTAUTH_URL="http://localhost:3100" --build-arg NEXT_PUBLIC_ARKE_SERVER_URL="http://localhost:4000" --build-arg NEXTAUTH_SECRET=<NEXTAUTH_SECRET> NEXT_PUBLIC_ARKE_PROJECT=<ARKE_PROJECT> 
+docker-compose up 
+```
