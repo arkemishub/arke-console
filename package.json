@@ -12,7 +12,7 @@
   "dependencies": {
     "@arkejs/client": "2.1.0",
     "@arkejs/form": "1.2.1",
-    "@arkejs/table": "0.5.1",
+    "@arkejs/table": "0.6.1",
     "@arkejs/ui": "0.24.2",
     "@heroicons/react": "^2.0.16",
     "next": "13.2.4",

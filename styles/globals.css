@@ -64,7 +64,7 @@
     }
 
     .dialog {
-        @apply bg-background/30 p-0
+        @apply bg-background/30 p-0 overflow-auto max-h-80
     }
 
     .dialog__head {

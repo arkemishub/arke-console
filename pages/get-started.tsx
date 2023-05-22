@@ -98,7 +98,19 @@ function GetStarted() {
               {() => (
                 <div className="mx-auto max-w-xl">
                   <div className="grid gap-6">
-                    <FormField id="label" />
+                    <FormField
+                      id="label"
+                      render={(props) => (
+                        <Input
+                          {...props}
+                          className="w-full"
+                          onChange={(e) => props.onChange(e.target.value)}
+                          pattern="^[a-z0-9_-]+$"
+                          required
+                          helperText="Insert a lowercase name, allowed characters: alphanumeric, underscore and hyphen"
+                        />
+                      )}
+                    />
                     <FormField id="description" />
                   </div>
                   <div className="mt-8 flex gap-4">

@@ -19,8 +19,11 @@ import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { NextPage } from "next";
-import { FormConfigProvider } from "@arkejs/form";
+import { FormConfigProvider, RenderProps } from "@arkejs/form";
 import { Autocomplete, Checkbox, Input, Json } from "@arkejs/ui";
+import { useEffect, useState } from "react";
+import useClient from "@/arke/useClient";
+import {TUnit} from "@arkejs/client";
 
 type NextPageWithAuth = NextPage & {
   auth?: boolean;
@@ -33,6 +36,32 @@ type AppPropsWithAuth = AppProps & {
 const inter = Inter({
   subsets: ["latin"],
 });
+
+function AutocompleteLink(props: RenderProps) {
+  const client = useClient();
+  const { id } = props;
+  const [values, setValues] = useState<TUnit[]>([]);
+
+  function onChange(value) {
+    console.log(value);
+    props.onChange(value);
+  }
+
+  useEffect(() => {
+    client.unit.getAll(id).then((res) => {
+      setValues(res.data.content.items);
+    });
+  }, []);
+
+  return (
+    <Autocomplete
+      {...props}
+      onChange={onChange}
+      renderLabel={(value) => value.label}
+      values={props.values}
+    />
+  );
+}
 
 export default function App({
   Component,
@@ -57,6 +86,23 @@ export default function App({
                 />
               );
             },
+            integer: (props) => (
+              <Input
+                {...props}
+                type="number"
+                fullWidth
+                onChange={(e) => props.onChange(e.target.value)}
+              />
+            ),
+            float: (props) => (
+              <Input
+                {...props}
+                type="number"
+                step="0.01"
+                fullWidth
+                onChange={(e) => props.onChange(e.target.value)}
+              />
+            ),
             string: (props) => {
               if (props.values && props.values.length > 0)
                 return (
@@ -82,6 +128,10 @@ export default function App({
                 checked={props.value}
                 onChange={(e) => props.onChange(e.target.checked)}
               />
+            ),
+            link: (props) => <AutocompleteLink {...props}/>,
+            default: (props: RenderProps & { type: string }) => (
+              <div className="text-red-500">Field {props.type} not found</div>
             ),
           }}
         >
