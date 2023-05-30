@@ -1,5 +1,7 @@
 FROM node:18-alpine AS base
 ARG PROJECT_NAME
+ARG ARKE_SERVER_URL="http://localhost:4000/lib"
+ARG NEXTAUTH_URL="http://localhost:3100/api/auth"
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -24,14 +26,15 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build .env file
-COPY .env.example .env.production
-
-# generate a random string for NEXTAUTH_SECRET and add it to .env.production
-RUN echo NEXTAUTH_SECRET=\" | tr -d '\n' >> .env.production \
+RUN echo NEXTAUTH_SECRET=\" | tr -d '\n' > .env.production \
     && openssl rand -base64 32 | tr -d '\n' >> .env.production \
     && echo \" >> .env.production \
     && echo NEXT_PUBLIC_ARKE_PROJECT= | tr -d '\n' >> .env.production \
-    && echo $PROJECT_NAME | tr -d '\n' >> .env.production
+    && echo $PROJECT_NAME >> .env.production  \
+    && echo NEXT_PUBLIC_ARKE_SERVER_URL= | tr -d '\n' >> .env.production \
+    && echo $ARKE_SERVER_URL >> .env.production \
+    && echo NEXTAUTH_URL= | tr -d '\n' >> .env.production \
+    && echo $NEXTAUTH_URL >> .env.production
 
 RUN yarn build
 
