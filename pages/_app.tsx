@@ -23,7 +23,7 @@ import { FormConfigProvider, RenderProps } from "@arkejs/form";
 import { Autocomplete, Checkbox, Input, Json } from "@arkejs/ui";
 import { useEffect, useState } from "react";
 import useClient from "@/arke/useClient";
-import {TUnit} from "@arkejs/client";
+import { TUnit } from "@arkejs/client";
 
 type NextPageWithAuth = NextPage & {
   auth?: boolean;
@@ -37,28 +37,41 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-function AutocompleteLink(props: RenderProps) {
+function AutocompleteLink(props: RenderProps & { reference: any }) {
   const client = useClient();
-  const { id } = props;
+  const { reference } = props;
   const [values, setValues] = useState<TUnit[]>([]);
 
   function onChange(value) {
-    console.log(value);
     props.onChange(value);
   }
 
   useEffect(() => {
-    client.unit.getAll(id).then((res) => {
-      setValues(res.data.content.items);
-    });
+    // getAll: arke / group (id: se é gruppo o arke)
+    // filter_keys [OR]
+    // params: load_links: true => getAll
+    if (reference?.arke_id === "group") {
+      // TODO: implement getAll by group and add filters with filter_keys
+      // client.unit.getAll(reference.id).then((res) => {
+      client.api.get(`/group/${reference.id}/unit`).then((res) => {
+        console.log(res.data.content.items);
+        setValues(res.data.content.items);
+      });
+    }
+    if (reference?.arke_id === "arke") {
+      client.unit.getAll(reference.id).then((res) => {
+        console.log(res.data.content.items);
+        setValues(res.data.content.items);
+      });
+    }
   }, []);
 
   return (
     <Autocomplete
       {...props}
       onChange={onChange}
-      renderLabel={(value) => value.label}
-      values={props.values}
+      renderLabel={(value) => `[${value.arke_id}] ${value.label ?? value.id}`}
+      values={values}
     />
   );
 }
@@ -129,7 +142,9 @@ export default function App({
                 onChange={(e) => props.onChange(e.target.checked)}
               />
             ),
-            link: (props) => <AutocompleteLink {...props}/>,
+            link: (props) => (
+              <AutocompleteLink {...props} reference={props.ref}  onChange={(value) => props.onChange(value.id)} />
+            ),
             default: (props: RenderProps & { type: string }) => (
               <div className="text-red-500">Field {props.type} not found</div>
             ),
