@@ -64,7 +64,7 @@
     }
 
     .dialog {
-        @apply bg-background/30 p-0
+        @apply bg-background/30 p-0 overflow-auto max-h-80
     }
 
     .dialog__head {
@@ -73,5 +73,9 @@
 
     .dialog__body {
         @apply bg-background p-6 border-x border-b border-neutral rounded-b-theme
+    }
+
+    .input__helperText {
+        @apply text-xs
     }
 }

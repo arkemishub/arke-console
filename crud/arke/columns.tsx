@@ -30,7 +30,7 @@ export const columns: Column[] = [
     type: ColumnType.String,
     render: (data) => (
       <Link href={`/arke/${data.id}`} className="underline">
-        {data.label as string}
+        {data.id as string}
       </Link>
     ),
   },
