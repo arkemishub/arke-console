@@ -16,7 +16,7 @@
 
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { Form, FormField } from "@arkejs/form";
-import { Button, Dialog, Spinner } from "@arkejs/ui";
+import { Button, Dialog, Input, Spinner } from "@arkejs/ui";
 import { TBaseParameter, TResponse, TUnit } from "@arkejs/client";
 import useClient from "@/arke/useClient";
 import { TrashIcon } from "@/components/Icon";
@@ -82,7 +82,21 @@ export function ArkeCrud({
           ) : (
             <>
               <div className="grid gap-4">
-                <FormField id="id" />
+                {!arkeId && (
+                  <FormField
+                    id="id"
+                    render={(props) => (
+                      <Input
+                        {...props}
+                        label="ID"
+                        className="w-full"
+                        onChange={(e) => props.onChange(e.target.value)}
+                        pattern="^[a-z0-9_-]+$"
+                        helperText="Insert a lowercase ID, allowed characters: alphanumeric, underscore and hyphen"
+                      />
+                    )}
+                  />
+                )}
                 <FormField id="label" />
                 <FormField id="active" />
               </div>

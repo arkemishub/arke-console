@@ -57,7 +57,7 @@ function PageTitle({
               </Breadcrumb.Crumb>
             ))}
           </Breadcrumb>
-          <div className="absolute bottom-0 h-[2px] w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
+          <div className="absolute bottom-0 h-[1px] w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
         </>
       )}
     </div>

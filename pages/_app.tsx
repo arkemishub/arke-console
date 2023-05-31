@@ -19,8 +19,11 @@ import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { NextPage } from "next";
-import { FormConfigProvider } from "@arkejs/form";
+import { FormConfigProvider, RenderProps } from "@arkejs/form";
 import { Autocomplete, Checkbox, Input, Json } from "@arkejs/ui";
+import { useEffect, useState } from "react";
+import useClient from "@/arke/useClient";
+import { TUnit } from "@arkejs/client";
 
 type NextPageWithAuth = NextPage & {
   auth?: boolean;
@@ -33,6 +36,45 @@ type AppPropsWithAuth = AppProps & {
 const inter = Inter({
   subsets: ["latin"],
 });
+
+function AutocompleteLink(props: RenderProps & { reference: any }) {
+  const client = useClient();
+  const { reference } = props;
+  const [values, setValues] = useState<TUnit[]>([]);
+
+  function onChange(value) {
+    props.onChange(value);
+  }
+
+  useEffect(() => {
+    // getAll: arke / group (id: se é gruppo o arke)
+    // filter_keys [OR]
+    // params: load_links: true => getAll
+    if (reference?.arke_id === "group") {
+      // TODO: implement getAll by group and add filters with filter_keys
+      // client.unit.getAll(reference.id).then((res) => {
+      client.api.get(`/group/${reference.id}/unit`).then((res) => {
+        console.log(res.data.content.items);
+        setValues(res.data.content.items);
+      });
+    }
+    if (reference?.arke_id === "arke") {
+      client.unit.getAll(reference.id).then((res) => {
+        console.log(res.data.content.items);
+        setValues(res.data.content.items);
+      });
+    }
+  }, []);
+
+  return (
+    <Autocomplete
+      {...props}
+      onChange={onChange}
+      renderLabel={(value) => `[${value.arke_id}] ${value.label ?? value.id}`}
+      values={values}
+    />
+  );
+}
 
 export default function App({
   Component,
@@ -57,6 +99,23 @@ export default function App({
                 />
               );
             },
+            integer: (props) => (
+              <Input
+                {...props}
+                type="number"
+                fullWidth
+                onChange={(e) => props.onChange(e.target.value)}
+              />
+            ),
+            float: (props) => (
+              <Input
+                {...props}
+                type="number"
+                step="0.01"
+                fullWidth
+                onChange={(e) => props.onChange(e.target.value)}
+              />
+            ),
             string: (props) => {
               if (props.values && props.values.length > 0)
                 return (
@@ -82,6 +141,12 @@ export default function App({
                 checked={props.value}
                 onChange={(e) => props.onChange(e.target.checked)}
               />
+            ),
+            link: (props) => (
+              <AutocompleteLink {...props} reference={props.ref}  onChange={(value) => props.onChange(value.id)} />
+            ),
+            default: (props: RenderProps & { type: string }) => (
+              <div className="text-red-500">Field {props.type} not found</div>
             ),
           }}
         >

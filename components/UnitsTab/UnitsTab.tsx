@@ -115,6 +115,26 @@ function UnitsTab({ arke }: { arke: TUnit }) {
               setSort(sort);
               loadData(currentPage, filters, sort);
             }}
+            noResult={
+              <div className="flex flex-col items-center p-4 py-8 text-center">
+                <div className="rounded-full bg-background-400 p-6">
+                  <AddIcon className="h-12 w-12 text-primary" />
+                </div>
+                <span className="mt-4 text-xl">
+                  Create your first {arke.label} to get started.
+                </span>
+                <div className="mt-4 flex">
+                  <Button
+                    className="border"
+                    onClick={() =>
+                      setCrud((prevState) => ({ ...prevState, add: true }))
+                    }
+                  >
+                    Add {arke.label}
+                  </Button>
+                </div>
+              </div>
+            }
           />
 
           <UnitAdd

@@ -70,7 +70,7 @@ function Arke(props: { data: TUnit[]; count: number }) {
     delete: false,
   });
 
-  const { setFilters, tableProps, setSort, filters, goToPage, currentPage } =
+  const { setFilters, tableProps, totalCount, setSort, filters, goToPage, currentPage } =
     useTable(
       typeof count !== "undefined"
         ? {
@@ -152,6 +152,28 @@ function Arke(props: { data: TUnit[]; count: number }) {
               setSort(sort);
               loadData(currentPage, filters, sort);
             }}
+            noResult={
+              <div className="flex flex-col items-center p-4 py-8 text-center">
+                <div className="rounded-full bg-background-400 p-6">
+                  <AddIcon className="h-12 w-12 text-primary" />
+                </div>
+                <span className="mt-4 text-xl">
+                  Create your first Arke to get started.
+                </span>
+                Do you need a hand? Check out our documentation.
+                <div className="mt-4 flex">
+                  <Button
+                    className="border"
+                    onClick={() =>
+                      setCrud((prevState) => ({ ...prevState, add: true }))
+                    }
+                  >
+                    Add Arke
+                  </Button>
+                </div>
+              </div>
+            }
+            totalCount={totalCount}
           />
         </>
       )}

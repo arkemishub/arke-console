@@ -25,7 +25,7 @@ import Pagination from "./Pagination/Pagination";
 import Filters from "@/components/Table/Filters/Filters";
 
 function Table(
-  props: Pick<ITableProps, "columns" | "data" | "actions"> &
+  props: Pick<ITableProps, "columns" | "data" | "actions" | "noResult"> &
     Omit<IUseTableData<any, any>, "tableProps"> & {
       onFiltersChange?: (filters: Filter[]) => void;
       onSortChange?: (sort: Sort[]) => void;
@@ -49,7 +49,7 @@ function Table(
         onChange={props.goToPage}
         currentPage={props.currentPage}
         pageCount={props.pageCount}
-        totalCount={props.pageCount ?? 0}
+        totalCount={props.totalCount ?? 0}
       />
     </>
   );

@@ -68,7 +68,11 @@ function UnitDetail({ detail }: { detail: TUnit }) {
             <div className="w-[200px] overflow-x-hidden text-ellipsis whitespace-nowrap border-r border-r-neutral text-sm uppercase text-neutral-400">
               {key}
             </div>
-            <div className="text-sm">{value ? JSON.stringify(value) : "-"}</div>
+            <div className="text-sm">
+              {typeof value !== "undefined" && value !== null
+                ? JSON.stringify(value)
+                : "-"}
+            </div>
           </li>
         ))}
       </ul>

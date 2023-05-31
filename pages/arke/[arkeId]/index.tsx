@@ -30,9 +30,15 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
       <>
         <PageTitle title={detail?.label as string} />
         <Tabs>
-          <Tabs.Tab>Detail</Tabs.Tab>
           <Tabs.Tab>Units</Tabs.Tab>
           <Tabs.Tab>Parameters</Tabs.Tab>
+          <Tabs.Tab>Struct</Tabs.Tab>
+          <Tabs.TabPanel>
+            <UnitsTab arke={detail} />
+          </Tabs.TabPanel>
+          <Tabs.TabPanel>
+            <LinkedParametersTab arke={detail} />
+          </Tabs.TabPanel>
           <Tabs.TabPanel>
             <ul>
               {Object.entries(detail).map(([key, value]) => (
@@ -49,12 +55,6 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
                 </li>
               ))}
             </ul>
-          </Tabs.TabPanel>
-          <Tabs.TabPanel>
-            <UnitsTab arke={detail} />
-          </Tabs.TabPanel>
-          <Tabs.TabPanel>
-            <LinkedParametersTab arke={detail} />
           </Tabs.TabPanel>
         </Tabs>
       </>
