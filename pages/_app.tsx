@@ -37,14 +37,13 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-function AutocompleteLink(props: RenderProps & { reference: any }) {
+function AutocompleteLink({
+  reference,
+  onChange,
+  ...props
+}: RenderProps & { reference: any }) {
   const client = useClient();
-  const { reference } = props;
   const [values, setValues] = useState<TUnit[]>([]);
-
-  function onChange(value) {
-    props.onChange(value);
-  }
 
   useEffect(() => {
     // getAll: arke / group (id: se é gruppo o arke)
@@ -54,13 +53,11 @@ function AutocompleteLink(props: RenderProps & { reference: any }) {
       // TODO: implement getAll by group and add filters with filter_keys
       // client.unit.getAll(reference.id).then((res) => {
       client.api.get(`/group/${reference.id}/unit`).then((res) => {
-        console.log(res.data.content.items);
         setValues(res.data.content.items);
       });
     }
     if (reference?.arke_id === "arke") {
       client.unit.getAll(reference.id).then((res) => {
-        console.log(res.data.content.items);
         setValues(res.data.content.items);
       });
     }
@@ -143,7 +140,13 @@ export default function App({
               />
             ),
             link: (props) => (
-              <AutocompleteLink {...props} reference={props.ref}  onChange={(value) => props.onChange(value.id)} />
+              <AutocompleteLink
+                {...props}
+                // @ts-ignore - todo: fix form types
+                reference={props.ref}
+                // @ts-ignore - todo: fix form types
+                onChange={(value) => props.onChange(value.id)}
+              />
             ),
             default: (props: RenderProps & { type: string }) => (
               <div className="text-red-500">Field {props.type} not found</div>

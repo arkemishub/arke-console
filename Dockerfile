@@ -1,6 +1,8 @@
 FROM node:18-alpine AS base
+
 ARG PROJECT_NAME
-ARG ARKE_SERVER_URL="http://localhost:4000/lib"
+ARG ARKE_SERVER_SSR_URL="http://host.docker.internal:4000/lib"
+ARG ARKE_SERVER_URL="http://0.0.0.0:4000/lib"
 ARG NEXTAUTH_URL="http://localhost:3100/api/auth"
 
 # Install dependencies only when needed
@@ -33,6 +35,8 @@ RUN echo NEXTAUTH_SECRET=\" | tr -d '\n' > .env.production \
     && echo $PROJECT_NAME >> .env.production  \
     && echo NEXT_PUBLIC_ARKE_SERVER_URL= | tr -d '\n' >> .env.production \
     && echo $ARKE_SERVER_URL >> .env.production \
+    && echo NEXT_PUBLIC_ARKE_SERVER_SSR_URL= | tr -d '\n' >> .env.production \
+    && echo $ARKE_SERVER_SSR_URL >> .env.production \
     && echo NEXTAUTH_URL= | tr -d '\n' >> .env.production \
     && echo $NEXTAUTH_URL >> .env.production
 
