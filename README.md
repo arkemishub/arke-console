@@ -45,10 +45,14 @@ docker run -p 3100:3100 ghcr.io/arkemishub/arke-console:latest
 
 Visit the console on http://localhost:3100
 
-## Installation with Docker Compose
-
-Run the Docker compose build passing the environment variables
+## Installation with Docker
 ```bash
-docker-compose build --build-arg --build-arg NEXTAUTH_URL="http://localhost:3100" --build-arg NEXT_PUBLIC_ARKE_SERVER_URL="http://localhost:4000" --build-arg NEXTAUTH_SECRET=<NEXTAUTH_SECRET> NEXT_PUBLIC_ARKE_PROJECT=<ARKE_PROJECT> 
-docker-compose up 
+docker build --build-arg PROJECT_NAME=project --build-arg -t arke-console . 
+docker run -p 3100:3100 arke-console 
 ```
+
+The build command accepts following parameters, that allows the customization of env variables:
+- `PROJECT_NAME` - the name of the project
+- `ARKE_SERVER_URL` - the url of the Arke server
+- `ARKE_PROJECT` - the name of the Arke project
+- `NEXTAUTH_URL` - the url of the console

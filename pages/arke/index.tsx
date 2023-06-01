@@ -70,22 +70,29 @@ function Arke(props: { data: TUnit[]; count: number }) {
     delete: false,
   });
 
-  const { setFilters, tableProps, totalCount, setSort, filters, goToPage, currentPage } =
-    useTable(
-      typeof count !== "undefined"
-        ? {
-            pagination: {
-              totalCount: count,
-              type: "custom",
-              pageSize: PAGE_SIZE,
-            },
-            columns,
-            sorting: {
-              sortable: true,
-            },
-          }
-        : null
-    );
+  const {
+    setFilters,
+    tableProps,
+    totalCount,
+    setSort,
+    filters,
+    goToPage,
+    currentPage,
+  } = useTable(
+    typeof count !== "undefined"
+      ? {
+          pagination: {
+            totalCount: count,
+            type: "custom",
+            pageSize: PAGE_SIZE,
+          },
+          columns,
+          sorting: {
+            sortable: true,
+          },
+        }
+      : null
+  );
 
   const loadData = useCallback(
     (page?: number, filters?: Filter[], sort?: Sort[]) => {

@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Arke Playground</title>
+        <title>Arke Console</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
