@@ -35,7 +35,7 @@ function Sidebar() {
             <Image src="/logo.png" alt="logo" height={30} width={30} />
             <p className="ml-2 font-semibold">ARKE</p>
             <p className="ml-2 border-l border-l-neutral pl-2 text-neutral-400">
-              Playground
+              Console
             </p>
           </div>
         </Link>
