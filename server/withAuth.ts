@@ -29,7 +29,7 @@ export function withAuth<
     context: GetServerSidePropsContext
   ) {
     const session = await getToken({ req: context?.req });
-    const client = getClient();
+    const client = getClient(context);
 
     if (!session)
       return {
