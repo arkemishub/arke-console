@@ -22,7 +22,6 @@ Create a `.env.local` file with the following variables:
 NEXT_PUBLIC_ARKE_SERVER_URL=
 NEXTAUTH_URL=
 NEXTAUTH_SECRET=
-NEXT_PUBLIC_ARKE_PROJECT=
 ```
 
 ### Build & Run the production server

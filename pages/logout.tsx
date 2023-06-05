@@ -16,9 +16,11 @@
 
 import React, { useEffect } from "react";
 import { signOut } from "next-auth/react";
+import { deleteCookie } from "cookies-next";
 
 export default function Logout() {
   useEffect(() => {
+    deleteCookie("arke_project");
     signOut({ callbackUrl: "/login" });
   }, []);
 

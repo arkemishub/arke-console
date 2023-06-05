@@ -17,14 +17,17 @@
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
 import { Form, FormField } from "@arkejs/form";
-import { Button, Input } from "@arkejs/ui";
+import { Autocomplete, Button, Input } from "@arkejs/ui";
 import React, { useCallback, useState } from "react";
-import { BaseParameter, TBaseParameter } from "@arkejs/client";
+import { BaseParameter, TBaseParameter, TUnit } from "@arkejs/client";
 import useClient from "@/arke/useClient";
 import { CopyIcon } from "@/components/Icon";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import Image from "next/image";
+import { getClient } from "@/arke/getClient";
+import { setCookie } from "cookies-next";
+import { useRouter } from "next/router";
 
 const fields: Array<TBaseParameter & Record<string, unknown>> = [
   {
@@ -39,7 +42,8 @@ const fields: Array<TBaseParameter & Record<string, unknown>> = [
   },
 ];
 
-function GetStarted() {
+function GetStarted({ projects }: { projects: TUnit[] }) {
+  const router = useRouter();
   const [projectId, setProjectId] = useState("");
 
   const client = useClient();
@@ -50,11 +54,12 @@ function GetStarted() {
       id: (data.label as string).trim().replace(/\/+$/, "-"),
       type: "postgres_schema",
     });
-    setProjectId(`NEXT_PUBLIC_ARKE_PROJECT=${res.data.content.id}`);
+    onSelectProject(res.data.content);
   }, []);
 
-  const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(projectId);
+  const onSelectProject = (project: TUnit) => {
+    setCookie("arke_project", project.id);
+    router.push("/");
   };
 
   return (
@@ -85,80 +90,72 @@ function GetStarted() {
           />
         </div>
 
-        {!projectId ? (
-          <>
-            <h1 className="text-center text-5xl font-semibold">
-              Create your project
-            </h1>
-            <p className="mx-auto max-w-lg text-center text-neutral-400">
-              NEXT_PUBLIC_ARKE_PROJECT variable is not configured. Follow the
-              steps below to create your first project.
-            </p>
-            <Form fields={fields} onSubmit={handleSubmit}>
-              {() => (
-                <div className="mx-auto max-w-xl">
-                  <div className="grid gap-6">
-                    <FormField
-                      id="label"
-                      render={(props) => (
-                        <Input
-                          {...props}
-                          className="w-full"
-                          onChange={(e) => props.onChange(e.target.value)}
-                          pattern="^[a-z0-9_-]+$"
-                          required
-                          helperText="Insert a lowercase name, allowed characters: alphanumeric, underscore and hyphen"
-                        />
-                      )}
+        <h1 className="text-center text-5xl font-semibold">
+          Configure your project
+        </h1>
+        <p className="mx-auto max-w-lg text-center text-neutral-400"></p>
+        <p className="mx-auto max-w-lg text-center text-neutral-400">
+          Select an existing project
+        </p>
+        <div className="mx-auto w-full max-w-xl">
+          <Autocomplete
+            placeholder="Choose project"
+            onChange={onSelectProject}
+            renderLabel={(item) => item.label ?? ""}
+            values={projects}
+          />
+        </div>
+
+        <p className="mx-auto max-w-lg text-center text-neutral-400">
+          or create a new one
+        </p>
+        <Form fields={fields} onSubmit={handleSubmit}>
+          {() => (
+            <div className="mx-auto max-w-xl">
+              <div className="grid gap-6">
+                <FormField
+                  id="label"
+                  render={(props) => (
+                    <Input
+                      {...props}
+                      className="w-full"
+                      onChange={(e) => props.onChange(e.target.value)}
+                      pattern="^[a-z0-9_-]+$"
+                      required
+                      helperText="Insert a lowercase name, allowed characters: alphanumeric, underscore and hyphen"
                     />
-                    <FormField id="description" />
-                  </div>
-                  <div className="mt-8 flex gap-4">
-                    <Button className="w-full" color="primary" type="submit">
-                      Create
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </Form>
-          </>
-        ) : (
-          <>
-            <h1 className="text-center text-5xl font-semibold">
-              Connect your console
-            </h1>
-
-            <p className="text-center text-neutral-400">
-              Connect your console to your new project by adding following
-              variable to your .env file:
-            </p>
-
-            <div className="relative mx-auto w-full max-w-lg">
-              <Input
-                disabled
-                value={projectId}
-                className="w-full !cursor-default bg-neutral-900 opacity-100"
-              />
-              <Button
-                onClick={handleCopyToClipboard}
-                className="absolute right-0 top-0 bg-neutral"
-              >
-                <CopyIcon />
-              </Button>
+                  )}
+                />
+                <FormField id="description" />
+              </div>
+              <div className="mt-8 flex gap-4">
+                <Button className="w-full" color="primary" type="submit">
+                  Create
+                </Button>
+              </div>
             </div>
-
-            <Link href="/" className="btn btn--primary mx-auto">
-              I pasted it in my env file, get me in!
-            </Link>
-          </>
-        )}
+          )}
+        </Form>
       </div>
     </div>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = withAuth(() => {
-  return { props: {} };
-});
+export const getServerSideProps: GetServerSideProps = withAuth(
+  async (context) => {
+    const client = getClient(context);
+
+    const response = await client.unit.getAll("arke_project", {});
+
+    return {
+      props: {
+        projects:
+          response?.data?.content?.items?.filter(
+            (item) => item.id !== "arke_system"
+          ) ?? [],
+      },
+    };
+  }
+);
 
 export default GetStarted;
