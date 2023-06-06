@@ -30,14 +30,14 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
       <>
         <PageTitle title={detail?.label as string} />
         <Tabs>
-          <Tabs.Tab>Units</Tabs.Tab>
           <Tabs.Tab>Parameters</Tabs.Tab>
+          <Tabs.Tab>Units</Tabs.Tab>
           <Tabs.Tab>Struct</Tabs.Tab>
           <Tabs.TabPanel>
-            <UnitsTab arke={detail} />
+            <LinkedParametersTab arke={detail} />
           </Tabs.TabPanel>
           <Tabs.TabPanel>
-            <LinkedParametersTab arke={detail} />
+            <UnitsTab arke={detail} />
           </Tabs.TabPanel>
           <Tabs.TabPanel>
             <ul>

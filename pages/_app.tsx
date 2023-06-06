@@ -69,6 +69,7 @@ function AutocompleteLink({
       onChange={onChange}
       renderLabel={(value) => `[${value.arke_id}] ${value.label ?? value.id}`}
       values={values}
+      value={values.find((item) => item.id === props.value)}
     />
   );
 }
@@ -139,6 +140,13 @@ export default function App({
                 onChange={(e) => props.onChange(e.target.checked)}
               />
             ),
+            list: (props) => (
+              <Json
+                label={props.label}
+                value={JSON.stringify(props.value)}
+                onChange={(value) => props.onChange(JSON.parse(value))}
+              />
+            ),
             link: (props) => (
               <AutocompleteLink
                 {...props}
@@ -149,7 +157,9 @@ export default function App({
               />
             ),
             default: (props: RenderProps & { type: string }) => (
-              <div className="text-red-500">Field {props.type} not found</div>
+              <div className="text-red-500">
+                Type &quot;{props.type}&quot; not found
+              </div>
             ),
           }}
         >
