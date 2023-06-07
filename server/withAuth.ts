@@ -17,6 +17,7 @@
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { getToken } from "next-auth/jwt";
 import { getClient } from "@/arke/getClient";
+import { getCookieName } from "../utils/auth";
 
 export function withAuth<
   P extends { [key: string]: unknown } = { [key: string]: unknown }
@@ -28,8 +29,11 @@ export function withAuth<
   return async function nextGetServerSidePropsHandlerWrappedWithLoggedInRedirect(
     context: GetServerSidePropsContext
   ) {
-    const session = await getToken({ req: context?.req });
-    const client = getClient();
+    const session = await getToken({
+      req: context?.req,
+      cookieName: `${getCookieName()}.session-token`,
+    });
+    const client = getClient(context);
 
     if (!session)
       return {

@@ -14,26 +14,9 @@
  * limitations under the License.
  */
 
-import React, { useEffect } from "react";
-import { signOut } from "next-auth/react";
-import { deleteCookie } from "cookies-next";
-
-export default function Logout() {
-  useEffect(() => {
-    deleteCookie("arke_project");
-    signOut({ callbackUrl: "/login" });
-  }, []);
-
-  return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      You are being logged out...
-    </div>
-  );
+function getCookieName() {
+  const secureCookie = process.env.NEXTAUTH_URL?.startsWith("https://");
+  return `${secureCookie ? "__Secure-" : ""}arke-console-auth`;
 }
+
+export { getCookieName };

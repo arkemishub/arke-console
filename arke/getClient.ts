@@ -19,6 +19,8 @@ import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import { getToken } from "next-auth/jwt";
 import * as process from "process";
+import { getCookie } from "cookies-next";
+import { getCookieName } from "../utils/auth";
 
 const getServerUrl = () => {
   if (
@@ -38,10 +40,17 @@ export const getClient = (context?: {
   const serverUrl = getServerUrl();
   return new Client({
     serverUrl,
-    project: process.env.NEXT_PUBLIC_ARKE_PROJECT,
+    project:
+      getCookie("arke_project", {
+        req: context?.req,
+        res: context?.res,
+      })?.toString() ?? "",
     getSession: async () => {
       if (typeof window === "undefined" && context) {
-        return getToken({ req: context?.req });
+        return getToken({
+          req: context?.req,
+          cookieName: `${getCookieName()}.session-token`,
+        });
       }
       return getSession() as Promise<TToken>;
     },

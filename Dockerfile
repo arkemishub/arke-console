@@ -1,6 +1,5 @@
 FROM node:18-alpine AS base
 
-ARG PROJECT_ID
 ARG ARKE_SERVER_SSR_URL="http://host.docker.internal:4000/lib"
 ARG ARKE_SERVER_URL="http://0.0.0.0:4000/lib"
 ARG NEXTAUTH_URL="http://localhost:3100/api/auth"
@@ -31,8 +30,6 @@ COPY . .
 RUN echo NEXTAUTH_SECRET=\" | tr -d '\n' > .env.production \
     && openssl rand -base64 32 | tr -d '\n' >> .env.production \
     && echo \" >> .env.production \
-    && echo NEXT_PUBLIC_ARKE_PROJECT= | tr -d '\n' >> .env.production \
-    && echo $PROJECT_ID >> .env.production  \
     && echo NEXT_PUBLIC_ARKE_SERVER_URL= | tr -d '\n' >> .env.production \
     && echo $ARKE_SERVER_URL >> .env.production \
     && echo NEXT_PUBLIC_ARKE_SERVER_SSR_URL= | tr -d '\n' >> .env.production \
