@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import { getSession } from 'next-auth/react';
+import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
+import { getSession } from "next-auth/react";
 
 export function withLoggedInRedirect<
   P extends { [key: string]: unknown } = { [key: string]: unknown }

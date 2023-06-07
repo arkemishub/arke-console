@@ -66,6 +66,8 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       },
     }),
   ];
+  const useSecureCookies = process.env.NEXTAUTH_URL?.startsWith("https://");
+  const cookiePrefix = useSecureCookies ? "__Secure-" : "";
 
   return await NextAuth(req, res, {
     callbacks: {
@@ -116,5 +118,67 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       newUser: "/auth/new-org", // New users will be directed here on first sign in (leave the property out if not of interest)
     },
     session: { strategy: "jwt" },
+    cookies: {
+      sessionToken: {
+        name: `${cookiePrefix}arke-console-auth.session-token`,
+        options: {
+          httpOnly: true,
+          sameSite: "lax",
+          path: "/",
+          secure: useSecureCookies,
+        },
+      },
+      callbackUrl: {
+        name: `${cookiePrefix}arke-console-auth.callback-url`,
+        options: {
+          httpOnly: true,
+          sameSite: "lax",
+          path: "/",
+          secure: useSecureCookies,
+        },
+      },
+      csrfToken: {
+        // Default to __Host- for CSRF token for additional protection if using useSecureCookies
+        // NB: The `__Host-` prefix is stricter than the `__Secure-` prefix.
+        name: `${
+          useSecureCookies ? "__Host-" : ""
+        }arke-console-auth.csrf-token`,
+        options: {
+          httpOnly: true,
+          sameSite: "lax",
+          path: "/",
+          secure: useSecureCookies,
+        },
+      },
+      pkceCodeVerifier: {
+        name: `${cookiePrefix}arke-console-auth.pkce.code_verifier`,
+        options: {
+          httpOnly: true,
+          sameSite: "lax",
+          path: "/",
+          secure: useSecureCookies,
+          maxAge: 60 * 15, // 15 minutes in seconds
+        },
+      },
+      state: {
+        name: `${cookiePrefix}arke-console-auth.state`,
+        options: {
+          httpOnly: true,
+          sameSite: "lax",
+          path: "/",
+          secure: useSecureCookies,
+          maxAge: 60 * 15, // 15 minutes in seconds
+        },
+      },
+      nonce: {
+        name: `${cookiePrefix}arke-console-auth.nonce`,
+        options: {
+          httpOnly: true,
+          sameSite: "lax",
+          path: "/",
+          secure: useSecureCookies,
+        },
+      },
+    },
   });
 }
