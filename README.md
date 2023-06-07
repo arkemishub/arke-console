@@ -46,12 +46,11 @@ Visit the console on http://localhost:3100
 
 ## Installation with Docker
 ```bash
-docker build --build-arg PROJECT_ID=project --build-arg -t arke-console . 
+docker build -t arke-console . 
 docker run -p 3100:3100 arke-console 
 ```
 
 The build command accepts following parameters, that allows the customization of env variables:
-- `PROJECT_ID` - the name of the project
 - `ARKE_SERVER_URL` - the url of the Arke server
-- `ARKE_PROJECT` - the name of the Arke project
+- `ARKE_SERVER_SSR_URL` - the url of the Arke server for SSR
 - `NEXTAUTH_URL` - the url of the console
