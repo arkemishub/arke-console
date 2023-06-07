@@ -20,6 +20,7 @@ import { getSession } from "next-auth/react";
 import { getToken } from "next-auth/jwt";
 import * as process from "process";
 import { getCookie } from "cookies-next";
+import { getCookieName } from "../utils/auth";
 
 const getServerUrl = () => {
   if (
@@ -46,7 +47,10 @@ export const getClient = (context?: {
       })?.toString() ?? "",
     getSession: async () => {
       if (typeof window === "undefined" && context) {
-        return getToken({ req: context?.req });
+        return getToken({
+          req: context?.req,
+          cookieName: `${getCookieName()}.session-token`,
+        });
       }
       return getSession() as Promise<TToken>;
     },
