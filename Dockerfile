@@ -3,6 +3,7 @@ FROM node:18-alpine AS base
 ARG ARKE_SERVER_SSR_URL="http://host.docker.internal:4000/lib"
 ARG ARKE_SERVER_URL="http://0.0.0.0:4000/lib"
 ARG NEXTAUTH_URL="http://localhost:3100/api/auth"
+ARG PROJECT_ID
 
 # Install dependencies only when needed
 FROM base AS deps

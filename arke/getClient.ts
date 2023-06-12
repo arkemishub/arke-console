@@ -18,7 +18,6 @@ import { Client, TToken } from "@arkejs/client";
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import { getToken } from "next-auth/jwt";
-import * as process from "process";
 import { getCookie } from "cookies-next";
 import { getCookieName } from "../utils/auth";
 
@@ -33,6 +32,17 @@ const getServerUrl = () => {
   return process.env.NEXT_PUBLIC_ARKE_SERVER_URL;
 };
 
+const getProjectId = (context?: {
+  req: GetServerSidePropsContext["req"];
+  res: GetServerSidePropsContext["res"];
+}) =>
+  (process.env.NEXT_PUBLIC_ARKE_PROJECT ||
+    getCookie("arke_project", {
+      req: context?.req,
+      res: context?.res,
+    })?.toString()) ??
+  "";
+
 export const getClient = (context?: {
   req: GetServerSidePropsContext["req"];
   res: GetServerSidePropsContext["res"];
@@ -40,11 +50,7 @@ export const getClient = (context?: {
   const serverUrl = getServerUrl();
   return new Client({
     serverUrl,
-    project:
-      getCookie("arke_project", {
-        req: context?.req,
-        res: context?.res,
-      })?.toString() ?? "",
+    project: getProjectId(context),
     getSession: async () => {
       if (typeof window === "undefined" && context) {
         return getToken({
