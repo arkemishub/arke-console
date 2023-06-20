@@ -23,6 +23,7 @@ describe("Sidebar", () => {
     expect(getByText("Dashboard")).toBeInTheDocument();
     expect(getByText("Arke")).toBeInTheDocument();
     expect(getByText("Parameters")).toBeInTheDocument();
+    expect(getByText("Users")).toBeInTheDocument();
     expect(getByText("Logout")).toBeInTheDocument();
   });
 });

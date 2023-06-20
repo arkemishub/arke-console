@@ -87,7 +87,7 @@ function LinkedParameterAdd({
         multiple
         values={values}
         value={selected}
-        renderLabel={(val) => val.id}
+        getDisplayValue={(val) => val.id}
         renderChips={false}
         placeholder="Search a parameter"
       />
@@ -136,7 +136,7 @@ function LinkedParameterDelete({
   const onSubmit = useCallback(() => {
     if (parameter.type) {
       client.arke
-        .removeParameter(arkeId, parameter.type, parameter.id)
+        .removeParameter(arkeId, parameter.type as string, parameter.id as string)
         .then(() => {
           onDelete();
         });

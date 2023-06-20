@@ -101,7 +101,7 @@ function GetStarted({ projects }: { projects: TUnit[] }) {
           <Autocomplete
             placeholder="Choose project"
             onChange={onSelectProject}
-            renderLabel={(item) => item.label ?? ""}
+            getDisplayValue={(item) => item.label ?? ""}
             values={projects}
           />
         </div>
