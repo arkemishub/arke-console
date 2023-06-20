@@ -14,16 +14,6 @@
  * limitations under the License.
  */
 
-import { render } from "@testing-library/react";
-import { Sidebar } from "@/components/Sidebar";
-
-describe("Sidebar", () => {
-  test("should render", () => {
-    const { getByText } = render(<Sidebar />);
-    expect(getByText("Dashboard")).toBeInTheDocument();
-    expect(getByText("Arke")).toBeInTheDocument();
-    expect(getByText("Parameters")).toBeInTheDocument();
-    expect(getByText("Users")).toBeInTheDocument();
-    expect(getByText("Logout")).toBeInTheDocument();
-  });
-});
+export * from "./columns";
+export * from "./UserCrud";
+export * from "./UserDelete";

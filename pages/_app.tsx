@@ -67,7 +67,9 @@ function AutocompleteLink({
     <Autocomplete
       {...props}
       onChange={onChange}
-      renderLabel={(value) => `[${value.arke_id}] ${value.label ?? value.id}`}
+      getDisplayValue={(value) =>
+        `[${value.arke_id}] ${value.label ?? value.id}`
+      }
       values={values}
       value={values.find((item) => item.id === props.value)}
     />
@@ -114,14 +116,24 @@ export default function App({
                 onChange={(e) => props.onChange(e.target.value)}
               />
             ),
+            date: (props) => (
+              <Input
+                {...props}
+                type="date"
+                fullWidth
+                onChange={(e) => props.onChange(e.target.value)}
+              />
+            ),
             string: (props) => {
               if (props.values && props.values.length > 0)
                 return (
                   <Autocomplete
                     {...props}
-                    onChange={(value) => props.onChange(value)}
-                    renderLabel={(value) => value.label}
-                    values={props.values}
+                    onChange={(value) => props.onChange(value.value)}
+                    getDisplayValue={(value) => value.label}
+                    value={props.values.filter(
+                      (item: { value: string }) => item.value === props.value
+                    )}
                   />
                 );
               return (

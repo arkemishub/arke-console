@@ -118,7 +118,7 @@ export function ParameterAdd({
             <>
               <div className="grid gap-4">
                 {fields.map((field) => (
-                  <FormField id={field.id} key={field.id} />
+                  <FormField id={field.id as string} key={field.id as string} />
                 ))}
               </div>
               <div className="mt-4 flex  gap-4">

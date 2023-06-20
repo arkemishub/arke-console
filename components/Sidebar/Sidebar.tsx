@@ -20,6 +20,7 @@ import {
   ArrowLeftOnRectangleIcon,
   SparklesIcon,
   TagIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import { twMerge } from "tailwind-merge";
@@ -43,6 +44,7 @@ function Sidebar() {
           <SidebarItem icon={HomeIcon} label="Dashboard" href="/" />
           <SidebarItem icon={SparklesIcon} label="Arke" href="/arke" />
           <SidebarItem icon={TagIcon} label="Parameters" href="/parameters" />
+          <SidebarItem icon={UserIcon} label="Users" href="/users" />
           <SidebarItem
             icon={ArrowLeftOnRectangleIcon}
             label="Logout"
