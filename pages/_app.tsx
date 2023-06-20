@@ -114,14 +114,24 @@ export default function App({
                 onChange={(e) => props.onChange(e.target.value)}
               />
             ),
+            date: (props) => (
+              <Input
+                {...props}
+                type="date"
+                fullWidth
+                onChange={(e) => props.onChange(e.target.value)}
+              />
+            ),
             string: (props) => {
               if (props.values && props.values.length > 0)
                 return (
                   <Autocomplete
                     {...props}
-                    onChange={(value) => props.onChange(value)}
+                    onChange={(value) => props.onChange(value.value)}
                     renderLabel={(value) => value.label}
-                    values={props.values}
+                    value={props.values.filter(
+                      (item: { value: string }) => item.value === props.value
+                    )}
                   />
                 );
               return (
