@@ -44,7 +44,7 @@ export const columns: Column[] = [
     id: "first_access",
     type: ColumnType.Bool,
     render: (data) => (
-      <Switch checked={!!data.active} color="primary" disabled />
+      <Switch checked={!!data.first_access} color="primary" disabled />
     ),
   },
 ];
