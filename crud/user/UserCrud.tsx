@@ -35,7 +35,7 @@ export function UserCrud({
   onSubmit(data: TResponse<TUnit>): void;
 }) {
   const [loading, setLoading] = useState(true);
-  const [fields, setFields] = useState<TBaseParameter[]>([]);
+  const [fields, setFields] = useState<TBaseParameter[] | undefined>(undefined);
 
   const client = useClient();
 
@@ -54,17 +54,20 @@ export function UserCrud({
         });
       }
 
-      promise.then((res) => {
-        const parameters = res.data.content.parameters.map((item) => {
-          if (item.id === "password_hash") {
-            item.id = "password";
+      promise
+        .then((res) => {
+          const parameters = res.data.content.parameters.map((item) => {
+            if (item.id === "password_hash") {
+              item.id = "password";
+              return item;
+            }
             return item;
-          }
-          return item;
+          });
+          setFields(parameters);
+        })
+        .finally(() => {
+          setLoading(false);
         });
-        setFields(parameters);
-        setLoading(false);
-      });
     }
   }, [open, unitId]);
 
@@ -88,11 +91,20 @@ export function UserCrud({
     [client, unitId, onSubmit]
   );
 
+  const handleClose = useCallback(() => {
+    setFields(undefined);
+    onClose();
+  }, [onClose]);
+
   return (
-    <Dialog open={!!open} title={title} onClose={onClose}>
-      <Form fields={fields} onSubmit={onFormSubmit} style={{ height: "100%" }}>
+    <Dialog open={!!open} title={title} onClose={handleClose}>
+      <Form
+        fields={fields ?? []}
+        onSubmit={onFormSubmit}
+        style={{ height: "100%" }}
+      >
         {() =>
-          loading ? (
+          loading || !fields ? (
             <Spinner />
           ) : (
             <>

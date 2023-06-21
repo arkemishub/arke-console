@@ -168,11 +168,7 @@ export default function App({
                 onChange={(value) => props.onChange(value.id)}
               />
             ),
-            default: (props: RenderProps & { type: string }) => (
-              <div className="text-red-500">
-                Type &quot;{props.type}&quot; not found
-              </div>
-            ),
+            default: (props: RenderProps & { type: string }) => <></>,
           }}
         >
           <Component {...pageProps} />
