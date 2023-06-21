@@ -24,7 +24,6 @@ export function ParameterAdd({
   open,
   title,
   onClose,
-  arkeId,
   onSubmit,
 }: {
   open: string | boolean | undefined;
@@ -34,7 +33,7 @@ export function ParameterAdd({
   onSubmit(data: TResponse<TUnit>): void;
 }) {
   const [loading, setLoading] = useState(true);
-  const [fields, setFields] = useState<TBaseParameter[]>([]);
+  const [fields, setFields] = useState<TBaseParameter[] | undefined>(undefined);
   const [parameterTypes, setParameterTypes] = useState<TUnit[]>([]);
   const [selectedType, setSelectedType] = useState<TUnit | undefined>(
     undefined
@@ -51,7 +50,7 @@ export function ParameterAdd({
         setLoading(false);
       });
     }
-  }, [open, arkeId]);
+  }, [open]);
 
   const onFormSubmit = useCallback(
     (data: Record<string, unknown>) => {
@@ -60,7 +59,7 @@ export function ParameterAdd({
           (acc: Record<string, unknown>, [key, value]) => {
             let parsedValue = value;
             if (
-              fields.find((f) => f.id === key)?.type === "dict" &&
+              fields?.find((f) => f.id === key)?.type === "dict" &&
               typeof value == "string"
             )
               parsedValue = JSON.parse(value);
@@ -83,6 +82,7 @@ export function ParameterAdd({
   const onParameterTypeChange = useCallback(
     (value: TUnit) => {
       setSelectedType(value);
+      setLoading(true);
       client.arke
         .struct(value.id, {
           params: {
@@ -96,13 +96,22 @@ export function ParameterAdd({
             ],
           },
         })
-        .then((res) => setFields(res.data.content.parameters));
+        .then((res) => {
+          setFields(res.data.content.parameters);
+        })
+        .finally(() => setLoading(false));
     },
     [client]
   );
 
+  const handleClose = useCallback(() => {
+    setSelectedType(undefined);
+    setFields(undefined);
+    onClose();
+  }, [onClose]);
+
   return (
-    <Dialog open={!!open} title={title} onClose={onClose}>
+    <Dialog open={!!open} title={title} onClose={handleClose}>
       <Select
         value={selectedType}
         values={parameterTypes}
@@ -110,34 +119,49 @@ export function ParameterAdd({
         renderLabel={(val) => val.label as string}
         className="mb-4"
       />
-      <Form fields={fields} onSubmit={onFormSubmit} style={{ height: "100%" }}>
-        {() =>
-          loading ? (
-            <Spinner />
-          ) : (
-            <>
-              <div className="grid gap-4">
-                {fields.map((field) => (
-                  <FormField id={field.id as string} key={field.id as string} />
-                ))}
-              </div>
-              <div className="mt-4 flex  gap-4">
-                <Button className="w-full bg-neutral" onClick={onClose}>
-                  Close
-                </Button>
-                <Button
-                  disabled={loading}
-                  color="primary"
-                  className="w-full"
-                  type="submit"
-                >
-                  Confirm
-                </Button>
-              </div>
-            </>
-          )
-        }
-      </Form>
+      {selectedType ? (
+        <Form
+          fields={fields ?? []}
+          onSubmit={onFormSubmit}
+          style={{ height: "100%" }}
+        >
+          {() =>
+            loading ? (
+              <Spinner />
+            ) : (
+              <>
+                <div className="grid gap-4">
+                  {fields?.map((field) => (
+                    <FormField
+                      id={field.id as string}
+                      key={field.id as string}
+                    />
+                  ))}
+                </div>
+                <div className="mt-4 flex  gap-4">
+                  <Button className="w-full bg-neutral" onClick={onClose}>
+                    Close
+                  </Button>
+                  <Button
+                    disabled={loading}
+                    color="primary"
+                    className="w-full"
+                    type="submit"
+                  >
+                    Confirm
+                  </Button>
+                </div>
+              </>
+            )
+          }
+        </Form>
+      ) : (
+        <div className="flex min-h-[300px] items-center justify-center text-center">
+          <p className="text-sm font-thin text-neutral-300">
+            Please select a parameter type
+          </p>
+        </div>
+      )}
     </Dialog>
   );
 }

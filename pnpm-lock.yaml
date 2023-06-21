@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@arkejs/client':
-    specifier: 2.1.3
-    version: 2.1.3
+    specifier: 2.2.0
+    version: 2.2.0
   '@arkejs/form':
     specifier: 1.2.2
     version: 1.2.2(react-dom@18.2.0)(react@18.2.0)
@@ -15,8 +15,8 @@ dependencies:
     specifier: 0.7.1
     version: 0.7.1(react-dom@18.2.0)(react@18.2.0)
   '@arkejs/ui':
-    specifier: 0.26.1
-    version: 0.26.1(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.2.7)
+    specifier: 0.26.2
+    version: 0.26.2(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.2.7)
   '@heroicons/react':
     specifier: ^2.0.16
     version: 2.0.16(react@18.2.0)
@@ -120,8 +120,8 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
 
-  /@arkejs/client@2.1.3:
-    resolution: {integrity: sha512-iznTFhUCD2vpRux9cyEpk4qEAV57XiLyw0hxc2YY5J41sjQwWsIX7iwlvT7iL5vYevXnlkM9SythU9AFtGR2BQ==}
+  /@arkejs/client@2.2.0:
+    resolution: {integrity: sha512-B0L3zVK/TLZdZhtIFtWe39+8msBQd41slvwLUiU8q8Mo0PSQY8ahhWjUORMJA/GSicpM8X1OT8KX4A3Nap0wMg==}
     dependencies:
       axios: 0.24.0
     transitivePeerDependencies:
@@ -148,8 +148,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@arkejs/ui@0.26.1(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.2.7):
-    resolution: {integrity: sha512-Nw5O+YXandEwtYVbMBUDhvrkVYVd4OSk6dz7rXTy+fmYRy4J1xkJx8DUKfcDD/mnfT01YukNnMS8hHfd8mkf1Q==}
+  /@arkejs/ui@0.26.2(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.2.7):
+    resolution: {integrity: sha512-g4iuE748k/IOQwRN2ESBRLZAic+hfHISrEFFo+eRTDm21m+8ynbMnA+zB+M2Iy6zEbdEEjFv4e0NbVETh3QXKQ==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
