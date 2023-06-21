@@ -19,10 +19,6 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import { Switch } from "@arkejs/ui";
 
-const Json = dynamic(() => import("@arkejs/ui").then((module) => module.Json), {
-  ssr: false,
-});
-
 export const columns: Column[] = [
   {
     label: "ID",
@@ -43,18 +39,6 @@ export const columns: Column[] = [
       <Switch checked={!!data.active} color="primary" disabled />
     ),
   },
-  {
-    label: "Metadata",
-    id: "metadata",
-    sortable: false,
-    render: (data) => (
-      <Json
-        readOnly
-        value={JSON.stringify(data.metadata)}
-        className="!min-h-[50px] max-w-[250px]"
-      />
-    ),
-  },
 ];
 
 export const arkeUnitsColumns: Column[] = [
@@ -70,18 +54,6 @@ export const arkeUnitsColumns: Column[] = [
       </Link>
     ),
   },
-  {
-    label: "Metadata",
-    id: "metadata",
-    sortable: false,
-    render: (data) => (
-      <Json
-        readOnly
-        value={JSON.stringify(data.metadata)}
-        className="!min-h-[50px] max-w-[250px]"
-      />
-    ),
-  },
 ];
 
 export const linkedParametersColumns: Column[] = [
@@ -93,16 +65,5 @@ export const linkedParametersColumns: Column[] = [
   {
     label: "Type",
     id: "type",
-  },
-  {
-    label: "Metadata",
-    id: "metadata",
-    render: (data) => (
-      <Json
-        readOnly
-        value={JSON.stringify(data.metadata)}
-        className="!min-h-[50px] max-w-[250px]"
-      />
-    ),
   },
 ];

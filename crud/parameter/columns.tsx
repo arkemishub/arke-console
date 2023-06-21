@@ -17,10 +17,6 @@
 import { Column, ColumnType } from "@arkejs/table";
 import dynamic from "next/dynamic";
 
-const Json = dynamic(() => import("@arkejs/ui").then((module) => module.Json), {
-  ssr: false,
-});
-
 export const columns: Column[] = [
   {
     label: "ID",
@@ -37,17 +33,5 @@ export const columns: Column[] = [
     label: "Format",
     id: "format",
     type: ColumnType.String,
-  },
-  {
-    label: "Metadata",
-    id: "metadata",
-    sortable: false,
-    render: (data) => (
-      <Json
-        readOnly
-        value={JSON.stringify(data.metadata)}
-        className="!min-h-[50px] max-w-[250px]"
-      />
-    ),
   },
 ];
