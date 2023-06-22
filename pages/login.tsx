@@ -17,13 +17,23 @@
 import { GetServerSideProps } from "next";
 import { withLoggedInRedirect } from "@/server/withLoggedInRedirect";
 import { getCsrfToken, getProviders, signIn } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Input, Spinner } from "@arkejs/ui";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 export default function Login({ csrfToken }: { csrfToken: string }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const { query } = useRouter();
+
+  useEffect(() => {
+    if (query.error)
+      toast.error("Incorrect username and/or password", {
+        id: "error_login",
+      });
+  }, [query]);
 
   function onSignIn(e: any) {
     e.preventDefault();
