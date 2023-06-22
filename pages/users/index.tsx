@@ -34,6 +34,7 @@ import { withAuth } from "@/server/withAuth";
 import { Layout } from "@/components/Layout";
 import { Table } from "@/components/Table";
 import { AddIcon, EditIcon } from "@/components/Icon";
+import toast from "react-hot-toast";
 
 const PAGE_SIZE = 10;
 
@@ -196,6 +197,7 @@ function Users(props: { data: TUnit[]; count: number }) {
         onClose={() => setCrud((p) => ({ ...p, add: false }))}
         onSubmit={() => {
           loadData();
+          toast.success(`User created correctly`);
           setCrud((p) => ({ ...p, add: false }));
         }}
       />
@@ -211,6 +213,7 @@ function Users(props: { data: TUnit[]; count: number }) {
         onClose={() => setCrud((p) => ({ ...p, edit: false }))}
         onSubmit={() => {
           loadData();
+          toast.success(`User edited correctly`);
           setCrud((p) => ({ ...p, edit: false }));
         }}
       />
@@ -221,6 +224,7 @@ function Users(props: { data: TUnit[]; count: number }) {
         unitId={crud.delete as string}
         onSubmit={() => {
           loadData();
+          toast.success(`User deleted correctly`);
           setCrud((p) => ({ ...p, delete: false }));
         }}
       />

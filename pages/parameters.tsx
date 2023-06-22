@@ -33,6 +33,7 @@ import { getClient } from "@/arke/getClient";
 import { Layout } from "@/components/Layout";
 import { Table } from "@/components/Table";
 import { AddIcon, EditIcon, TrashIcon } from "@/components/Icon";
+import toast from "react-hot-toast";
 
 const PAGE_SIZE = 10;
 
@@ -192,8 +193,9 @@ function Parameters(props: { parameters: TUnit[]; count: number }) {
         }
         open={crud.add}
         onClose={() => setCrud((p) => ({ ...p, add: false }))}
-        onSubmit={() => {
+        onSubmit={(res) => {
           loadData();
+          toast.success(`Parameter ${res.data.content.id} created correctly`);
           setCrud((p) => ({ ...p, add: false }));
         }}
       />
@@ -212,8 +214,9 @@ function Parameters(props: { parameters: TUnit[]; count: number }) {
           typeof crud.edit === "object" ? (crud?.edit?.unitId as string) : ""
         }
         onClose={() => setCrud((p) => ({ ...p, edit: false }))}
-        onSubmit={() => {
+        onSubmit={(res) => {
           loadData();
+          toast.success(`Parameter ${res.data.content.id} edited correctly`);
           setCrud((p) => ({ ...p, edit: false }));
         }}
       />
@@ -238,6 +241,7 @@ function Parameters(props: { parameters: TUnit[]; count: number }) {
         }
         onSubmit={() => {
           loadData();
+          toast.success(`Parameter deleted correctly`);
           setCrud((p) => ({ ...p, delete: false }));
         }}
       />
