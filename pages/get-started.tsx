@@ -21,8 +21,6 @@ import { Autocomplete, Button, Input } from "@arkejs/ui";
 import React, { useCallback, useState } from "react";
 import { BaseParameter, TBaseParameter, TUnit } from "@arkejs/client";
 import useClient from "@/arke/useClient";
-import { CopyIcon } from "@/components/Icon";
-import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import Image from "next/image";
 import { getClient } from "@/arke/getClient";
@@ -46,7 +44,6 @@ const fields: Array<TBaseParameter & Record<string, unknown>> = [
 
 function GetStarted({ projects }: { projects: TUnit[] }) {
   const router = useRouter();
-  const [projectId, setProjectId] = useState("");
 
   const client = useClient();
 
@@ -77,21 +74,6 @@ function GetStarted({ projects }: { projects: TUnit[] }) {
         <div className="absolute bottom-0 h-[1px] w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
       </div>
       <div className="mb-12 flex grow flex-col justify-center gap-12">
-        <div className="mx-auto flex gap-2">
-          <span
-            className={twMerge(
-              "h-6 w-6 rounded-full bg-primary",
-              projectId && "opacity-20"
-            )}
-          />
-          <span
-            className={twMerge(
-              "h-6 w-6 rounded-full bg-primary",
-              !projectId && "opacity-20"
-            )}
-          />
-        </div>
-
         <h1 className="text-center text-5xl font-semibold">
           Configure your project
         </h1>

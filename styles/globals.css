@@ -19,6 +19,8 @@
 @tailwind utilities;
 
 @layer components {
+    /* overrides */
+
     .arke__table {
         @apply w-full gap-2 border-separate border-spacing-y-2
     }
@@ -77,5 +79,11 @@
 
     .input__helperText {
         @apply text-xs
+    }
+
+    /* custom classes */
+
+    .project__input {
+        @apply w-full pr-10 text-sm text-neutral-200 focus:outline-none focus:ring-0
     }
 }
