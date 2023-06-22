@@ -55,6 +55,7 @@ export function CrudAddEdit(props: CrudProps) {
   );
 
   const loadStruct = useCallback(() => {
+    setFields([]);
     const exclude = [
       "id",
       "active",

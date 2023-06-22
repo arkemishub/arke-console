@@ -42,6 +42,7 @@ export function ArkeCrud({
   const client = useClient();
 
   useEffect(() => {
+    setFields([]);
     if (open) {
       setLoading(true);
 
