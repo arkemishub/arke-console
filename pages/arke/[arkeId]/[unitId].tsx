@@ -27,12 +27,15 @@ import {
 } from "@/crud/common";
 import { Layout } from "@/components/Layout";
 import { PageTitle } from "@/components/PageTitle";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 function UnitDetail({ detail }: { detail: TUnit }) {
   const [crud, setCrud] = useState<CrudState>({
     edit: false,
     delete: false,
   });
+  const router = useRouter();
 
   return (
     <Layout>
@@ -83,6 +86,7 @@ function UnitDetail({ detail }: { detail: TUnit }) {
         title="Edit"
         onClose={() => setCrud((prevState) => ({ ...prevState, edit: false }))}
         onSubmit={() => {
+          toast.success(`Unit edited correctly`);
           setCrud((prevState) => ({ ...prevState, edit: false }));
         }}
       />
@@ -95,7 +99,9 @@ function UnitDetail({ detail }: { detail: TUnit }) {
           setCrud((prevState) => ({ ...prevState, delete: false }))
         }
         onSubmit={() => {
+          toast.success(`Unit deleted correctly`);
           setCrud((prevState) => ({ ...prevState, delete: false }));
+          void router.push(`/arke/${detail.arke_id}#units`);
         }}
       />
     </Layout>

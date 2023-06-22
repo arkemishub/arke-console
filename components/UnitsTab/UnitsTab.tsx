@@ -24,6 +24,7 @@ import { CrudAddEdit as UnitAdd } from "@/crud/common";
 import { arkeUnitsColumns } from "@/crud/arke";
 import { AddIcon } from "@/components/Icon";
 import { Table } from "@/components/Table";
+import toast from "react-hot-toast";
 
 const PAGE_SIZE = 10;
 
@@ -147,8 +148,9 @@ function UnitsTab({ arke }: { arke: TUnit }) {
             open={!!crud.add}
             arkeId={arke.id}
             onClose={() => setCrud((p) => ({ ...p, add: false }))}
-            onSubmit={() => {
+            onSubmit={(res) => {
               loadData();
+              toast.success(`${res.data.content.id} created correctly`);
               setCrud((p) => ({ ...p, add: false }));
             }}
           />

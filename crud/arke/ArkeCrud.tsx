@@ -20,6 +20,8 @@ import { Button, Dialog, Input, Spinner } from "@arkejs/ui";
 import { TBaseParameter, TResponse, TUnit } from "@arkejs/client";
 import useClient from "@/arke/useClient";
 import { TrashIcon } from "@/components/Icon";
+import { cleanId } from "../../utils/helper";
+import toast from "react-hot-toast";
 
 export function ArkeCrud({
   open,
@@ -90,7 +92,15 @@ export function ArkeCrud({
                         {...props}
                         label="ID"
                         className="w-full"
-                        onChange={(e) => props.onChange(e.target.value)}
+                        onChange={(e) =>
+                          props.onChange(
+                            cleanId(e.target.value, () =>
+                              toast.error(
+                                "The entered character is not allowed, it has been replaced with _"
+                              )
+                            )
+                          )
+                        }
                         pattern="^[a-z0-9_-]+$"
                         helperText="Insert a lowercase ID, allowed characters: alphanumeric, underscore and hyphen"
                       />

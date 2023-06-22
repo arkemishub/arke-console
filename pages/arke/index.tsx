@@ -34,6 +34,7 @@ import { withAuth } from "@/server/withAuth";
 import { Layout } from "@/components/Layout";
 import { Table } from "@/components/Table";
 import { AddIcon, EditIcon } from "@/components/Icon";
+import toast from "react-hot-toast";
 
 const PAGE_SIZE = 10;
 
@@ -193,8 +194,9 @@ function Arke(props: { data: TUnit[]; count: number }) {
         }
         open={crud.add}
         onClose={() => setCrud((p) => ({ ...p, add: false }))}
-        onSubmit={() => {
+        onSubmit={(res) => {
           loadData();
+          toast.success(`Arke ${res.data.content.id} created correctly`);
           setCrud((p) => ({ ...p, add: false }));
         }}
       />
@@ -208,8 +210,9 @@ function Arke(props: { data: TUnit[]; count: number }) {
         open={!!crud.edit}
         arkeId={crud.edit as string}
         onClose={() => setCrud((p) => ({ ...p, edit: false }))}
-        onSubmit={() => {
+        onSubmit={(res) => {
           loadData();
+          toast.success(`Arke ${res.data.content.id} edited correctly`);
           setCrud((p) => ({ ...p, edit: false }));
         }}
       />
@@ -219,6 +222,7 @@ function Arke(props: { data: TUnit[]; count: number }) {
         arkeId={crud.delete as string}
         onDelete={() => {
           loadData();
+          toast.success(`Arke deleted correctly`);
           setCrud((p) => ({ ...p, delete: false }));
         }}
       />

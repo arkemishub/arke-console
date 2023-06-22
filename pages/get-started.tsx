@@ -28,6 +28,8 @@ import Image from "next/image";
 import { getClient } from "@/arke/getClient";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
+import { cleanId } from "../utils/helper";
+import toast from "react-hot-toast";
 
 const fields: Array<TBaseParameter & Record<string, unknown>> = [
   {
@@ -119,8 +121,17 @@ function GetStarted({ projects }: { projects: TUnit[] }) {
                     <Input
                       {...props}
                       className="w-full"
-                      onChange={(e) => props.onChange(e.target.value)}
+                      onChange={(e) =>
+                        props.onChange(
+                          cleanId(e.target.value, () =>
+                            toast.error(
+                              "The entered character is not allowed, it has been replaced with _"
+                            )
+                          )
+                        )
+                      }
                       pattern="^[a-z0-9_-]+$"
+                      placeholder="Project name"
                       required
                       helperText="Insert a lowercase name, allowed characters: alphanumeric, underscore and hyphen"
                     />
