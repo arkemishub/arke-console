@@ -23,16 +23,41 @@ import { UnitsTab } from "@/components/UnitsTab";
 import { Layout } from "@/components/Layout";
 import { PageTitle } from "@/components/PageTitle";
 import { LinkedParametersTab } from "@/components/LinkedParametersTab";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
 
 function ArkeDetail({ detail }: { detail: TUnit }) {
+  const router = useRouter();
+  const tabs = [
+    { value: 0, id: "parameters", label: "Parameters" },
+    { value: 1, id: "units", label: "Units" },
+    { value: 2, id: "struct", label: "Struct" },
+  ];
+  const getTab = (value: string | number, key: "id" | "value" = "id") =>
+    tabs.find((item) => item[key] === value);
+  const activeTab = useMemo(() => {
+    const hash = router.asPath.split("#")[1];
+    if (hash) {
+      if (hash === "parameters") return getTab("parameters")?.value;
+      if (hash === "units") return getTab("units")?.value;
+      if (hash === "struct") return getTab("struct")?.value;
+    }
+  }, [router.asPath]);
+
   return (
     <Layout>
       <>
         <PageTitle title={detail?.label as string} />
-        <Tabs>
-          <Tabs.Tab>Parameters</Tabs.Tab>
-          <Tabs.Tab>Units</Tabs.Tab>
-          <Tabs.Tab>Struct</Tabs.Tab>
+        <Tabs
+          active={activeTab}
+          onChange={(value) => {
+            const tab = getTab(value, "value");
+            void router.push(`${router.asPath.split("#")[0]}#${tab?.id}`);
+          }}
+        >
+          {tabs.map((tab) => (
+            <Tabs.Tab key={tab.id}>{tab.label}</Tabs.Tab>
+          ))}
           <Tabs.TabPanel>
             <LinkedParametersTab arke={detail} />
           </Tabs.TabPanel>

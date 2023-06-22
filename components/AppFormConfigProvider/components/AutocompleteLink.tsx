@@ -3,6 +3,7 @@ import useClient from "@/arke/useClient";
 import { useEffect, useState } from "react";
 import { TUnit } from "@arkejs/client";
 import { Autocomplete } from "@arkejs/ui";
+import toast from "react-hot-toast";
 
 export type LinkRef = { id: string; arke_id: "group" | "arke" };
 
@@ -23,14 +24,29 @@ export default function AutocompleteLink(props: AutocompleteLinkProps) {
     if (reference?.arke_id === "group") {
       // TODO: implement getAll by group and add filters with filter_keys
       // client.unit.getAll(reference.id).then((res) => {
-      client.api.get(`/group/${reference.id}/unit`).then((res) => {
-        setValues(res.data.content.items);
-      });
+      client.api
+        .get(`/group/${reference.id}/unit`)
+        .then((res) => {
+          setValues(res.data.content.items);
+        })
+        .catch(() =>
+          toast.error("Something went wrong during group retrieval", {
+            id: "error_link_group",
+          })
+        );
     }
     if (reference?.arke_id === "arke") {
-      client.unit.getAll(reference.id).then((res) => {
-        setValues(res.data.content.items);
-      });
+      console.log(reference.id);
+      client.unit
+        .getAll(reference.id)
+        .then((res) => {
+          setValues(res.data.content.items);
+        })
+        .catch(() =>
+          toast.error("Something went wrong during arke retrieval", {
+            id: "error_link_arke",
+          })
+        );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

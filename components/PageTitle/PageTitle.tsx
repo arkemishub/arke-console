@@ -51,8 +51,21 @@ function PageTitle({
                   index === routes.length - 1 && "text-neutral-400"
                 )}
               >
-                <Link href={`${routes.slice(0, index + 1).join("/")}` || "/"}>
-                  {item === "" ? <HomeIcon className="h-4 w-4" /> : item}
+                <Link
+                  href={
+                    `${
+                      routes
+                        .slice(0, index + 1)
+                        .join("/")
+                        .split("#")[0]
+                    }` || "/"
+                  }
+                >
+                  {item === "" ? (
+                    <HomeIcon className="h-4 w-4" />
+                  ) : (
+                    item.split("#")[0]
+                  )}
                 </Link>
               </Breadcrumb.Crumb>
             ))}
