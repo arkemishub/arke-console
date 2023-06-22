@@ -25,15 +25,31 @@ import {
 import { useRouter } from "next/router";
 import { twMerge } from "tailwind-merge";
 import Image from "next/image";
-import { HomeIcon } from "@/components/Icon";
+import { CopyIcon, HomeIcon } from "@/components/Icon";
+import { Button, Input } from "@arkejs/ui";
+import { getCookie } from "cookies-next";
+import toast from "react-hot-toast";
 
 function Sidebar() {
+  const project =
+    process.env.NEXT_PUBLIC_ARKE_PROJECT ??
+    getCookie("arke_project")?.toString();
+
+  const handleCopy = () => {
+    if (project) {
+      navigator.clipboard
+        .writeText(project)
+        .then(() => toast.success("Project ID copied to clipboard"));
+    }
+  };
+
   return (
     <div className="h-full p-6">
       <aside className="flex h-full w-full flex-col rounded-theme bg-background-400 p-1">
         <Link href="/">
           <div className="flex items-center px-2 py-4">
             <Image src="/logo.png" alt="logo" height={30} width={30} />
+
             <p className="ml-2 font-semibold">ARKE</p>
             <p className="ml-2 border-l border-l-neutral pl-2 text-neutral-400">
               Console
@@ -41,6 +57,19 @@ function Sidebar() {
           </div>
         </Link>
         <ul className="mt-8 flex h-full flex-col">
+          <li className="relative mx-2 mb-8">
+            <span className="mb-2 block text-xs text-neutral-400">
+              Active Project
+            </span>
+            <Input value={project} readOnly className="project__input" />
+            <Button
+              onClick={handleCopy}
+              className="absolute bottom-1 right-1 bg-neutral p-1.5 text-neutral-300"
+            >
+              <CopyIcon className="h-5 w-5" />
+            </Button>
+          </li>
+
           <SidebarItem icon={HomeIcon} label="Dashboard" href="/" />
           <SidebarItem icon={SparklesIcon} label="Arke" href="/arke" />
           <SidebarItem icon={TagIcon} label="Parameters" href="/parameters" />
