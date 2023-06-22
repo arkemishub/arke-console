@@ -40,6 +40,7 @@ export function UserCrud({
   const client = useClient();
 
   useEffect(() => {
+    setFields([]);
     if (open) {
       setLoading(true);
 

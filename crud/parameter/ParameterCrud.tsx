@@ -42,6 +42,7 @@ export function ParameterAdd({
   const client = useClient();
 
   useEffect(() => {
+    setFields([]);
     if (open) {
       setLoading(true);
 
