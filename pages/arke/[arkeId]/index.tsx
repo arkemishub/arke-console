@@ -22,7 +22,7 @@ import { getClient } from "@/arke/getClient";
 import { UnitsTab } from "@/components/UnitsTab";
 import { Layout } from "@/components/Layout";
 import { PageTitle } from "@/components/PageTitle";
-import { LinkedParametersTab } from "@/components/LinkedParametersTab";
+import { AssignParametersTab } from "components/AssignParametersTab";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 
@@ -59,7 +59,7 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
             <Tabs.Tab key={tab.id}>{tab.label}</Tabs.Tab>
           ))}
           <Tabs.TabPanel>
-            <LinkedParametersTab arke={detail} />
+            <AssignParametersTab arke={detail} />
           </Tabs.TabPanel>
           <Tabs.TabPanel>
             <UnitsTab arke={detail} />

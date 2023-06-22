@@ -21,7 +21,7 @@ import useClient from "@/arke/useClient";
 import { TBaseParameter, TUnit } from "@arkejs/client";
 import { LinkIcon, TrashIcon } from "@/components/Icon";
 
-function LinkedParameterAdd({
+function AssignParameterAdd({
   open,
   onClose,
   arkeId,
@@ -73,7 +73,7 @@ function LinkedParameterAdd({
       title={
         <div className="flex items-center gap-4">
           <LinkIcon className="text-primary" />
-          Link Parameters
+          Assign Parameters
         </div>
       }
       className="flex min-h-[400px] flex-col"
@@ -118,7 +118,7 @@ function LinkedParameterAdd({
   );
 }
 
-function LinkedParameterDelete({
+function AssignParameterDelete({
   onClose,
   arkeId,
   onDelete,
@@ -136,7 +136,11 @@ function LinkedParameterDelete({
   const onSubmit = useCallback(() => {
     if (parameter.type) {
       client.arke
-        .removeParameter(arkeId, parameter.type as string, parameter.id as string)
+        .removeParameter(
+          arkeId,
+          parameter.type as string,
+          parameter.id as string
+        )
         .then(() => {
           onDelete();
         });
@@ -149,7 +153,7 @@ function LinkedParameterDelete({
       title={
         <div className="flex items-center gap-4">
           <TrashIcon className="text-error" />
-          Unlink Parameter
+          Unassign Parameter
         </div>
       }
       onClose={onClose}
@@ -167,4 +171,4 @@ function LinkedParameterDelete({
   );
 }
 
-export { LinkedParameterAdd, LinkedParameterDelete };
+export { AssignParameterAdd, AssignParameterDelete };

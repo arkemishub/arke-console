@@ -20,13 +20,13 @@ import useClient from "@/arke/useClient";
 import { TBaseParameter, TUnit } from "@arkejs/client";
 import { Table } from "@/components/Table";
 import { Button } from "@arkejs/ui";
-import { LinkedParameterDelete, linkedParametersColumns } from "@/crud/arke";
-import { LinkedParameterAdd } from "@/crud/arke/LinkedParameterCrud";
+import { AssignParameterDelete, linkedParametersColumns } from "@/crud/arke";
+import { AssignParameterAdd } from "@/crud/arke/AssignParameterCrud";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 const PAGE_SIZE = 10;
 
-function LinkedParametersTab({ arke }: { arke: TUnit }) {
+function AssignParametersTab({ arke }: { arke: TUnit }) {
   const [crud, setCrud] = useState<{
     add: boolean;
     edit: TBaseParameter | false;
@@ -93,7 +93,7 @@ function LinkedParametersTab({ arke }: { arke: TUnit }) {
                 setCrud((prevState) => ({ ...prevState, add: true }))
               }
             >
-              Link Parameter
+              Assign Parameters
             </Button>
           </div>
           <Table
@@ -125,7 +125,7 @@ function LinkedParametersTab({ arke }: { arke: TUnit }) {
               loadData(currentPage, filters, sort);
             }}
           />
-          <LinkedParameterAdd
+          <AssignParameterAdd
             onSubmit={() => {
               loadData();
               setCrud((prevState) => ({ ...prevState, add: false }));
@@ -137,7 +137,7 @@ function LinkedParametersTab({ arke }: { arke: TUnit }) {
               setCrud((prevState) => ({ ...prevState, add: false }))
             }
           />
-          <LinkedParameterDelete
+          <AssignParameterDelete
             parameter={crud.delete as TBaseParameter}
             onClose={() =>
               setCrud((prevState) => ({ ...prevState, delete: false }))
@@ -155,4 +155,4 @@ function LinkedParametersTab({ arke }: { arke: TUnit }) {
   );
 }
 
-export default LinkedParametersTab;
+export default AssignParametersTab;

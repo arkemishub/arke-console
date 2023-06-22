@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-export * from './columns';
-export * from './ArkeCrud';
-export * from './LinkedParameterCrud';
+export * from "./columns";
+export * from "./ArkeCrud";
+export * from "./AssignParameterCrud";

@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export { default as LinkedParametersTab } from "./LinkedParametersTab";
+export { default as AssignParametersTab } from "./AssignParametersTab";
