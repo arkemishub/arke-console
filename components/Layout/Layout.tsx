@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import { Sidebar } from "@/components/Sidebar";
 
-function Layout({ children }: PropsWithChildren<{}>) {
+interface LayoutProps {
+  children: ReactNode;
+  showDemoBanner?: boolean;
+}
+
+function Layout({ children, showDemoBanner = false }: LayoutProps) {
   return (
     <>
+      {showDemoBanner && (
+        <div className="bg-background-200 p-2 text-center text-sm">
+          This is a demo of Arke Console. The database resets every hour. To
+          login, use username:admin and Password:admin
+        </div>
+      )}
       <div className="grid h-screen grid-cols-[300px_auto]">
         <Sidebar />
         <div className="flex-1 overflow-y-auto p-6">{children}</div>
