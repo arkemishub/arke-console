@@ -15,15 +15,11 @@
  */
 
 import "@/styles/globals.css";
+import "@/styles/prism.css";
 import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { NextPage } from "next";
-import { FormConfigProvider, RenderProps } from "@arkejs/form";
-import { Autocomplete, Checkbox, Input, Json } from "@arkejs/ui";
-import { useEffect, useState } from "react";
-import useClient from "@/arke/useClient";
-import { TUnit } from "@arkejs/client";
 import { Toaster } from "react-hot-toast";
 import AppFormConfigProvider from "@/components/AppFormConfigProvider/AppFormConfigProvider";
 

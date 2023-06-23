@@ -83,6 +83,46 @@
 
     /* custom classes */
 
+    .api__docs {
+        @apply flex gap-8
+    }
+
+    .api__docs div:nth-child(2) {
+        @apply w-full
+    }
+
+    .api__docs > .tabs__list {
+        @apply bg-transparent flex flex-col p-0
+    }
+
+    .api__docs .tab__panel {
+        @apply mt-0
+    }
+
+    .api__docs__content .tabs__list {
+        @apply bg-transparent p-0
+    }
+
+    .api__docs__content .tab {
+        @apply border-b-2 border-transparent rounded-none text-left mr-8 text-sm whitespace-nowrap w-auto px-4
+    }
+
+    .api__docs__content .tab.tab--selected {
+        @apply border-b-2 bg-transparent text-primary border-primary
+    }
+
+    .api__docs__content .tab__panel {
+        @apply mt-8
+    }
+
+    .api__docs__content code {
+        @apply text-sm
+    }
+
+    .btn--outlined.btn--background-contrast {
+        @apply border border-background-contrast text-background-contrast hover:bg-background-400
+    }
+
     .project__input {
         @apply w-full pr-10 text-sm text-neutral-200 focus:outline-none focus:ring-0
     }
