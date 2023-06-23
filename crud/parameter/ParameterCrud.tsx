@@ -158,7 +158,7 @@ export function ParameterAdd({
         </Form>
       ) : (
         <div className="flex min-h-[300px] items-center justify-center text-center">
-          <p className="text-sm font-thin text-neutral-300">
+          <p className="text-sm text-neutral-300">
             Please select a parameter type
           </p>
         </div>

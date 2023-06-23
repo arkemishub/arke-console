@@ -20,7 +20,7 @@ import { Form, FormField } from "@arkejs/form";
 import { TBaseParameter, TResponse, TUnit } from "@arkejs/client";
 import { Button, Dialog, Spinner } from "@arkejs/ui";
 import toast from "react-hot-toast";
-import { router } from "next/client";
+import { useRouter } from "next/router";
 
 export interface CrudProps {
   unitId?: string;
@@ -39,6 +39,7 @@ export function CrudAddEdit(props: CrudProps) {
   const [fields, setFields] = useState<TBaseParameter[]>([]);
   const [loading, setLoading] = useState(true);
   const { arkeId, open, title, unitId, onClose, onSubmit } = props;
+  const router = useRouter();
 
   const onFormSubmit = useCallback(
     (data: Record<string, unknown>) => {
