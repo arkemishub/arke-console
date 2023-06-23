@@ -69,9 +69,15 @@ export function ArkeCrud({
         promise = client.arke.create(data);
       }
 
-      promise.then((res) => {
-        onSubmit(res);
-      });
+      promise
+        .then((res) => {
+          onSubmit(res);
+        })
+        .catch((err) => {
+          err.response.data.messages.forEach((item: { message: string }) =>
+            toast.error(item.message)
+          );
+        });
     },
     [client, arkeId, onSubmit]
   );

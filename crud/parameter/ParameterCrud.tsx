@@ -19,6 +19,7 @@ import { Form, FormField } from "@arkejs/form";
 import { Button, Dialog, Select, Spinner } from "@arkejs/ui";
 import { TBaseParameter, TResponse, TUnit } from "@arkejs/client";
 import useClient from "@/arke/useClient";
+import toast from "react-hot-toast";
 
 export function ParameterAdd({
   open,
@@ -74,6 +75,11 @@ export function ParameterAdd({
           .create(selectedType.id, { ...parsed, type: selectedType.id })
           .then((res) => {
             onSubmit(res);
+          })
+          .catch((err) => {
+            err.response.data.messages.forEach((item: { message: string }) =>
+              toast.error(item.message)
+            );
           });
       }
     },
