@@ -134,6 +134,10 @@
     .project__input {
         @apply w-full pr-10 text-sm text-neutral-200 focus:outline-none focus:ring-0
     }
+
+    .card {
+        @apply bg-background p-2 border border-neutral rounded-theme shadow-2xl
+    }
 }
 
 
@@ -154,30 +158,6 @@
     height: 10px;
     border-radius: 2px;
     background-color: #778899;
-}
-
-.react-flow__node.circle {
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: 700;
-}
-
-.react-flow__node.annotation {
-    border-radius: 0;
-    text-align: left;
-    background: white;
-    border: none;
-    line-height: 1.4;
-    width: 225px;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 15%), 0 2px 4px -1px rgb(0 0 0 / 8%);
-}
-
-.react-flow__node.annotation .react-flow__handle {
-    display: none;
 }
 
 .custom-node__header {

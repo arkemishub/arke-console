@@ -6,18 +6,75 @@ import ReactFlow, {
   Background,
   useNodesState,
   useEdgesState,
+  BackgroundVariant,
 } from "reactflow";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CustomNode from "@/pages/visual-composer/custom-nodex";
 import {
   nodes as initialNodes,
   edges as initialEdges,
 } from "./initial-elements";
 import "reactflow/dist/style.css";
+import RightClickMenuContext from "@/pages/visual-composer/RightClickMenuContext";
+import useClient from "@/arke/useClient";
+import { Client, TBaseParameter } from "@arkejs/client";
+import { Filter, Sort } from "@arkejs/table";
+import { AddIcon } from "@/components/Icon";
+import toast from "react-hot-toast";
+import { ArkeCrud as ArkeAdd } from "@/crud/arke";
+
+const PAGE_SIZE = 10;
+const fetchArke = async (
+  client: Client,
+  page?: number,
+  filters?: Filter[],
+  sort?: Sort[]
+) => {
+  return client.arke.getAll({
+    params: {
+      filter:
+        filters && filters?.length > 0
+          ? `and(${filters.map(
+              (f) => `${f.operator}(${f.columnId},${f.value})`
+            )})`
+          : null,
+      offset: (page ?? 0) * PAGE_SIZE,
+      limit: PAGE_SIZE,
+      order: sort?.map((sort) => `${sort.columnId};${sort.type}`),
+    },
+  });
+};
 
 export default function Index() {
+  const client = useClient();
+  const [crud, setCrud] = useState<{
+    add: boolean;
+    edit: TBaseParameter | false;
+    delete: TBaseParameter | false;
+  }>({
+    add: false,
+    edit: false,
+    delete: false,
+  });
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+
+  useEffect(() => {
+    updateData();
+  }, []);
+
+  function updateData() {
+    fetchArke(client).then((res) => {
+      const tmpNodes = res.data.content.items.map((item) => ({
+        id: item.id,
+        type: "custom",
+        position: { x: 100, y: 200 },
+        data: { ...item },
+      }));
+      setNodes(tmpNodes);
+    });
+  }
+
   const onConnect = useCallback(
     (params) => setEdges((eds) => addEdge(params, eds)),
     []
@@ -37,11 +94,8 @@ export default function Index() {
 
   return (
     <Layout>
-      <span
-        onContextMenu={(e) => {
-          e.preventDefault(); // prevent the default behaviour when right clicked
-          console.log("Right Click");
-        }}
+      <RightClickMenuContext
+        onCreateArke={() => setCrud((p) => ({ ...p, add: true }))}
       >
         <ReactFlow
           nodes={nodes}
@@ -66,9 +120,30 @@ export default function Index() {
             pannable
           />
           <Controls />
-          <Background color="#aaa" gap={16} />
+          <Background
+            id="1"
+            gap={10}
+            color="#1D1F29"
+            variant={BackgroundVariant.Lines}
+          />
         </ReactFlow>
-      </span>
+      </RightClickMenuContext>
+
+      <ArkeAdd
+        title={
+          <div className="flex items-center gap-4">
+            <AddIcon className="text-primary" />
+            Add Arke
+          </div>
+        }
+        open={crud.add}
+        onClose={() => setCrud((p) => ({ ...p, add: false }))}
+        onSubmit={(res) => {
+          toast.success(`Arke ${res.data.content.id} created correctly`);
+          updateData();
+          setCrud((p) => ({ ...p, add: false }));
+        }}
+      />
     </Layout>
   );
 }

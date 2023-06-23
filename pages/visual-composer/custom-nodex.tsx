@@ -1,10 +1,12 @@
 import React, { memo } from "react";
 
+const PAGE_SIZE = 10;
+
 function CustomNode({ id, data }) {
   return (
     <>
       <div className="custom-node__header">
-        This is a <strong>custom node</strong>
+        <strong>{data.label}</strong>
       </div>
     </>
   );

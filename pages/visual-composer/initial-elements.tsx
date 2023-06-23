@@ -6,12 +6,7 @@ export const nodes = [
     id: "1",
     type: "custom",
     position: { x: 100, y: 200 },
-    data: {
-      selects: {
-        "handle-0": "smoothstep",
-        "handle-1": "smoothstep",
-      },
-    },
+    data: {},
   },
 ];
 
