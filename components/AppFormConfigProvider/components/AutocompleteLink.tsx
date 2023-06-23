@@ -40,8 +40,8 @@ export default function AutocompleteLink(props: AutocompleteLinkProps) {
     if (reference?.arke_id === "group") {
       // TODO: implement getAll by group and add filters with filter_keys
       // client.unit.getAll(reference.id).then((res) => {
-      client.api
-        .get(`/group/${reference.id}/unit`)
+      client.group
+        .getAllUnits(reference.id)
         .then((res) => {
           setValues(res.data.content.items);
         })
@@ -52,7 +52,6 @@ export default function AutocompleteLink(props: AutocompleteLinkProps) {
         );
     }
     if (reference?.arke_id === "arke") {
-      console.log(reference.id);
       client.unit
         .getAll(reference.id)
         .then((res) => {

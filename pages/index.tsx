@@ -57,7 +57,7 @@ export default function Home() {
             category="Support"
             title="Contact us"
             content="Do you need support? Our experts will help you."
-            href="https://discord.com/invite/mRcaQGHq5M"
+            href="https://discord.gg/947C6JArtM"
             linkText="Contact us"
             icon={<SupportIcon />}
           />

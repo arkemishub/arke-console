@@ -46,7 +46,15 @@ export default function App({
           --font-inter: ${inter.style.fontFamily};
         }
       `}</style>
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          style: {
+            borderRadius: "10px",
+            background: "#1D1F29",
+            color: "#fff",
+          },
+        }}
+      />
       <SessionProvider session={session} basePath="/next/api/auth">
         <AppFormConfigProvider>
           <Component {...pageProps} />

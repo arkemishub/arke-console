@@ -81,6 +81,14 @@
         @apply text-xs
     }
 
+    .drawer {
+        @apply duration-500
+    }
+
+    .drawer__overlay {
+        @apply backdrop-blur-sm
+    }
+
     /* custom classes */
 
     .api__docs {
