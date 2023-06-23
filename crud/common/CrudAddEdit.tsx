@@ -19,6 +19,8 @@ import useClient from "@/arke/useClient";
 import { Form, FormField } from "@arkejs/form";
 import { TBaseParameter, TResponse, TUnit } from "@arkejs/client";
 import { Button, Dialog, Spinner } from "@arkejs/ui";
+import toast from "react-hot-toast";
+import { router } from "next/client";
 
 export interface CrudProps {
   unitId?: string;
@@ -73,6 +75,15 @@ export function CrudAddEdit(props: CrudProps) {
     promise.then((res) => {
       setFields(res.data.content.parameters);
       setLoading(false);
+      if (res.data.content.parameters.length === 0) {
+        toast.error(
+          "You have to assign at least one parameter to create a unit",
+          {
+            id: "error_unit_no_parameters",
+          }
+        );
+        void router.push(`/arke/${arkeId}#parameters`);
+      }
     });
   }, [unitId, arkeId, client]);
 
