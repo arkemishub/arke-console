@@ -111,7 +111,7 @@ function AssignParameterAdd({
           Cancel
         </Button>
         <Button color="primary" className="w-full" onClick={handleSubmit}>
-          Link
+          Assign
         </Button>
       </div>
     </Dialog>
