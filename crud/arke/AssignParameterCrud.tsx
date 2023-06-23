@@ -27,7 +27,7 @@ function AssignParameterAdd({
   arkeId,
   onSubmit,
 }: {
-  open: boolean;
+  open?: boolean;
   onClose: () => void;
   linkedParameters: TUnit[];
   arkeId: string;
@@ -111,7 +111,7 @@ function AssignParameterAdd({
           Cancel
         </Button>
         <Button color="primary" className="w-full" onClick={handleSubmit}>
-          Link
+          Assign
         </Button>
       </div>
     </Dialog>

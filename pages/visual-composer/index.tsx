@@ -9,7 +9,7 @@ import ReactFlow, {
   BackgroundVariant,
 } from "reactflow";
 import { useCallback, useEffect, useState } from "react";
-import CustomNode from "@/pages/visual-composer/custom-nodex";
+import ArkeNode from "@/pages/visual-composer/ArkeNode";
 import {
   nodes as initialNodes,
   edges as initialEdges,
@@ -45,6 +45,11 @@ const fetchArke = async (
   });
 };
 
+// defined outside of the component
+const nodeTypes = {
+  arke: ArkeNode,
+};
+
 export default function Index() {
   const client = useClient();
   const [crud, setCrud] = useState<{
@@ -64,14 +69,21 @@ export default function Index() {
   }, []);
 
   function updateData() {
-    fetchArke(client).then((res) => {
-      const tmpNodes = res.data.content.items.map((item) => ({
-        id: item.id,
-        type: "custom",
-        position: { x: 100, y: 200 },
-        data: { ...item },
-      }));
-      setNodes(tmpNodes);
+    fetchArke(client).then(async (res) => {
+      const structPromises = res.data.content.items.map(async (item, index) => {
+        const response = await client.arke.struct(item.id);
+        return {
+          id: item.id,
+          type: "arke",
+          position: { x: index * 200, y: 200 },
+          data: {
+            arke: item,
+            parameters: response.data.content.parameters,
+            onUpdateData: updateData,
+          },
+        };
+      });
+      Promise.all(structPromises).then((data) => setNodes(data));
     });
   }
 
@@ -84,8 +96,9 @@ export default function Index() {
   // this could also be done with a custom edge for example
   const edgesWithUpdatedTypes = edges.map((edge) => {
     if (edge.sourceHandle) {
-      const edgeType = nodes.find((node) => node.type === "custom").data
-        .selects[edge.sourceHandle];
+      const edgeType = nodes.find((node) => node.type === "arke").data.selects[
+        edge.sourceHandle
+      ];
       edge.type = edgeType;
     }
 
@@ -108,9 +121,7 @@ export default function Index() {
           }
           fitView
           attributionPosition="top-right"
-          nodeTypes={{
-            custom: CustomNode,
-          }}
+          nodeTypes={nodeTypes}
         >
           <MiniMap
             style={{
@@ -122,9 +133,9 @@ export default function Index() {
           <Controls />
           <Background
             id="1"
-            gap={10}
+            gap={4}
             color="#1D1F29"
-            variant={BackgroundVariant.Lines}
+            variant={BackgroundVariant.Dots}
           />
         </ReactFlow>
       </RightClickMenuContext>
