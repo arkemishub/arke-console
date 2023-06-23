@@ -15,7 +15,7 @@
  */
 
 import { TUnit } from "@arkejs/client";
-import { Tabs } from "@arkejs/ui";
+import { Tabs, Button } from "@arkejs/ui";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
 import { getClient } from "@/arke/getClient";
@@ -24,9 +24,16 @@ import { Layout } from "@/components/Layout";
 import { PageTitle } from "@/components/PageTitle";
 import { AssignParametersTab } from "components/AssignParametersTab";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { CodeBracketIcon } from "@heroicons/react/24/outline";
+import dynamic from "next/dynamic";
+const ApiDocsDrawer = dynamic(
+  () => import("@/components/ApiDocs").then((mod) => mod.ApiDocsDrawer),
+  { ssr: false }
+);
 
 function ArkeDetail({ detail }: { detail: TUnit }) {
+  const [isApiDocsDrawerOpen, setIsApiDocsOpen] = useState(false);
   const router = useRouter();
   const tabs = [
     { value: 0, id: "parameters", label: "Parameters" },
@@ -47,7 +54,18 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
   return (
     <Layout>
       <>
-        <PageTitle title={detail?.label as string} />
+        <PageTitle
+          title={detail?.label as string}
+          action={
+            <Button
+              className="btn--background-contrast btn--outlined flex gap-2 text-sm"
+              onClick={() => setIsApiDocsOpen(true)}
+            >
+              <CodeBracketIcon className="h-4 w-4" />
+              Api Docs
+            </Button>
+          }
+        />
         <Tabs
           active={activeTab}
           onChange={(value) => {
@@ -83,6 +101,11 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
           </Tabs.TabPanel>
         </Tabs>
       </>
+      <ApiDocsDrawer
+        kind="arke"
+        open={isApiDocsDrawerOpen}
+        onClose={() => setIsApiDocsOpen(false)}
+      />
     </Layout>
   );
 }
