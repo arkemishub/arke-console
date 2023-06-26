@@ -155,8 +155,6 @@
 .arke-node__header {
     padding: 4px 10px;
     border-bottom: 1px solid #373b4b;
-}
-
-.arke-node__body {
-    padding: 10px;
+    display: flex;
+    align-items: center;
 }

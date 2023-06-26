@@ -19,7 +19,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import useClient from "@/arke/useClient";
 import { TBaseParameter, TUnit } from "@arkejs/client";
-import { LinkIcon, TrashIcon } from "@/components/Icon";
+import { AddIcon, LinkIcon, TrashIcon } from "@/components/Icon";
+import toast from "react-hot-toast";
+import { ParameterAdd } from "@/crud/parameter";
+import { CrudState } from "@/types/crud";
 
 function AssignParameterAdd({
   open,
@@ -34,6 +37,11 @@ function AssignParameterAdd({
   onSubmit: () => void;
 }) {
   const client = useClient();
+  const [crud, setCrud] = useState<CrudState>({
+    add: false,
+    edit: false,
+    delete: false,
+  });
   const [inputValue, setInputValue] = useState("");
   const [values, setValues] = useState<TUnit[]>([]);
   const [selected, setSelected] = useState<TUnit[]>([]);
@@ -68,53 +76,79 @@ function AssignParameterAdd({
   }, [selected, arkeId, onSubmit]);
 
   return (
-    <Dialog
-      open={open}
-      title={
-        <div className="flex items-center gap-4">
-          <LinkIcon className="text-primary" />
-          Assign Parameters
-        </div>
-      }
-      className="flex min-h-[400px] flex-col"
-      onClose={onClose}
-    >
-      <Autocomplete
-        onChange={(val) => {
-          setSelected([...val]);
-        }}
-        onInputChange={(event) => setInputValue(event.target.value)}
-        multiple
-        values={values}
-        value={selected}
-        getDisplayValue={(val) => val.id}
-        renderChips={false}
-        placeholder="Search a parameter"
-      />
-      <div className="mt-6 flex flex-wrap gap-2">
-        {selected.map((sel) => (
-          <Chip
-            color="secondary"
-            key={sel.id}
-            onDelete={() =>
-              setSelected((prevState) =>
-                prevState.filter((item) => item.id !== sel.id)
-              )
-            }
+    <>
+      <Dialog
+        open={open as boolean}
+        title={
+          <div className="flex items-center gap-4">
+            <LinkIcon className="text-primary" />
+            Assign Parameters
+          </div>
+        }
+        className="flex min-h-[400px] flex-col"
+        onClose={onClose}
+      >
+        <Autocomplete
+          onChange={(val) => {
+            setSelected([...val]);
+          }}
+          onInputChange={(event) => setInputValue(event.target.value)}
+          multiple
+          values={values}
+          value={selected}
+          getDisplayValue={(val) => val.id}
+          renderChips={false}
+          placeholder="Search a parameter"
+        />
+        <div className="mt-2">
+          or{" "}
+          <span
+            className="cursor-pointer text-primary underline"
+            onClick={() => setCrud((p) => ({ ...p, add: true }))}
           >
-            {sel.id}
-          </Chip>
-        ))}
-      </div>
-      <div className="mt-auto flex gap-4 pt-4">
-        <Button className="w-full bg-neutral" onClick={onClose}>
-          Cancel
-        </Button>
-        <Button color="primary" className="w-full" onClick={handleSubmit}>
-          Assign
-        </Button>
-      </div>
-    </Dialog>
+            create new one
+          </span>
+        </div>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {selected.map((sel) => (
+            <Chip
+              color="primary"
+              key={sel.id}
+              onDelete={() =>
+                setSelected((prevState) =>
+                  prevState.filter((item) => item.id !== sel.id)
+                )
+              }
+            >
+              {sel.id}
+            </Chip>
+          ))}
+        </div>
+        <div className="mt-auto flex gap-4 pt-4">
+          <Button className="w-full bg-neutral" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button color="primary" className="w-full" onClick={handleSubmit}>
+            Assign
+          </Button>
+        </div>
+      </Dialog>
+
+      <ParameterAdd
+        title={
+          <div className="flex items-center gap-4">
+            <AddIcon className="text-primary" />
+            Add Parameter
+          </div>
+        }
+        open={crud.add}
+        onClose={() => setCrud((p) => ({ ...p, add: false }))}
+        onSubmit={(res) => {
+          toast.success(`Parameter ${res.data.content.id} created correctly`);
+          setCrud((p) => ({ ...p, add: false }));
+        }}
+      />
+    </>
   );
 }
 
@@ -158,13 +192,13 @@ function AssignParameterDelete({
       }
       onClose={onClose}
     >
-      <p className="text-sm">Do you really want to unlink that parameter?</p>
+      <p className="text-sm">Do you really want to unassign that parameter?</p>
       <div className="mt-4 flex gap-4">
         <Button className="w-full bg-neutral" onClick={onClose}>
           Cancel
         </Button>
         <Button className="w-full bg-error" onClick={onSubmit}>
-          Unlink
+          Unassign
         </Button>
       </div>
     </Dialog>
