@@ -158,3 +158,25 @@
     display: flex;
     align-items: center;
 }
+
+.react-flow__minimap svg {
+    background-color: #2c2f3d;
+}
+
+.react-flow__minimap-node {
+    fill: #1d1f29!important;
+    stroke: none;
+}
+
+.react-flow__minimap-mask {
+    fill: #000000 !important;
+}
+
+.react-flow__controls-button {
+    background: #1d1f29!important;
+    border-bottom: 1px solid #373b4b;
+}
+
+.react-flow__controls-button svg {
+    fill: #ffffff;
+}
