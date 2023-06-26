@@ -11,10 +11,6 @@ import ReactFlow, {
 } from "reactflow";
 import React, { useCallback, useEffect, useState } from "react";
 import ArkeNode from "@/components/VisualSchema/ArkeNode";
-import {
-  nodes as initialNodes,
-  edges as initialEdges,
-} from "./initial-elements";
 import "reactflow/dist/style.css";
 import RightClickMenuContext from "@/components/VisualSchema/RightClickMenuContext";
 import useClient from "@/arke/useClient";
@@ -116,10 +112,9 @@ export default function Index() {
     });
   }
 
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
-    []
-  );
+  const onConnect = useCallback((params: Connection) => {
+    setEdges((eds) => addEdge(params, eds));
+  }, []);
 
   return (
     <Layout>
@@ -132,9 +127,7 @@ export default function Index() {
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
           onConnect={onConnect}
-          onInit={(reactFlowInstance) =>
-            console.log("flow loaded:", reactFlowInstance)
-          }
+          // onInit={(reactFlowInstance) => }
           fitView
           attributionPosition="top-right"
           nodeTypes={nodeTypes}

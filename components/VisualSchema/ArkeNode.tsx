@@ -6,9 +6,11 @@ import { CrudState } from "@/types/crud";
 import toast from "react-hot-toast";
 import { TUnit } from "@arkejs/client";
 import { AssignParameterAdd } from "@/crud/arke";
-import { EditIcon, TrashIcon } from "@/components/Icon";
+import { AddIcon, EditIcon, LinkIcon, TrashIcon } from "@/components/Icon";
 import { RemoveIcon } from "@/components/Icon/RemoveIcon";
 import arkeId from "@/pages/arke/[arkeId]";
+import { LinkArkeOrGroup } from "@/crud/arke/LinkArkeOrGroup";
+import { Handle, Position } from "reactflow";
 
 interface ArkeNodeProps {
   data: {
@@ -21,10 +23,11 @@ interface ArkeNodeProps {
   };
 }
 function ArkeNode(props: ArkeNodeProps) {
-  const [crud, setCrud] = useState<CrudState>({
+  const [crud, setCrud] = useState<CrudState & { link: boolean }>({
     add: false,
     edit: false,
     delete: false,
+    link: false,
   });
   const {
     arke,
@@ -40,6 +43,12 @@ function ArkeNode(props: ArkeNodeProps) {
     <div className="arke-node">
       <div className="arke-node__header">
         <div className="flex w-11/12 items-center">
+          <div
+            className={twMerge(
+              "mr-1 h-[6px] w-[6px] rounded-full",
+              arke.active ? "bg-success" : "bg-error"
+            )}
+          />
           <strong className="truncate">{arke.label}</strong>
           <div onClick={() => onEditArke(arke)}>
             <EditIcon className="mx-1 w-3 cursor-pointer" />
@@ -53,13 +62,20 @@ function ArkeNode(props: ArkeNodeProps) {
       </div>
       <div className="p-2">
         <div
-          className="mb-2 flex cursor-pointer underline"
+          className="flex cursor-pointer items-center underline"
           onClick={() => setCrud((p) => ({ ...p, add: true }))}
         >
           <PlusIcon className="mr-1 w-3" />
           Assign new parameter
         </div>
-        {parameters.map((item) => (
+        <div
+          className="mb-2 flex cursor-pointer items-center underline"
+          onClick={() => setCrud((prevState) => ({ ...prevState, link: true }))}
+        >
+          <LinkIcon className="mr-1 w-3" />
+          Connect arke or group
+        </div>
+        {parameters.map((item: TUnit & any) => (
           <div
             key={item.id}
             className={twMerge(
@@ -78,8 +94,18 @@ function ArkeNode(props: ArkeNodeProps) {
                 )}
               />
             </div>
-            <div className="mr-1">{item.label}</div>
-            <div>({item.type})</div>
+
+            {!item.ref ? (
+              <>
+                <div className="mr-1">{item.label}</div>
+                <div>({item.type})</div>
+              </>
+            ) : (
+              <div className="flex text-primary">
+                <div className="mr-1">{item.ref.label}</div>
+                <div>({item.ref.type})</div>
+              </div>
+            )}
           </div>
         ))}
       </div>
@@ -93,6 +119,17 @@ function ArkeNode(props: ArkeNodeProps) {
           toast.success(`Parameters assigned correctly`);
           onLoadData();
           setCrud((prevState) => ({ ...prevState, add: false }));
+        }}
+      />
+
+      <LinkArkeOrGroup
+        arkeId={arke.id}
+        open={crud.link}
+        onClose={() => setCrud((prevState) => ({ ...prevState, link: false }))}
+        onSubmit={() => {
+          toast.success(`Link connected correctly`);
+          onLoadData();
+          setCrud((prevState) => ({ ...prevState, link: false }));
         }}
       />
     </div>
