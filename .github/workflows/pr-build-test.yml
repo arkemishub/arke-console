@@ -32,5 +32,11 @@ jobs:
         run: pnpm build
       - name: Test
         run: pnpm test -- --coverage --bail --detectOpenHandles
-#      - name: Upload coverage reports to Codecov
-#        uses: codecov/codecov-action@v3
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/cobertura-coverage.xml
+          directory: coverage
+          fail_ci_if_error: true
+          verbose: true
