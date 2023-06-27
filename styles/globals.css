@@ -174,7 +174,7 @@
 
 .react-flow__controls-button {
     background: #1d1f29!important;
-    border-bottom: 1px solid #373b4b;
+    border-bottom: 1px solid #373b4b!important;
 }
 
 .react-flow__controls-button svg {
