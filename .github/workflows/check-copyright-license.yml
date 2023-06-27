@@ -1,13 +1,9 @@
-
 # Workflow name
 name: 'Check copyright license on files'
 
 # Event for the workflow
 on:
-  workflow_dispatch:
-  pull_request:
-    branches:
-      - "main"
+  workflow_call:
 
 # List of jobs
 jobs:
