@@ -23,6 +23,7 @@ import { Button } from "@arkejs/ui";
 import { AssignParameterDelete, linkedParametersColumns } from "@/crud/arke";
 import { AssignParameterAdd } from "@/crud/arke/AssignParameterCrud";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import toast from "react-hot-toast";
 
 const PAGE_SIZE = 10;
 
@@ -126,16 +127,17 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
             }}
           />
           <AssignParameterAdd
-            onSubmit={() => {
-              loadData();
-              setCrud((prevState) => ({ ...prevState, add: false }));
-            }}
             arkeId={arke.id}
             linkedParameters={data as TUnit[]}
             open={crud.add}
             onClose={() =>
               setCrud((prevState) => ({ ...prevState, add: false }))
             }
+            onSubmit={() => {
+              loadData();
+              toast.success(`Parameters assigned correctly`);
+              setCrud((prevState) => ({ ...prevState, add: false }));
+            }}
           />
           <AssignParameterDelete
             parameter={crud.delete as TBaseParameter}
