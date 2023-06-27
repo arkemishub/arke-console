@@ -38,12 +38,9 @@ import {
   ArkeCrud as ArkeEdit,
   ArkeCrud as ArkeAdd,
   ArkeDelete,
-  AssignParameterAdd,
   AssignParameterDelete,
 } from "@/crud/arke";
 import { CrudState } from "@/types/crud";
-import { Simulate } from "react-dom/test-utils";
-import load = Simulate.load;
 
 const PAGE_SIZE = 10;
 const fetchArke = async (

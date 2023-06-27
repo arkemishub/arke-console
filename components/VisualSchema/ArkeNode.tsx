@@ -17,16 +17,13 @@
 import React, { memo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { Button } from "@arkejs/ui";
 import { CrudState } from "@/types/crud";
 import toast from "react-hot-toast";
 import { TUnit } from "@arkejs/client";
 import { AssignParameterAdd } from "@/crud/arke";
-import { AddIcon, EditIcon, LinkIcon, TrashIcon } from "@/components/Icon";
+import { EditIcon, LinkIcon, TrashIcon } from "@/components/Icon";
 import { RemoveIcon } from "@/components/Icon/RemoveIcon";
-import arkeId from "@/pages/arke/[arkeId]";
 import { LinkArkeOrGroup } from "@/crud/arke/LinkArkeOrGroup";
-import { Handle, Position } from "reactflow";
 
 interface ArkeNodeProps {
   data: {
