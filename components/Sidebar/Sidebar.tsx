@@ -75,11 +75,7 @@ function Sidebar() {
           <SidebarItem icon={SparklesIcon} label="Arke" href="/arke" />
           <SidebarItem icon={TagIcon} label="Parameters" href="/parameters" />
           <SidebarItem icon={UserIcon} label="Users" href="/users" />
-          <SidebarItem
-            icon={CompassIcon}
-            label="Visual Schema"
-            href="/visual-schema"
-          />
+
           <SidebarItem
             icon={ArrowLeftOnRectangleIcon}
             label="Logout"
