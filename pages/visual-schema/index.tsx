@@ -41,6 +41,10 @@ import {
   AssignParameterDelete,
 } from "@/crud/arke";
 import { CrudState } from "@/types/crud";
+import { GetServerSideProps } from "next";
+import { withAuth } from "@/server/withAuth";
+import { getClient } from "@/arke/getClient";
+import Users from "@/pages/users";
 
 const PAGE_SIZE = 10;
 const fetchArke = async (
@@ -69,7 +73,7 @@ const nodeTypes = {
   arke: ArkeNode,
 };
 
-export default function Index() {
+function VisualSchema() {
   const client = useClient();
   const [activeArke, setActiveArke] = useState<TUnit>();
   const [arkeCrud, setArkeCrud] = useState<CrudState>({
@@ -235,3 +239,11 @@ export default function Index() {
     </Layout>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = withAuth(() => {
+  return {
+    props: {},
+  };
+});
+
+export default VisualSchema;
