@@ -4,14 +4,15 @@ name: 'Check copyright license on files'
 # Event for the workflow
 on:
   workflow_call:
-
-inputs:
-  company:
-    description: Company name owner of the license
-    required: true
-  extensions:
-    description: Extensions list where license will add
-    required: true
+    inputs:
+      company:
+        description: Company name owner of the license
+        required: true
+        type: string
+      extensions:
+        description: Extensions list where license will add
+        required: true
+        type: string
 
 # List of jobs
 jobs:
