@@ -180,3 +180,7 @@
 .react-flow__controls-button svg {
     fill: #ffffff;
 }
+
+.react-flow__panel {
+    background: #1d1f29!important;
+}

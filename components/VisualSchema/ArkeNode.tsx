@@ -67,7 +67,7 @@ function ArkeNode(props: ArkeNodeProps) {
             <EditIcon className="mx-1 w-3 cursor-pointer" />
           </div>
         </div>
-        <div className="flex w-1/12 cursor-pointer justify-end">
+        <div className="flex w-1/12 cursor-pointer items-center justify-end">
           <div onClick={() => onDeleteArke(arke)}>
             <TrashIcon className="w-3 text-error" />
           </div>
@@ -88,6 +88,7 @@ function ArkeNode(props: ArkeNodeProps) {
           <LinkIcon className="mr-1 w-3" />
           Connect arke or group
         </div>
+
         {parameters.map((item: TUnit & any) => (
           <div
             key={item.id}

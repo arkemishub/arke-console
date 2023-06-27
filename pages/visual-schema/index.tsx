@@ -43,8 +43,7 @@ import {
 import { CrudState } from "@/types/crud";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
-import { getClient } from "@/arke/getClient";
-import Users from "@/pages/users";
+import NoDataNode from "@/components/VisualSchema/NoDataNode";
 
 const PAGE_SIZE = 10;
 const fetchArke = async (
@@ -70,6 +69,7 @@ const fetchArke = async (
 
 // defined outside component
 const nodeTypes = {
+  noData: NoDataNode,
   arke: ArkeNode,
 };
 
@@ -96,36 +96,52 @@ function VisualSchema() {
 
   function loadData() {
     fetchArke(client).then(async (res) => {
-      const structPromises = res.data.content.items.map(async (item, index) => {
-        const response = await client.arke.struct(item.id);
-        return {
-          id: item.id,
-          type: "arke",
-          position: { x: index * 200, y: 200 },
-          data: {
-            arke: item,
-            parameters: response.data.content.parameters,
-            onLoadData: loadData,
-            onEditArke: (arke: TUnit) => {
-              setActiveArke(arke);
-              setArkeCrud((p) => ({ ...p, edit: true }));
-            },
-            onDeleteArke: (arke: TUnit) => {
-              setActiveArke(arke);
-              setArkeCrud((p) => ({ ...p, delete: true }));
-            },
-            onUnassignParameter: (arke: TUnit, parameter: TBaseParameter) => {
-              setActiveArke(arke);
-              setActiveParameter(parameter);
-              setParametersCrud((prevState) => ({
-                ...prevState,
-                delete: true,
-              }));
-            },
+      if (res.data.content.items.length > 0) {
+        const structPromises = res.data.content.items.map(
+          async (item, index) => {
+            const response = await client.arke.struct(item.id);
+            return {
+              id: item.id,
+              type: "arke",
+              position: { x: index * 200, y: 0 },
+              data: {
+                arke: item,
+                parameters: response.data.content.parameters,
+                onLoadData: loadData,
+                onEditArke: (arke: TUnit) => {
+                  setActiveArke(arke);
+                  setArkeCrud((p) => ({ ...p, edit: true }));
+                },
+                onDeleteArke: (arke: TUnit) => {
+                  setActiveArke(arke);
+                  setArkeCrud((p) => ({ ...p, delete: true }));
+                },
+                onUnassignParameter: (
+                  arke: TUnit,
+                  parameter: TBaseParameter
+                ) => {
+                  setActiveArke(arke);
+                  setActiveParameter(parameter);
+                  setParametersCrud((prevState) => ({
+                    ...prevState,
+                    delete: true,
+                  }));
+                },
+              },
+            };
+          }
+        );
+        Promise.all(structPromises).then((data) => setNodes(data));
+      } else {
+        setNodes([
+          {
+            id: "no_data",
+            type: "noData",
+            position: { x: 0, y: 0 },
+            data: {},
           },
-        };
-      });
-      Promise.all(structPromises).then((data) => setNodes(data));
+        ]);
+      }
     });
   }
 

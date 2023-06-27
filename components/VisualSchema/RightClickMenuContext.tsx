@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { ReactNode, useRef, useState } from "react";
+import React, { ReactNode, useRef, useState } from "react";
 import useOnClickOutside from "@/hooks/useOnClickOutside";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 interface RightClickMenuContextProps {
   children: ReactNode;
@@ -58,13 +59,14 @@ export default function RightClickMenuContext(
           style={{ top: position.top, left: position?.left }}
         >
           <div
-            className="cursor-pointer"
+            className="flex cursor-pointer"
             onClick={() => {
               setShowContextMenu(false);
               onCreateArke();
             }}
           >
-            Create an Arke
+            <PlusIcon className="mr-1 w-4" />
+            Create new Arke
           </div>
         </div>
       )}
