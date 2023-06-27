@@ -26,6 +26,7 @@ const createJestConfig = nextJest({
 const config = {
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   testEnvironment: "jest-environment-jsdom",
+  coverageReporters: ["text", "html", "cobertura"],
   moduleNameMapper: {
     "^@/components/(.*)$": "<rootDir>/components/$1",
   },

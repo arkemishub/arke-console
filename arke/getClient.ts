@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-import { Client, TToken } from "@arkejs/client";
+import { Client, HTTPStatusCode, TToken } from "@arkejs/client";
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import { getToken } from "next-auth/jwt";
 import { getCookie } from "cookies-next";
 import { getCookieName } from "../utils/auth";
+import toast from "react-hot-toast";
 
 const getServerUrl = () => {
   if (
@@ -59,6 +60,21 @@ export const getClient = (context?: {
         });
       }
       return getSession() as Promise<TToken>;
+    },
+    httpClientConfig: (api) => {
+      api.interceptors.request.use((config) => config);
+      api.interceptors.response.use(
+        (config) => {
+          return config;
+        },
+        (err) => {
+          if (err.response.status === HTTPStatusCode.InternalServerError) {
+            toast.error(`${err.message}: ${err.response.data?.errors?.detail}`);
+          }
+          return Promise.reject(err);
+        }
+      );
+      return api;
     },
   });
 };

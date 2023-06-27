@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@import "./visual-schema.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -133,5 +135,9 @@
 
     .project__input {
         @apply w-full pr-10 text-sm text-neutral-200 focus:outline-none focus:ring-0
+    }
+
+    .card {
+        @apply bg-background p-2 border border-neutral rounded-theme shadow-2xl
     }
 }

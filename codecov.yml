@@ -1,0 +1,22 @@
+# Validate: curl --data-binary @codecov.yml https://codecov.io/validate
+codecov:
+  # set new Default branch
+  branch: main
+  # Specify a branch you want Codecov to always only read the YAML from
+  strict_yaml_branch: main;
+  # When Codecov generates a comparison for a pull-request, but the pull-request’s base
+  # does not have coverage information, Codecov will try to find an appropriate substitute (a “pseudo-base”)
+  allow_pseudo_compare: True
+
+coverage:
+  status:
+    project:
+      default:
+        target: 70%
+        threshold: 5%
+    patch: false
+
+comment:
+  require_changes: true
+  layout: "diff, reach"
+  behavior: default

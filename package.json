@@ -10,7 +10,7 @@
     "test": "jest --silent"
   },
   "dependencies": {
-    "@arkejs/client": "2.2.0",
+    "@arkejs/client": "2.4.0",
     "@arkejs/form": "1.2.2",
     "@arkejs/table": "0.7.1",
     "@arkejs/ui": "0.27.0",
@@ -22,7 +22,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.7",
-    "react-hot-toast": "2.4.1"
+    "react-hot-toast": "2.4.1",
+    "reactflow": "^11.7.4"
   },
   "devDependencies": {
     "@swc/core": "^1.3.52",

@@ -1,0 +1,31 @@
+# Workflow name
+name: 'Check copyright license on files'
+
+# Event for the workflow
+on:
+  workflow_call:
+    inputs:
+      company:
+        description: Company name owner of the license
+        required: true
+        type: string
+      extensions:
+        description: Extensions list where license will add
+        required: true
+        type: string
+
+# List of jobs
+jobs:
+  Check-Copyright-License:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.20.4'
+      - run: go install github.com/google/addlicense@latest
+      - run: addlicense -c '${{ inputs.company }}' -l apache ${{ inputs.extensions }}
+      - run: git status --porcelain
+      - run: git diff --exit-code
