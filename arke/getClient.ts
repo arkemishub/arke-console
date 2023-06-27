@@ -61,7 +61,7 @@ export const getClient = (context?: {
       }
       return getSession() as Promise<TToken>;
     },
-    apiConfig: (api) => {
+    httpClientConfig: (api) => {
       api.interceptors.request.use((config) => config);
       api.interceptors.response.use(
         (config) => {

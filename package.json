@@ -10,7 +10,7 @@
     "test": "jest --silent"
   },
   "dependencies": {
-    "@arkejs/client": "file://Users/manolobattista/Workspace/Arke/clientjs",
+    "@arkejs/client": "2.4.0",
     "@arkejs/form": "1.2.2",
     "@arkejs/table": "0.7.1",
     "@arkejs/ui": "0.27.0",

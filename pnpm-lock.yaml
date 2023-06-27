@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@arkejs/client':
-    specifier: file://Users/manolobattista/Workspace/Arke/clientjs
-    version: file:../clientjs
+    specifier: 2.4.0
+    version: 2.4.0
   '@arkejs/form':
     specifier: 1.2.2
     version: 1.2.2(react-dom@18.2.0)(react@18.2.0)
@@ -131,6 +131,14 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
+
+  /@arkejs/client@2.4.0:
+    resolution: {integrity: sha512-WsrIsWXT1npGx5IbJxypvBbp42H1xra1gqT4KdJHDFLB/mDJtXuFLnfgegns7geTnOyDNj6ZFoU+Q4KEIXckGA==}
+    dependencies:
+      axios: 1.4.0
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /@arkejs/form@1.2.2(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-l50DJIGiiIlhRFPmo3stQ1BBZIM4UyPGQPj1ewwACclWj5sfNHzOblTBEJpNSOyKRiAujhP29R/S+uUVW8L6jA==}
@@ -5764,14 +5772,4 @@ packages:
     dependencies:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
-    dev: false
-
-  file:../clientjs:
-    resolution: {directory: ../clientjs, type: directory}
-    name: '@arkejs/client'
-    version: 2.2.0
-    dependencies:
-      axios: 1.4.0
-    transitivePeerDependencies:
-      - debug
     dev: false
