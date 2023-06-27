@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+@import "./visual-schema.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -138,49 +140,4 @@
     .card {
         @apply bg-background p-2 border border-neutral rounded-theme shadow-2xl
     }
-}
-
-
-/* Visual composer */
-.arke-node {
-    font-size: 10px;
-    width: 180px;
-    background: #1D1F29;
-    border: 1px solid #373b4b;
-    color: #f5f5f6;
-    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 15%), 0 2px 4px -1px rgb(0 0 0 / 8%);
-    border-radius: 8px;
-}
-
-.arke-node__header {
-    padding: 4px 10px;
-    border-bottom: 1px solid #373b4b;
-    display: flex;
-    align-items: center;
-}
-
-.react-flow__minimap svg {
-    background-color: #2c2f3d;
-}
-
-.react-flow__minimap-node {
-    fill: #1d1f29!important;
-    stroke: none;
-}
-
-.react-flow__minimap-mask {
-    fill: #000000 !important;
-}
-
-.react-flow__controls-button {
-    background: #1d1f29!important;
-    border-bottom: 1px solid #373b4b!important;
-}
-
-.react-flow__controls-button svg {
-    fill: #ffffff;
-}
-
-.react-flow__panel {
-    background: #1d1f29!important;
 }

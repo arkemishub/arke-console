@@ -30,4 +30,4 @@ function NoDataNode(props: NoDataNodeProps) {
   );
 }
 
-export default memo(NoDataNode);
+export default NoDataNode;
