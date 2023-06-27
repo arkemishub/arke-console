@@ -5,9 +5,10 @@ name: 'Build and Test'
 # Event for the workflow
 on:
   workflow_dispatch:
-  pull_request:
-    branches:
-      - "main"
+  workflow_run:
+    workflows: ["Check copyright license on files"]
+    types:
+      - completed
 
 # List of jobs
 jobs:
@@ -23,6 +24,8 @@ jobs:
           version: 8.6.1
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+      - name: Check Copyright license
+        uses: ./.github/workflows/check-copyright-license
       - name: Build package
         run: pnpm build
       - name: Test
