@@ -6,7 +6,7 @@ codecov:
   strict_yaml_branch: main;
   # When Codecov generates a comparison for a pull-request, but the pull-request’s base
   # does not have coverage information, Codecov will try to find an appropriate substitute (a “pseudo-base”)
-  allow_pseudo_compare: False
+  allow_pseudo_compare: True
 
 coverage:
   status:
