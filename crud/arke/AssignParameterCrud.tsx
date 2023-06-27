@@ -158,7 +158,7 @@ function AssignParameterDelete({
       }
       onClose={onClose}
     >
-      <p className="text-sm">Do you really want to unlink that parameter?</p>
+      <p className="text-sm">Do you really want to unassign that parameter?</p>
       <div className="mt-4 flex gap-4">
         <Button className="w-full bg-neutral" onClick={onClose}>
           Cancel
