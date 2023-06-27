@@ -12,6 +12,9 @@ on:
 jobs:
   Check-License:
     uses: ./.github/workflows/check-copyright-license.yml
+    with:
+      company: Arkemis S.r.l.
+      extensions: ./**/*.js ./**/*.ts ./**/*.tsx ./**/*.css
   Build-Test:
     runs-on: ubuntu-latest
     needs: Check-License
