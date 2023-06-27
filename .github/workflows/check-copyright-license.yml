@@ -1,0 +1,24 @@
+
+# Workflow name
+name: 'Check copyright license on files'
+
+# Event for the workflow
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - "main"
+
+# List of jobs
+jobs:
+  Build-Test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '^1.20.4' # The Go version to download (if necessary) and use.
+      - run: go install github.com/google/addlicense@latest
+      - run: addlicense -c 'Arkemis S.r.l.' -l apache ./**/*.js ./**/*.ts ./**/*.tsx ./**/*.css
