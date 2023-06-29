@@ -68,10 +68,16 @@ export const getClient = (context?: {
           return config;
         },
         (err) => {
-          if (err.response.status === HTTPStatusCode.InternalServerError) {
-            toast.error(`${err.message}: ${err.response.data?.errors?.detail}`);
+          if (err.response) {
+            if (err.response.status === HTTPStatusCode.InternalServerError) {
+              toast.error(
+                `${err.message}: ${err.response.data?.errors?.detail}`
+              );
+            }
+            return Promise.reject(err);
+          } else {
+            toast.error(`Something went wrong. The Server is unreachable.`);
           }
-          return Promise.reject(err);
         }
       );
       return api;
