@@ -120,10 +120,11 @@ function Arke(props: { data: TUnit[]; count: number }) {
           </Button>
         }
       />
-      <>
+      {data && (
         <Table
           data={data}
           actions={{
+            label: "",
             actions: [
               {
                 content: <PencilIcon className="h-4 w-4" />,
@@ -179,7 +180,7 @@ function Arke(props: { data: TUnit[]; count: number }) {
           }
           totalCount={totalCount}
         />
-      </>
+      )}
       <ArkeAdd
         title={
           <div className="flex items-center gap-4">

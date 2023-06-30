@@ -114,6 +114,7 @@ function Parameters(props: { parameters: TUnit[]; count: number }) {
       <Table
         data={parameters}
         actions={{
+          label: "",
           actions: [
             {
               content: <PencilIcon className="h-4 w-4" />,

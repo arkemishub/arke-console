@@ -22,9 +22,9 @@ import { ArrowDownIcon } from "@heroicons/react/24/outline";
 type InlineFilterProps = {
   column: Column;
   filters: Filter[];
-  onFiltersChange: (filters: Filter[]) => void;
-  onSortChange: (column: Column) => void;
-  sort: Sort;
+  onFiltersChange?: (filters: Filter[]) => void;
+  onSortChange?: (sort: Sort[]) => void;
+  sort: Sort[];
   filterable?: boolean;
   sortable?: boolean;
 };
@@ -32,7 +32,7 @@ type InlineFilterProps = {
 function InlineFilter({ filterable = true, ...props }: InlineFilterProps) {
   const onSortChange = () => {
     if (props.sortable) {
-      let newSort = props.sort.find((s) => s.columnId === props.column.id);
+      let newSort = props?.sort?.find((s) => s.columnId === props.column.id);
 
       if (newSort?.type === SortType.DESC) {
         props.onSortChange?.(

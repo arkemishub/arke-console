@@ -96,6 +96,7 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
           </div>
           <Table
             actions={{
+              label: "",
               actions: [
                 {
                   content: <XMarkIcon className="h-4 w-4" />,
