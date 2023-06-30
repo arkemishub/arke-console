@@ -11,10 +11,10 @@ on:
 # List of jobs
 jobs:
   Check-License:
-    uses: ./.github/workflows/check-copyright-license.yml
-    with:
-      company: Arkemis S.r.l.
-      extensions: ./**/*.js ./**/*.ts ./**/*.tsx ./**/*.css
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check License Header
+        uses: apache/skywalking-eyes/header@v0.4.0
   Build-Test:
     runs-on: ubuntu-latest
     needs: Check-License
