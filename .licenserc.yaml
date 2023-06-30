@@ -1,7 +1,7 @@
 header:
   license:
     spdx-id: Apache-2.0
-    copyright-owner: Apache Software Foundation
+    copyright-owner: Arkemis S.r.l.
 
   paths-ignore:
     - 'dist'
@@ -10,8 +10,12 @@ header:
     - '**/*.json'
     - '**/*.yml'
     - '**/*.yaml'
+    - '.idea/**'
     - 'LICENSE'
     - 'NOTICE'
     - 'Dockerfile'
+    - '.env*'
+    - '.github/**'
+    - '.gitignore'
 
   comment: on-failure
