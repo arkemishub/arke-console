@@ -61,6 +61,7 @@ const fetchArke = async (
 };
 
 function Users(props: { data: TUnit[]; count: number }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<TUnit[] | undefined>(props.data);
   const [count, setCount] = useState<number | undefined>(props.count);
   const client = useClient();
@@ -75,6 +76,7 @@ function Users(props: { data: TUnit[]; count: number }) {
     setFilters,
     tableProps,
     totalCount,
+    sort,
     setSort,
     filters,
     goToPage,
@@ -98,9 +100,11 @@ function Users(props: { data: TUnit[]; count: number }) {
 
   const loadData = useCallback(
     (page?: number, filters?: Filter[], sort?: Sort[]) => {
+      setIsLoading(true);
       fetchArke(client, page, filters, sort).then((res) => {
         setData(res.data.content.items);
         setCount(res.data.content.count);
+        setIsLoading(false);
       });
     },
     []
@@ -123,6 +127,7 @@ function Users(props: { data: TUnit[]; count: number }) {
       />
       {data && (
         <Table
+          loading={isLoading}
           data={data}
           actions={{
             label: "",
@@ -148,11 +153,11 @@ function Users(props: { data: TUnit[]; count: number }) {
           {...tableProps}
           goToPage={(page) => {
             goToPage(page);
-            loadData(page);
+            loadData(page, filters, sort);
           }}
           onFiltersChange={(filters) => {
             setFilters(filters);
-            loadData(currentPage, filters);
+            loadData(currentPage, filters, sort);
           }}
           onSortChange={(sort) => {
             setSort(sort);

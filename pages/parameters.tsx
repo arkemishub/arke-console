@@ -58,6 +58,7 @@ const fetchParameters = async (
   });
 
 function Parameters(props: { parameters: TUnit[]; count: number }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [parameters, setParameters] = useState<TUnit[]>(props.parameters);
   const [count, setCount] = useState<number>(props.count);
   const client = useClient();
@@ -68,29 +69,38 @@ function Parameters(props: { parameters: TUnit[]; count: number }) {
     delete: false,
   });
 
-  const { setFilters, tableProps, setSort, filters, goToPage, currentPage } =
-    useTable(
-      typeof count !== "undefined"
-        ? {
-            pagination: {
-              totalCount: count,
-              type: "custom",
-              pageSize: PAGE_SIZE,
-            },
-            columns,
-            sorting: {
-              type: "custom",
-              sortable: true,
-            },
-          }
-        : null
-    );
+  const {
+    setFilters,
+    tableProps,
+    sort,
+    setSort,
+    filters,
+    goToPage,
+    currentPage,
+  } = useTable(
+    typeof count !== "undefined"
+      ? {
+          pagination: {
+            totalCount: count,
+            type: "custom",
+            pageSize: PAGE_SIZE,
+          },
+          columns,
+          sorting: {
+            type: "custom",
+            sortable: true,
+          },
+        }
+      : null
+  );
 
   const loadData = useCallback(
     (page?: number, filters?: Filter[], sort?: Sort[]) => {
+      setIsLoading(true);
       fetchParameters(client, page, filters, sort).then((res) => {
         setParameters(res.data.content.items);
         setCount(res.data.content.count);
+        setIsLoading(false);
       });
     },
     []
@@ -113,6 +123,7 @@ function Parameters(props: { parameters: TUnit[]; count: number }) {
       />
       <Table
         data={parameters}
+        loading={isLoading}
         actions={{
           label: "",
           actions: [
@@ -144,11 +155,11 @@ function Parameters(props: { parameters: TUnit[]; count: number }) {
         {...tableProps}
         goToPage={(page) => {
           goToPage(page);
-          loadData(page);
+          loadData(page, filters, sort);
         }}
         onFiltersChange={(filters) => {
           setFilters(filters);
-          loadData(currentPage, filters);
+          loadData(currentPage, filters, sort);
         }}
         onSortChange={(sort) => {
           setSort(sort);
