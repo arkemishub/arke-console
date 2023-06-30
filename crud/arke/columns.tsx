@@ -16,7 +16,6 @@
 
 import { Column, ColumnType } from "@arkejs/table";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { Switch } from "@arkejs/ui";
 
 export const columns: Column[] = [
@@ -45,6 +44,7 @@ export const arkeUnitsColumns: Column[] = [
   {
     label: "ID",
     id: "id",
+    type: ColumnType.String,
     render: (rowData) => (
       <Link
         className="underline"
@@ -60,10 +60,12 @@ export const linkedParametersColumns: Column[] = [
   {
     label: "ID",
     id: "id",
+    type: ColumnType.String,
   },
-  { label: "Label", id: "label" },
+  { label: "Label", id: "label", type: ColumnType.String },
   {
     label: "Type",
     id: "type",
+    type: ColumnType.String,
   },
 ];

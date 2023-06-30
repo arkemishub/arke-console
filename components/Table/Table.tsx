@@ -22,36 +22,50 @@ import {
   Sort,
 } from "@arkejs/table";
 import Pagination from "./Pagination/Pagination";
-import Filters from "@/components/Table/Filters/Filters";
+import InlineFilter from "@/components/Table/Filters/InlineFilter";
+import { Spinner } from "@arkejs/ui";
 
 function Table(
   props: Pick<ITableProps, "columns" | "data" | "actions" | "noResult"> &
     Omit<IUseTableData<any, any>, "tableProps"> & {
       onFiltersChange?: (filters: Filter[]) => void;
       onSortChange?: (sort: Sort[]) => void;
+      filterable?: boolean;
+      loading?: boolean;
     }
 ) {
   return (
-    <>
-      <div className="flex justify-end">
-        {props.allColumns.some(
-          (col) => (col?.availableFilterOperators?.length ?? 0) > 0
-        ) && (
-          <Filters
-            allColumns={props.allColumns}
-            filters={props.filters}
-            onFiltersChange={(filters) => props.onFiltersChange?.(filters)}
-          />
-        )}
+    <div className="relative min-h-[400px]">
+      {props.loading && (
+        <div className="absolute top-[110px] z-20  flex h-[calc(100%-110px)] w-full flex-col items-center justify-center gap-4 bg-background">
+          <p>Loading...</p>
+          <Spinner />
+        </div>
+      )}
+      <div className="overflow-x-auto">
+        <ArkeTable
+          {...props}
+          renderHeader={(column) => (
+            <InlineFilter
+              filterable={props.filterable}
+              sort={props.sort}
+              filters={props.filters}
+              column={column}
+              onFiltersChange={props.onFiltersChange}
+              onSortChange={props.onSortChange}
+              sortable={props.sortable}
+            />
+          )}
+          setSort={(sort) => props.onSortChange?.(sort)}
+        />
+        <Pagination
+          onChange={props.goToPage}
+          currentPage={props.currentPage}
+          pageCount={props.pageCount}
+          totalCount={props.totalCount ?? 0}
+        />
       </div>
-      <ArkeTable {...props} setSort={(sort) => props.onSortChange?.(sort)} />
-      <Pagination
-        onChange={props.goToPage}
-        currentPage={props.currentPage}
-        pageCount={props.pageCount}
-        totalCount={props.totalCount ?? 0}
-      />
-    </>
+    </div>
   );
 }
 

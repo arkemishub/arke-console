@@ -38,7 +38,6 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
     delete: false,
   });
   const [data, setData] = useState<TBaseParameter[] | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState(false);
   const client = useClient();
   const { filters, tableProps, setSort, setFilters, goToPage, currentPage } =
     useTable(
@@ -56,7 +55,6 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
 
   const loadData = useCallback(
     (page?: number, filters?: Filter[], sort?: Sort[]) => {
-      setIsLoading(true);
       client.arke
         .struct(arke.id, {
           params: {
@@ -72,7 +70,6 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
           },
         })
         .then((res) => {
-          setIsLoading(false);
           setData(res.data.content.parameters);
         });
     },
@@ -85,7 +82,7 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
 
   return (
     <>
-      {data && !isLoading && (
+      {data && (
         <>
           <div className="flex justify-end">
             <Button
@@ -99,7 +96,7 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
           </div>
           <Table
             actions={{
-              label: "Actions",
+              label: "",
               actions: [
                 {
                   content: <XMarkIcon className="h-4 w-4" />,
@@ -111,6 +108,7 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
                 },
               ],
             }}
+            filterable={false}
             data={data}
             {...tableProps}
             goToPage={(page) => {
