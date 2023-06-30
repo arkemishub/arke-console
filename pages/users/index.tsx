@@ -63,7 +63,6 @@ const fetchArke = async (
 function Users(props: { data: TUnit[]; count: number }) {
   const [data, setData] = useState<TUnit[] | undefined>(props.data);
   const [count, setCount] = useState<number | undefined>(props.count);
-  const [isLoading, setIsLoading] = useState(false);
   const client = useClient();
 
   const [crud, setCrud] = useState<CrudState>({
@@ -91,6 +90,7 @@ function Users(props: { data: TUnit[]; count: number }) {
           columns,
           sorting: {
             sortable: true,
+            type: "custom",
           },
         }
       : null
@@ -98,9 +98,7 @@ function Users(props: { data: TUnit[]; count: number }) {
 
   const loadData = useCallback(
     (page?: number, filters?: Filter[], sort?: Sort[]) => {
-      setIsLoading(true);
       fetchArke(client, page, filters, sort).then((res) => {
-        setIsLoading(false);
         setData(res.data.content.items);
         setCount(res.data.content.count);
       });
@@ -123,69 +121,65 @@ function Users(props: { data: TUnit[]; count: number }) {
           </Button>
         }
       />
-      {data && !isLoading && (
-        <>
-          <Table
-            data={data}
-            actions={{
-              label: "Actions",
-              actions: [
-                {
-                  content: <PencilIcon className="h-4 w-4" />,
-                  onClick: (rowData) =>
-                    setCrud((prevState) => ({
-                      ...prevState,
-                      edit: rowData?.id as string,
-                    })),
-                },
-                {
-                  content: <XMarkIcon className="h-4 w-4" />,
-                  onClick: (rowData) =>
-                    setCrud((prevState) => ({
-                      ...prevState,
-                      delete: rowData?.id as string,
-                    })),
-                },
-              ],
-            }}
-            {...tableProps}
-            goToPage={(page) => {
-              goToPage(page);
-              loadData(page);
-            }}
-            onFiltersChange={(filters) => {
-              setFilters(filters);
-              loadData(currentPage, filters);
-            }}
-            onSortChange={(sort) => {
-              setSort(sort);
-              loadData(currentPage, filters, sort);
-            }}
-            noResult={
-              <div className="flex flex-col items-center p-4 py-8 text-center">
-                <div className="rounded-full bg-background-400 p-6">
-                  <AddIcon className="h-12 w-12 text-primary" />
-                </div>
-                <span className="mt-4 text-xl">
-                  Create your first User to get started.
-                </span>
-                Do you need a hand? Check out our documentation.
-                <div className="mt-4 flex">
-                  <Button
-                    className="border"
-                    onClick={() =>
-                      setCrud((prevState) => ({ ...prevState, add: true }))
-                    }
-                  >
-                    Add User
-                  </Button>
-                </div>
-              </div>
-            }
-            totalCount={totalCount}
-          />
-        </>
-      )}
+      <Table
+        data={data}
+        actions={{
+          actions: [
+            {
+              content: <PencilIcon className="h-4 w-4" />,
+              onClick: (rowData) =>
+                setCrud((prevState) => ({
+                  ...prevState,
+                  edit: rowData?.id as string,
+                })),
+            },
+            {
+              content: <XMarkIcon className="h-4 w-4" />,
+              onClick: (rowData) =>
+                setCrud((prevState) => ({
+                  ...prevState,
+                  delete: rowData?.id as string,
+                })),
+            },
+          ],
+        }}
+        {...tableProps}
+        goToPage={(page) => {
+          goToPage(page);
+          loadData(page);
+        }}
+        onFiltersChange={(filters) => {
+          setFilters(filters);
+          loadData(currentPage, filters);
+        }}
+        onSortChange={(sort) => {
+          setSort(sort);
+          loadData(currentPage, filters, sort);
+        }}
+        noResult={
+          <div className="flex flex-col items-center p-4 py-8 text-center">
+            <div className="rounded-full bg-background-400 p-6">
+              <AddIcon className="h-12 w-12 text-primary" />
+            </div>
+            <span className="mt-4 text-xl">
+              Create your first User to get started.
+            </span>
+            Do you need a hand? Check out our documentation.
+            <div className="mt-4 flex">
+              <Button
+                className="border"
+                onClick={() =>
+                  setCrud((prevState) => ({ ...prevState, add: true }))
+                }
+              >
+                Add User
+              </Button>
+            </div>
+          </div>
+        }
+        totalCount={totalCount}
+      />
+
       <UserAdd
         title={
           <div className="flex items-center gap-4">

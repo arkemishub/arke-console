@@ -12,8 +12,8 @@ dependencies:
     specifier: 1.2.2
     version: 1.2.2(react-dom@18.2.0)(react@18.2.0)
   '@arkejs/table':
-    specifier: 0.7.1
-    version: 0.7.1(react-dom@18.2.0)(react@18.2.0)
+    specifier: 0.7.2
+    version: 0.7.2(react-dom@18.2.0)(react@18.2.0)
   '@arkejs/ui':
     specifier: 0.27.0
     version: 0.27.0(date-fns@2.30.0)(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.2.7)
@@ -150,8 +150,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@arkejs/table@0.7.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-CORc0zoIAC/awPNY4MAm6gexbqXZiE1ejf3Zq1aZNifL8QGLDdwVS8HqtkGP69VKj8LjwvsHFkuk3PQM7QTEqw==}
+  /@arkejs/table@0.7.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-ov6CizyDi1zfZYXdKHiWce4Vr9kdzNQ0NPYX7QUs7tVyVi7LOVhpKmngvn1raJ1YbB3oN+SRYIJQTYVxamK6Yw==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0

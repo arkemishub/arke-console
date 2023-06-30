@@ -45,6 +45,7 @@ export const arkeUnitsColumns: Column[] = [
   {
     label: "ID",
     id: "id",
+    type: "string",
     render: (rowData) => (
       <Link
         className="underline"
@@ -60,10 +61,12 @@ export const linkedParametersColumns: Column[] = [
   {
     label: "ID",
     id: "id",
+    type: "string",
   },
-  { label: "Label", id: "label" },
+  { label: "Label", id: "label", type: "string" },
   {
     label: "Type",
     id: "type",
+    type: "string",
   },
 ];
