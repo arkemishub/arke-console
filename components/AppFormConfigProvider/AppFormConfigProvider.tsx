@@ -98,7 +98,7 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
           <AutocompleteLink
             {...props}
             reference={props.ref}
-            onChange={(value) => props.onChange(value.id)}
+            onChange={props.onChange}
           />
         ),
         default: (props: RenderProps & { type: string }) => <></>,

@@ -29,6 +29,7 @@ export interface CrudProps {
   title: ReactNode;
   onClose(): void;
   onSubmit(data: TResponse<TUnit>): void;
+  include?: string[];
 }
 
 let didInit = false;
@@ -38,7 +39,7 @@ export function CrudAddEdit(props: CrudProps) {
   const client = useClient();
   const [fields, setFields] = useState<TBaseParameter[]>([]);
   const [loading, setLoading] = useState(true);
-  const { arkeId, open, title, unitId, onClose, onSubmit } = props;
+  const { arkeId, open, title, unitId, onClose, onSubmit, include } = props;
   const router = useRouter();
 
   const onFormSubmit = useCallback(
@@ -68,7 +69,7 @@ export function CrudAddEdit(props: CrudProps) {
       "inserted_at",
       "updated_at",
       "parameters",
-    ];
+    ].filter((item) => !include?.includes(item));
 
     const promise = unitId
       ? client.unit.struct(arkeId, unitId, { params: { exclude } })

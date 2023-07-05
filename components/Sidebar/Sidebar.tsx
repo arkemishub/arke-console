@@ -30,6 +30,7 @@ import { Button, Input } from "@arkejs/ui";
 import { getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import { CompassIcon } from "@/components/Icon/CompassIcon";
+import {GroupIcon} from "@/components/Icon/GroupIcon";
 
 function Sidebar() {
   const project =
@@ -74,6 +75,7 @@ function Sidebar() {
           <SidebarItem icon={HomeIcon} label="Dashboard" href="/" />
           <SidebarItem icon={SparklesIcon} label="Arke" href="/arke" />
           <SidebarItem icon={TagIcon} label="Parameters" href="/parameters" />
+          <SidebarItem icon={GroupIcon} label="Groups" href="/groups" />
           <SidebarItem icon={UserIcon} label="Users" href="/users" />
           <SidebarItem
             icon={CompassIcon}
