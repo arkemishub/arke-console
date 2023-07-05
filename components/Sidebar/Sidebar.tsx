@@ -30,7 +30,7 @@ import { Button, Input } from "@arkejs/ui";
 import { getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import { CompassIcon } from "@/components/Icon/CompassIcon";
-import {GroupIcon} from "@/components/Icon/GroupIcon";
+import { GroupIcon } from "@/components/Icon/GroupIcon";
 
 function Sidebar() {
   const project =
