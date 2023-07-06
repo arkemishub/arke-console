@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -15,8 +15,8 @@ dependencies:
     specifier: 0.7.2
     version: 0.7.2(react-dom@18.2.0)(react@18.2.0)
   '@arkejs/ui':
-    specifier: 0.27.0
-    version: 0.27.0(date-fns@2.30.0)(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.2.7)
+    specifier: 0.28.3
+    version: 0.28.3(date-fns@2.30.0)(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.2.7)
   '@heroicons/react':
     specifier: ^2.0.16
     version: 2.0.16(react@18.2.0)
@@ -160,21 +160,21 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: false
 
-  /@arkejs/ui@0.27.0(date-fns@2.30.0)(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.2.7):
-    resolution: {integrity: sha512-SlAI5l8QKm11q4TesQKmetb9ey9Xegu3uvqNTiEwrOZWLvqE/LyQsCFRBt8i5NcSIyuEsKWiDQwLi5EIf28dxA==}
+  /@arkejs/ui@0.28.3(date-fns@2.30.0)(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.2.7):
+    resolution: {integrity: sha512-CYSnts5XNPcHkqQeCB5r3OcPM8Xsc7TXbWLUok1LCs5m+vZN8w6iIE5wa/BeOVrEGGUiKJXBbYJFdF3juWWJgg==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
       tailwindcss: ^3.2.4
     dependencies:
-      '@headlessui/react': 1.7.13(react-dom@18.2.0)(react@18.2.0)
-      '@monaco-editor/react': 4.4.6(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)
-      '@popperjs/core': 2.11.7
+      '@headlessui/react': 1.7.15(react-dom@18.2.0)(react@18.2.0)
+      '@monaco-editor/react': 4.5.1(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)
+      '@popperjs/core': 2.11.8
       color: 4.2.3
       react: 18.2.0
       react-day-picker: 8.8.0(date-fns@2.30.0)(react@18.2.0)
       react-dom: 18.2.0(react@18.2.0)
-      react-popper: 2.3.0(@popperjs/core@2.11.7)(react-dom@18.2.0)(react@18.2.0)
+      react-popper: 2.3.0(@popperjs/core@2.11.8)(react-dom@18.2.0)(react@18.2.0)
       tailwind-merge: 1.10.0
       tailwindcss: 3.2.7(postcss@8.4.21)
     transitivePeerDependencies:
@@ -537,8 +537,8 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@headlessui/react@1.7.13(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-9n+EQKRtD9266xIHXdY5MfiXPDfYwl7zBM7KOx2Ae3Gdgxy8QML1FkCMjq6AsOf0l6N9uvI4HcFtuFlenaldKg==}
+  /@headlessui/react@1.7.15(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-OTO0XtoRQ6JPB1cKNFYBZv2Q0JMqMGNhYP1CjPvcJvjz8YGokz8oAj89HIYZGN0gZzn/4kk9iUpmMF4Q21Gsqw==}
     engines: {node: '>=10'}
     peerDependencies:
       react: ^16 || ^17 || ^18
@@ -852,8 +852,8 @@ packages:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
 
-  /@monaco-editor/loader@1.3.2(monaco-editor@0.39.0):
-    resolution: {integrity: sha512-BTDbpHl3e47r3AAtpfVFTlAi7WXv4UQ/xZmz8atKl4q7epQV5e7+JbigFDViWF71VBi4IIBdcWP57Hj+OWuc9g==}
+  /@monaco-editor/loader@1.3.3(monaco-editor@0.39.0):
+    resolution: {integrity: sha512-6KKF4CTzcJiS8BJwtxtfyYt9shBiEv32ateQ9T4UVogwn4HM/uPo9iJd2Dmbkpz8CM6Y0PDUpjnZzCwC+eYo2Q==}
     peerDependencies:
       monaco-editor: '>= 0.21.0 < 1'
     dependencies:
@@ -861,16 +861,15 @@ packages:
       state-local: 1.0.7
     dev: false
 
-  /@monaco-editor/react@4.4.6(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-Gr3uz3LYf33wlFE3eRnta4RxP5FSNxiIV9ENn2D2/rN8KgGAD8ecvcITRtsbbyuOuNkwbuHYxfeaz2Vr+CtyFA==}
+  /@monaco-editor/react@4.5.1(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-NNDFdP+2HojtNhCkRfE6/D6ro6pBNihaOzMbGK84lNWzRu+CfBjwzGt4jmnqimLuqp5yE5viHS2vi+QOAnD5FQ==}
     peerDependencies:
       monaco-editor: '>= 0.25.0 < 1'
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@monaco-editor/loader': 1.3.2(monaco-editor@0.39.0)
+      '@monaco-editor/loader': 1.3.3(monaco-editor@0.39.0)
       monaco-editor: 0.39.0
-      prop-types: 15.8.1
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
     dev: false
@@ -1036,8 +1035,8 @@ packages:
       tslib: 2.5.0
     dev: true
 
-  /@popperjs/core@2.11.7:
-    resolution: {integrity: sha512-Cr4OjIkipTtcXKjAsm8agyleBuDHvxzeBoa1v543lbv1YaIwQjESsVcmjiWiPEbC1FIeHOG/Op9kdCmAmiS3Kw==}
+  /@popperjs/core@2.11.8:
+    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
     dev: false
 
   /@reactflow/background@11.2.4(react-dom@18.2.0)(react@18.2.0):
@@ -4445,6 +4444,7 @@ packages:
   /object-assign@4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
+    dev: true
 
   /object-hash@2.2.0:
     resolution: {integrity: sha512-gScRMn0bS5fH+IuwyIFgnh9zBdo4DV+6GhygmWM9HyNJSgS0hScp1f5vjtm7oIIOiT9trXrShAkLFSc2IqKNgw==}
@@ -4882,6 +4882,7 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
+    dev: true
 
   /proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
@@ -4930,8 +4931,8 @@ packages:
       react: 18.2.0
       scheduler: 0.23.0
 
-  /react-fast-compare@3.2.1:
-    resolution: {integrity: sha512-xTYf9zFim2pEif/Fw16dBiXpe0hoy5PxcD8+OwBnTtNLfIm3g6WxhKNurY+6OmdH1u6Ta/W/Vl6vjbYP1MFnDg==}
+  /react-fast-compare@3.2.2:
+    resolution: {integrity: sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==}
     dev: false
 
   /react-hook-form@7.43.7(react@18.2.0):
@@ -4959,6 +4960,7 @@ packages:
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+    dev: true
 
   /react-is@17.0.2:
     resolution: {integrity: sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==}
@@ -4968,17 +4970,17 @@ packages:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: true
 
-  /react-popper@2.3.0(@popperjs/core@2.11.7)(react-dom@18.2.0)(react@18.2.0):
+  /react-popper@2.3.0(@popperjs/core@2.11.8)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-e1hj8lL3uM+sgSR4Lxzn5h1GxBlpa4CQz0XLF8kx4MDrDRWY0Ena4c97PUeSX9i5W3UAfDP0z0FXCTQkoXUl3Q==}
     peerDependencies:
       '@popperjs/core': ^2.0.0
       react: ^16.8.0 || ^17 || ^18
       react-dom: ^16.8.0 || ^17 || ^18
     dependencies:
-      '@popperjs/core': 2.11.7
+      '@popperjs/core': 2.11.8
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-fast-compare: 3.2.1
+      react-fast-compare: 3.2.2
       warning: 4.0.3
     dev: false
 

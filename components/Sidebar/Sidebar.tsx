@@ -18,9 +18,9 @@ import { ElementType, useMemo } from "react";
 import Link from "next/link";
 import {
   ArrowLeftOnRectangleIcon,
-  SparklesIcon,
   TagIcon,
-  UserIcon,
+  UsersIcon,
+  Squares2X2Icon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import { twMerge } from "tailwind-merge";
@@ -30,7 +30,7 @@ import { Button, Input } from "@arkejs/ui";
 import { getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import { CompassIcon } from "@/components/Icon/CompassIcon";
-import { GroupIcon } from "@/components/Icon/GroupIcon";
+import { ArkeIcon } from "@/components/Icon/ArkeIcon";
 
 function Sidebar() {
   const project =
@@ -50,10 +50,14 @@ function Sidebar() {
       <aside className="flex h-full w-full flex-col rounded-theme bg-background-400 p-1">
         <Link href="/">
           <div className="flex items-center px-2 py-4">
-            <Image src="/logo.png" alt="logo" height={30} width={30} />
-
-            <p className="ml-2 font-semibold">ARKE</p>
-            <p className="ml-2 border-l border-l-neutral pl-2 text-neutral-400">
+            <Image
+              src="/arke_logo.svg"
+              alt="logo"
+              height={30}
+              width={92}
+              className="mx-2"
+            />
+            <p className="ml-2 border-l border-l-neutral pl-3 text-neutral-400">
               Console
             </p>
           </div>
@@ -63,20 +67,23 @@ function Sidebar() {
             <span className="mb-2 block text-xs text-neutral-400">
               Active Project
             </span>
-            <Input value={project} readOnly className="project__input" />
-            <Button
-              onClick={handleCopy}
-              className="absolute bottom-1 right-1 bg-neutral p-1.5 text-neutral-300"
-            >
-              <CopyIcon className="h-5 w-5" />
-            </Button>
+            <Input
+              value={project}
+              readOnly
+              className="project__input"
+              suffixAdornment={
+                <Button onClick={handleCopy} className="p-0">
+                  <CopyIcon className="h-5 w-5" />
+                </Button>
+              }
+            />
           </li>
 
           <SidebarItem icon={HomeIcon} label="Dashboard" href="/" />
-          <SidebarItem icon={SparklesIcon} label="Arke" href="/arke" />
+          <SidebarItem icon={ArkeIcon} label="Arke" href="/arke" />
           <SidebarItem icon={TagIcon} label="Parameters" href="/parameters" />
-          <SidebarItem icon={GroupIcon} label="Groups" href="/groups" />
-          <SidebarItem icon={UserIcon} label="Users" href="/users" />
+          <SidebarItem icon={Squares2X2Icon} label="Groups" href="/groups" />
+          <SidebarItem icon={UsersIcon} label="Users" href="/users" />
           <SidebarItem
             icon={CompassIcon}
             label="Visual schema"

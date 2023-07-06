@@ -23,6 +23,7 @@ import { AddIcon, LinkIcon, TrashIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { ParameterAdd } from "@/crud/parameter";
 import { CrudState } from "@/types/crud";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 function AssignParameterAdd({
   open,
@@ -46,6 +47,12 @@ function AssignParameterAdd({
   const [values, setValues] = useState<TUnit[]>([]);
   const [selected, setSelected] = useState<TUnit[]>([]);
   const debouncedInputValue = useDebounce<string>(inputValue, 500);
+
+  useEffect(() => {
+    setInputValue("");
+    setValues([]);
+    setSelected([]);
+  }, [open]);
 
   useEffect(() => {
     if (debouncedInputValue) {
@@ -99,6 +106,9 @@ function AssignParameterAdd({
           getDisplayValue={(val) => val.id}
           renderChips={false}
           placeholder="Search a parameter"
+          startAdornment={
+            <MagnifyingGlassIcon className="h-5 w-5 stroke-white" />
+          }
         />
         <div className="mt-2">
           or{" "}

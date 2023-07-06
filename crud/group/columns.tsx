@@ -17,6 +17,7 @@
 import { Column, ColumnType } from "@arkejs/table";
 import dynamic from "next/dynamic";
 import { TUnit } from "@arkejs/client";
+import { Chip } from "@arkejs/ui";
 
 export const columns: Column[] = [
   {
@@ -29,7 +30,13 @@ export const columns: Column[] = [
     id: "arke_list",
     type: ColumnType.String,
     render: (rowData) => (
-      <div>{(rowData.arke_list as TUnit[]).map((item) => item).join(", ")}</div>
+      <div className="flex gap-1">
+        {(rowData.arke_list as TUnit[]).map((item, index) => (
+          <Chip key={index} className="bg-primary p-1 text-black">
+            {item.id}
+          </Chip>
+        ))}
+      </div>
     ),
   },
   { label: "Label", id: "label", type: ColumnType.String },

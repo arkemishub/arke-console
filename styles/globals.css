@@ -47,6 +47,10 @@
         @apply bg-background-300
     }
 
+    .arke__table__actions {
+        @apply flex
+    }
+
     .arke__table .arke__table__actions button {
         @apply btn p-2 rounded-full inline-block
     }
@@ -139,5 +143,13 @@
 
     .card {
         @apply bg-background p-2 border border-neutral rounded-theme shadow-2xl
+    }
+
+    .json {
+        @apply !border border-neutral rounded-theme
+    }
+
+    .autocomplete__clear > svg {
+        @apply stroke-white
     }
 }
