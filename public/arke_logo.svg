@@ -1,3 +1,19 @@
+<!--
+  ~ Copyright 2023 Arkemis S.r.l.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+
 <svg width="273" height="57" viewBox="0 0 273 57" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_591_11695)">
 <path d="M25.114 35.3213C28.9587 35.3213 32.0756 32.2087 32.0756 28.3691C32.0756 24.5296 28.9587 21.417 25.114 21.417C21.2692 21.417 18.1523 24.5296 18.1523 28.3691C18.1523 32.2087 21.2692 35.3213 25.114 35.3213Z" fill="#49E8AB"/>
