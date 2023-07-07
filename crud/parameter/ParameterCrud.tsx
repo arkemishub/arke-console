@@ -20,6 +20,7 @@ import { Button, Dialog, Select, Spinner } from "@arkejs/ui";
 import { TBaseParameter, TResponse, TUnit } from "@arkejs/client";
 import useClient from "@/arke/useClient";
 import toast from "react-hot-toast";
+import { AdjustmentsVerticalIcon } from "@heroicons/react/24/outline";
 
 export function ParameterAdd({
   open,
@@ -123,8 +124,12 @@ export function ParameterAdd({
         value={selectedType}
         values={parameterTypes}
         onChange={onParameterTypeChange}
-        renderLabel={(val) => val.label as string}
+        renderLabel={(val: TUnit) => val.label}
         className="mb-4"
+        placeholder="Select the type parameter"
+        startAdornment={
+          <AdjustmentsVerticalIcon className="h-5 w-5 stroke-white" />
+        }
       />
       {selectedType ? (
         <Form

@@ -18,6 +18,7 @@ import { Column, Filter, FilterOperator, Sort, SortType } from "@arkejs/table";
 import { Autocomplete, Button, Input } from "@arkejs/ui";
 import { twMerge } from "tailwind-merge";
 import { ArrowDownIcon } from "@heroicons/react/24/outline";
+import { FunnelIcon } from "@heroicons/react/24/outline";
 
 type InlineFilterProps = {
   column: Column;
@@ -104,6 +105,7 @@ function InlineFilterInput({ column, filters, ...props }: InlineFilterProps) {
             },
           ])
         }
+        startAdornment={<FunnelIcon className="h-4 w-4 stroke-white" />}
       />
     );
   }

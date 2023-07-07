@@ -17,16 +17,16 @@
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
 import { Form, FormField } from "@arkejs/form";
-import { Autocomplete, Button, Input } from "@arkejs/ui";
-import React, { useCallback, useState } from "react";
+import { Autocomplete, Button, Input, Popover } from "@arkejs/ui";
+import React, { useCallback } from "react";
 import { BaseParameter, TBaseParameter, TUnit } from "@arkejs/client";
 import useClient from "@/arke/useClient";
-import { twMerge } from "tailwind-merge";
 import Image from "next/image";
 import { getClient } from "@/arke/getClient";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { cleanId } from "../utils/helper";
+import { CubeIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 
 const fields: Array<TBaseParameter & Record<string, unknown>> = [
@@ -58,15 +58,20 @@ function GetStarted({ projects }: { projects: TUnit[] }) {
 
   const onSelectProject = (project: TUnit) => {
     setCookie("arke_project", project.id);
-    router.push("/");
+    void router.push("/");
   };
 
   return (
     <div className="mx-auto flex h-screen w-full max-w-7xl flex-col gap-8 py-4">
       <div className="relative">
         <div className="flex items-center px-2 py-4">
-          <Image src="/logo.png" alt="logo" height={30} width={30} />
-          <p className="ml-2 font-semibold">ARKE</p>
+          <Image
+            src="/arke_logo.svg"
+            alt="logo"
+            height={30}
+            width={92}
+            className="mx-2"
+          />
           <p className="ml-2 border-l border-l-neutral pl-2 text-neutral-400">
             Console
           </p>
@@ -87,6 +92,7 @@ function GetStarted({ projects }: { projects: TUnit[] }) {
             onChange={onSelectProject}
             getDisplayValue={(item) => item.label ?? ""}
             values={projects}
+            startAdornment={<CubeIcon className="h-5 w-5" />}
           />
         </div>
 
