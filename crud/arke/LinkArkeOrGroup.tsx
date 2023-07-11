@@ -49,8 +49,8 @@ function LinkArkeOrGroup({
 
   useEffect(() => {
     if (debouncedInputValue) {
-      client.arke
-        .getAll({
+      client.group
+        .getAllUnits("arke_or_group", {
           params: {
             offset: 0,
             limit: 5,
@@ -108,9 +108,13 @@ function LinkArkeOrGroup({
           onInputChange={(event) => setInputValue(event.target.value)}
           values={values}
           value={selected}
-          getDisplayValue={(val) => val.id}
           renderChips={false}
           placeholder="Search an Arke or Group"
+          getDisplayValue={(value) => {
+            return `[${(value as TUnit).arke_id}] ${
+              (value as TUnit).label ?? (value as TUnit).id
+            }`;
+          }}
         />
 
         <div className="mt-auto flex gap-4 pt-4">

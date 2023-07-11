@@ -117,7 +117,7 @@ function ArkeNode(props: ArkeNodeProps) {
             ) : (
               <div className="flex text-primary">
                 <div className="mr-1">{item.ref.label}</div>
-                <div>({item.ref.type})</div>
+                <div>({item.ref.type ?? item.ref.arke_id})</div>
               </div>
             )}
           </div>
