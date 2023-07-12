@@ -21,10 +21,18 @@ import { useEffect, useState } from "react";
 import { Button, Input, Spinner } from "@arkejs/ui";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
+import {
+  UserCircleIcon,
+  EyeIcon,
+  EyeSlashIcon,
+  LockClosedIcon,
+  ArrowRightOnRectangleIcon,
+} from "@heroicons/react/24/outline";
 
 export default function Login({ csrfToken }: { csrfToken: string }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const { query } = useRouter();
 
@@ -51,15 +59,17 @@ export default function Login({ csrfToken }: { csrfToken: string }) {
         onSubmit={onSignIn}
         className="m-auto grid w-[400px] gap-4 pt-[20%]"
       >
-        <h1>Login</h1>
+        <h1 className="mb-2 text-center text-xl">Login</h1>
         <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-        <br />
         <Input
           type="text"
           name="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
+          startAdornment={
+            <UserCircleIcon className="h-5 w-5 stroke-white/50" />
+          }
           fullWidth
         />
         <Input
@@ -68,9 +78,31 @@ export default function Login({ csrfToken }: { csrfToken: string }) {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           fullWidth
+          startAdornment={
+            <LockClosedIcon className="h-5 w-5 stroke-white/50" />
+          }
+          endAdornment={
+            <span
+              role="presentation"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <EyeIcon className="h-5 w-5 stroke-white/50" />
+              ) : (
+                <EyeSlashIcon className="h-5 w-5 stroke-white/50" />
+              )}
+            </span>
+          }
         />
         <Button color="primary" type="submit">
-          {loading ? <Spinner /> : "Login"}
+          {loading ? (
+            <Spinner className="h-5 w-5" />
+          ) : (
+            <>
+              <ArrowRightOnRectangleIcon className="mr-2 h-5 w-5 stroke-black" />
+              Login
+            </>
+          )}
         </Button>
       </form>
     </div>
