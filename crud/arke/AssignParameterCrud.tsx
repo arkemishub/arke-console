@@ -103,7 +103,7 @@ function AssignParameterAdd({
           multiple
           values={values}
           value={selected}
-          getDisplayValue={(val) => val.id}
+          renderValue={(val) => val.id}
           renderChips={false}
           placeholder="Search a parameter"
           startAdornment={

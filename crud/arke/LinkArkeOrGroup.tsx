@@ -110,7 +110,7 @@ function LinkArkeOrGroup({
           value={selected}
           renderChips={false}
           placeholder="Search an Arke or Group"
-          getDisplayValue={(value) => {
+          renderValue={(value) => {
             return `[${(value as TUnit).arke_id}] ${
               (value as TUnit).label ?? (value as TUnit).id
             }`;
