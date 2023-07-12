@@ -104,66 +104,64 @@ export function UserCrud({
         onSubmit={onFormSubmit}
         style={{ height: "100%" }}
       >
-        {() =>
-          loading || !fields ? (
-            <Spinner />
-          ) : (
-            <>
-              <div className="grid gap-4">
-                <FormField id="username" />
-                <FormField id="type" />
-                <FormField id="first_name" />
-                <FormField id="last_name" />
-                <FormField id="first_access" />
-                <FormField id="phone_number" />
+        {loading || !fields ? (
+          <Spinner />
+        ) : (
+          <>
+            <div className="grid gap-4">
+              <FormField id="username" />
+              <FormField id="type" />
+              <FormField id="first_name" />
+              <FormField id="last_name" />
+              <FormField id="first_access" />
+              <FormField id="phone_number" />
+              <FormField
+                id="address"
+                render={(props) => (
+                  <Input
+                    {...props}
+                    label="Address"
+                    className="w-full"
+                    onChange={(e) => props.onChange(e.target.value)}
+                  />
+                )}
+              />
+              <FormField id="birth_date" />
+              <FormField id="fiscal_code" />
+              <FormField id="environment" />
+              {!unitId && (
                 <FormField
-                  id="address"
+                  id="password"
                   render={(props) => (
                     <Input
                       {...props}
-                      label="Address"
+                      type="password"
+                      label="Password"
                       className="w-full"
                       onChange={(e) => props.onChange(e.target.value)}
                     />
                   )}
                 />
-                <FormField id="birth_date" />
-                <FormField id="fiscal_code" />
-                <FormField id="environment" />
-                {!unitId && (
-                  <FormField
-                    id="password"
-                    render={(props) => (
-                      <Input
-                        {...props}
-                        type="password"
-                        label="Password"
-                        className="w-full"
-                        onChange={(e) => props.onChange(e.target.value)}
-                      />
-                    )}
-                  />
-                )}
-              </div>
-              <div className="mt-4 flex gap-4">
-                <Button
-                  className="btn-outlined w-full bg-neutral"
-                  onClick={onClose}
-                >
-                  Close
-                </Button>
-                <Button
-                  className="w-full"
-                  disabled={loading}
-                  color="primary"
-                  type="submit"
-                >
-                  Confirm
-                </Button>
-              </div>
-            </>
-          )
-        }
+              )}
+            </div>
+            <div className="mt-4 flex gap-4">
+              <Button
+                className="btn-outlined w-full bg-neutral"
+                onClick={onClose}
+              >
+                Close
+              </Button>
+              <Button
+                className="w-full"
+                disabled={loading}
+                color="primary"
+                type="submit"
+              >
+                Confirm
+              </Button>
+            </div>
+          </>
+        )}
       </Form>
     </Dialog>
   );

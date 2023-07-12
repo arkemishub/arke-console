@@ -137,7 +137,7 @@ function InlineFilterInput({ column, filters, ...props }: InlineFilterProps) {
             },
           ])
         }
-        getDisplayValue={(value) => value.label}
+        renderValue={(value) => value.label}
         values={values}
       />
     );

@@ -86,7 +86,7 @@ export default function AutocompleteLink(props: AutocompleteLinkProps) {
           onChange((value as TUnit).id);
         }
       }}
-      getDisplayValue={(value) => {
+      renderValue={(value) => {
         return `[${(value as TUnit).arke_id}] ${
           (value as TUnit).label ?? (value as TUnit).id
         }`;

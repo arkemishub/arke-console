@@ -90,7 +90,7 @@ function GetStarted({ projects }: { projects: TUnit[] }) {
           <Autocomplete
             placeholder="Choose project"
             onChange={onSelectProject}
-            getDisplayValue={(item) => item.label ?? ""}
+            renderValue={(item) => item.label ?? ""}
             values={projects}
             startAdornment={<CubeIcon className="h-5 w-5" />}
           />
@@ -100,40 +100,38 @@ function GetStarted({ projects }: { projects: TUnit[] }) {
           or create a new one
         </p>
         <Form fields={fields} onSubmit={handleSubmit}>
-          {() => (
-            <div className="mx-auto max-w-xl">
-              <div className="grid gap-6">
-                <FormField
-                  id="label"
-                  render={(props) => (
-                    <Input
-                      {...props}
-                      className="w-full"
-                      onChange={(e) =>
-                        props.onChange(
-                          cleanId(e.target.value, () =>
-                            toast.error(
-                              "The entered character is not allowed, it has been replaced with _"
-                            )
+          <div className="mx-auto max-w-xl">
+            <div className="grid gap-6">
+              <FormField
+                id="label"
+                render={(props) => (
+                  <Input
+                    {...props}
+                    className="w-full"
+                    onChange={(e) =>
+                      props.onChange(
+                        cleanId(e.target.value, () =>
+                          toast.error(
+                            "The entered character is not allowed, it has been replaced with _"
                           )
                         )
-                      }
-                      pattern="^[a-z0-9_-]+$"
-                      placeholder="Project name"
-                      required
-                      helperText="Insert a lowercase name, allowed characters: alphanumeric, underscore and hyphen"
-                    />
-                  )}
-                />
-                <FormField id="description" />
-              </div>
-              <div className="mt-8 flex gap-4">
-                <Button className="w-full" color="primary" type="submit">
-                  Create
-                </Button>
-              </div>
+                      )
+                    }
+                    pattern="^[a-z0-9_-]+$"
+                    placeholder="Project name"
+                    required
+                    helperText="Insert a lowercase name, allowed characters: alphanumeric, underscore and hyphen"
+                  />
+                )}
+              />
+              <FormField id="description" />
             </div>
-          )}
+            <div className="mt-8 flex gap-4">
+              <Button className="w-full" color="primary" type="submit">
+                Create
+              </Button>
+            </div>
+          </div>
         </Form>
       </div>
     </div>

@@ -45,7 +45,7 @@ import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
 import NoDataNode from "@/components/VisualSchema/NoDataNode";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 100;
 const fetchArke = async (
   client: Client,
   page?: number,

@@ -109,36 +109,34 @@ export function CrudAddEdit(props: CrudProps) {
           style={{ height: "100%" }}
           fields={fields}
         >
-          {({ fields }) =>
-            loading ? (
-              <Spinner />
-            ) : (
-              <>
-                <div className="grid gap-4">
-                  {fields.map((field) => (
-                    <FormField key={field.id} id={field.id} />
-                  ))}
-                </div>
-                <div className="mt-4 flex gap-4">
-                  <Button
-                    disabled={loading}
-                    className="w-full bg-neutral"
-                    onClick={onClose}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    disabled={loading}
-                    color="primary"
-                    className="w-full"
-                    type="submit"
-                  >
-                    Confirm
-                  </Button>
-                </div>
-              </>
-            )
-          }
+          {loading ? (
+            <Spinner />
+          ) : (
+            <>
+              <div className="grid gap-4">
+                {fields.map((field) => (
+                  <FormField key={field.id as string} id={field.id as string} />
+                ))}
+              </div>
+              <div className="mt-4 flex gap-4">
+                <Button
+                  disabled={loading}
+                  className="w-full bg-neutral"
+                  onClick={onClose}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  disabled={loading}
+                  color="primary"
+                  className="w-full"
+                  type="submit"
+                >
+                  Confirm
+                </Button>
+              </div>
+            </>
+          )}
         </Form>
       ) : (
         <Spinner />

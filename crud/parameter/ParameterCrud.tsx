@@ -124,56 +124,43 @@ export function ParameterAdd({
         value={selectedType}
         values={parameterTypes}
         onChange={onParameterTypeChange}
-        renderLabel={(val: TUnit) => val.label}
+        renderValue={(val: TUnit) => val.label}
         className="mb-4"
         placeholder="Select the type parameter"
         startAdornment={
           <AdjustmentsVerticalIcon className="h-5 w-5 stroke-white" />
         }
       />
-      {selectedType ? (
-        <Form
-          fields={fields ?? []}
-          onSubmit={onFormSubmit}
-          style={{ height: "100%" }}
-        >
-          {() =>
-            loading ? (
-              <Spinner />
-            ) : (
-              <>
-                <div className="grid gap-4">
-                  {fields?.map((field) => (
-                    <FormField
-                      id={field.id as string}
-                      key={field.id as string}
-                    />
-                  ))}
-                </div>
-                <div className="mt-4 flex  gap-4">
-                  <Button className="w-full bg-neutral" onClick={onClose}>
-                    Close
-                  </Button>
-                  <Button
-                    disabled={loading}
-                    color="primary"
-                    className="w-full"
-                    type="submit"
-                  >
-                    Confirm
-                  </Button>
-                </div>
-              </>
-            )
-          }
-        </Form>
-      ) : (
-        <div className="flex min-h-[300px] items-center justify-center text-center">
-          <p className="text-sm text-neutral-300">
-            Please select a parameter type
-          </p>
-        </div>
-      )}
+      <Form
+        fields={fields ?? []}
+        onSubmit={onFormSubmit}
+        style={{ height: "100%" }}
+      >
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <div className="grid gap-4">
+              {fields?.map((field) => (
+                <FormField id={field.id as string} key={field.id as string} />
+              ))}
+            </div>
+            <div className="mt-4 flex  gap-4">
+              <Button className="w-full bg-neutral" onClick={onClose}>
+                Close
+              </Button>
+              <Button
+                disabled={loading}
+                color="primary"
+                className="w-full"
+                type="submit"
+              >
+                Confirm
+              </Button>
+            </div>
+          </>
+        )}
+      </Form>
     </Dialog>
   );
 }

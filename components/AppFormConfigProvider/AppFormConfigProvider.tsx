@@ -65,7 +65,7 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
               <Autocomplete
                 {...props}
                 onChange={(value) => props.onChange(value.value)}
-                getDisplayValue={(value) => value.label}
+                renderValue={(value) => value.label}
                 value={props.values.filter(
                   (item: { value: string }) => item.value === props.value
                 )}

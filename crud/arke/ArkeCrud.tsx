@@ -85,57 +85,55 @@ export function ArkeCrud({
   return (
     <Dialog open={!!open} title={title} onClose={onClose}>
       <Form fields={fields} onSubmit={onFormSubmit} style={{ height: "100%" }}>
-        {() =>
-          loading ? (
-            <Spinner />
-          ) : (
-            <>
-              <div className="grid gap-4">
-                {!arkeId && (
-                  <FormField
-                    id="id"
-                    render={(props) => (
-                      <Input
-                        {...props}
-                        label="ID"
-                        className="w-full"
-                        onChange={(e) =>
-                          props.onChange(
-                            cleanId(e.target.value, () =>
-                              toast.error(
-                                "The entered character is not allowed, it has been replaced with _"
-                              )
+        {loading ? (
+          <Spinner />
+        ) : (
+          <>
+            <div className="grid gap-4">
+              {!arkeId && (
+                <FormField
+                  id="id"
+                  render={(props) => (
+                    <Input
+                      {...props}
+                      label="ID"
+                      className="w-full"
+                      onChange={(e) =>
+                        props.onChange(
+                          cleanId(e.target.value, () =>
+                            toast.error(
+                              "The entered character is not allowed, it has been replaced with _"
                             )
                           )
-                        }
-                        pattern="^[a-z0-9_-]+$"
-                        helperText="Insert a lowercase ID, allowed characters: alphanumeric, underscore and hyphen"
-                      />
-                    )}
-                  />
-                )}
-                <FormField id="label" />
-                <FormField id="active" />
-              </div>
-              <div className="mt-4 flex gap-4">
-                <Button
-                  className="btn-outlined w-full bg-neutral"
-                  onClick={onClose}
-                >
-                  Close
-                </Button>
-                <Button
-                  className="w-full"
-                  disabled={loading}
-                  color="primary"
-                  type="submit"
-                >
-                  Confirm
-                </Button>
-              </div>
-            </>
-          )
-        }
+                        )
+                      }
+                      pattern="^[a-z0-9_-]+$"
+                      helperText="Insert a lowercase ID, allowed characters: alphanumeric, underscore and hyphen"
+                    />
+                  )}
+                />
+              )}
+              <FormField id="label" />
+              <FormField id="active" />
+            </div>
+            <div className="mt-4 flex gap-4">
+              <Button
+                className="btn-outlined w-full bg-neutral"
+                onClick={onClose}
+              >
+                Close
+              </Button>
+              <Button
+                className="w-full"
+                disabled={loading}
+                color="primary"
+                type="submit"
+              >
+                Confirm
+              </Button>
+            </div>
+          </>
+        )}
       </Form>
     </Dialog>
   );
