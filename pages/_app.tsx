@@ -20,8 +20,13 @@ import type { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import { SessionProvider } from "next-auth/react";
 import { NextPage } from "next";
-import { Toaster } from "react-hot-toast";
 import AppFormConfigProvider from "@/components/AppFormConfigProvider/AppFormConfigProvider";
+import dynamic from "next/dynamic";
+
+const Toaster = dynamic(
+  () => import("react-hot-toast").then((mod) => mod.Toaster),
+  { ssr: false }
+);
 
 type NextPageWithAuth = NextPage & {
   auth?: boolean;
