@@ -9,8 +9,8 @@ dependencies:
     specifier: 2.4.1
     version: 2.4.1
   '@arkejs/form':
-    specifier: 1.4.1
-    version: 1.4.1(react-dom@18.2.0)(react@18.2.0)
+    specifier: file://Users/manolobattista/Workspace/Arke/form
+    version: file:../../../Arke/form(react-dom@18.2.0)(react@18.2.0)
   '@arkejs/table':
     specifier: 0.7.2
     version: 0.7.2(react-dom@18.2.0)(react@18.2.0)
@@ -138,17 +138,6 @@ packages:
       axios: 1.4.0
     transitivePeerDependencies:
       - debug
-    dev: false
-
-  /@arkejs/form@1.4.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-c+YQ0m+njvLeYwXr6M9i5uKJP0A+2xmELPJ3zsv9JWzECjZWQi67BlsbqsvrOQM8tPTUAHDjS9v9aX0lkDtLpg==}
-    peerDependencies:
-      react: ^18.2.0
-      react-dom: ^18.2.0
-    dependencies:
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      react-hook-form: 7.43.7(react@18.2.0)
     dev: false
 
   /@arkejs/table@0.7.2(react-dom@18.2.0)(react@18.2.0):
@@ -5775,4 +5764,17 @@ packages:
     dependencies:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
+
+  file:../../../Arke/form(react-dom@18.2.0)(react@18.2.0):
+    resolution: {directory: ../../../Arke/form, type: directory}
+    id: file:../../../Arke/form
+    name: '@arkejs/form'
+    peerDependencies:
+      react: ^18.2.0
+      react-dom: ^18.2.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      react-hook-form: 7.43.7(react@18.2.0)
     dev: false

@@ -15,7 +15,7 @@
  */
 
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
-import { Form, FormField } from "@arkejs/form";
+import { Field, Form } from "@arkejs/form";
 import { Button, Dialog, Input, Spinner } from "@arkejs/ui";
 import { TBaseParameter, TResponse, TUnit } from "@arkejs/client";
 import useClient from "@/arke/useClient";
@@ -84,22 +84,26 @@ export function ArkeCrud({
 
   return (
     <Dialog open={!!open} title={title} onClose={onClose}>
-      <Form fields={fields} onSubmit={onFormSubmit} style={{ height: "100%" }}>
+      <Form
+        fields={fields as Field[]}
+        onSubmit={onFormSubmit}
+        style={{ height: "100%" }}
+      >
         {loading ? (
           <Spinner />
         ) : (
           <>
             <div className="grid gap-4">
               {!arkeId && (
-                <FormField
+                <Form.Field
                   id="id"
-                  render={(props) => (
+                  render={({ field }) => (
                     <Input
-                      {...props}
+                      {...field}
                       label="ID"
                       className="w-full"
                       onChange={(e) =>
-                        props.onChange(
+                        field.onChange(
                           cleanId(e.target.value, () =>
                             toast.error(
                               "The entered character is not allowed, it has been replaced with _"
@@ -113,8 +117,8 @@ export function ArkeCrud({
                   )}
                 />
               )}
-              <FormField id="label" />
-              <FormField id="active" />
+              <Form.Field id="label" />
+              <Form.Field id="active" />
             </div>
             <div className="mt-4 flex gap-4">
               <Button

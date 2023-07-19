@@ -16,7 +16,7 @@
 
 import React, { ReactNode, useCallback, useState } from "react";
 import useClient from "@/arke/useClient";
-import { Form, FormField } from "@arkejs/form";
+import { Field, Form } from "@arkejs/form";
 import { TBaseParameter, TResponse, TUnit } from "@arkejs/client";
 import { Button, Dialog, Spinner } from "@arkejs/ui";
 import toast from "react-hot-toast";
@@ -75,7 +75,12 @@ export function CrudAddEdit(props: CrudProps) {
       ? client.unit.struct(arkeId, unitId, { params: { exclude } })
       : client.arke.struct(arkeId, { params: { exclude } });
     promise.then((res) => {
-      setFields(res.data.content.parameters);
+      setFields(
+        res.data.content.parameters.map((item) => {
+          item.refLink = item.ref;
+          return item;
+        })
+      );
       setLoading(false);
       if (res.data.content.parameters.length === 0) {
         toast.error(
@@ -105,9 +110,9 @@ export function CrudAddEdit(props: CrudProps) {
     <Dialog open={!!open} title={title} onClose={onClose}>
       {fields.length > 0 ? (
         <Form
+          fields={fields as Field[]}
           onSubmit={onFormSubmit}
           style={{ height: "100%" }}
-          fields={fields}
         >
           {loading ? (
             <Spinner />
@@ -115,7 +120,10 @@ export function CrudAddEdit(props: CrudProps) {
             <>
               <div className="grid gap-4">
                 {fields.map((field) => (
-                  <FormField key={field.id as string} id={field.id as string} />
+                  <Form.Field
+                    key={field.id as string}
+                    id={field.id as string}
+                  />
                 ))}
               </div>
               <div className="mt-4 flex gap-4">
