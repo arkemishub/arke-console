@@ -105,7 +105,12 @@ export function ParameterAdd({
           },
         })
         .then((res) => {
-          setFields(res.data.content.parameters);
+          setFields(
+            res.data.content.parameters.map((item) => {
+              item.refLink = item.ref;
+              return item;
+            })
+          );
         })
         .finally(() => setLoading(false));
     },
