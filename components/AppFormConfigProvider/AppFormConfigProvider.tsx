@@ -15,7 +15,7 @@
  */
 
 import { ReactNode } from "react";
-import { FormConfigProvider as FCProvider, RenderProps } from "@arkejs/form";
+import { FormConfigProvider as FCProvider } from "@arkejs/form";
 import { Autocomplete, Checkbox, Input, Json } from "@arkejs/ui";
 import AutocompleteLink, {
   LinkRef,
@@ -25,83 +25,83 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
   return (
     <FCProvider
       components={{
-        dict: (props) => {
+        dict: ({ field }) => {
           return (
             <Json
-              label={props.label}
-              value={JSON.stringify(props.value)}
-              onChange={(value) => props.onChange(JSON.parse(value))}
+              label={field.label}
+              value={JSON.stringify(field.value)}
+              onChange={(value) => field.onChange(JSON.parse(value))}
             />
           );
         },
-        integer: (props) => (
+        integer: ({ field }) => (
           <Input
-            {...props}
+            {...field}
             type="number"
             fullWidth
-            onChange={(e) => props.onChange(e.target.value)}
+            onChange={(e) => field.onChange(e.target.value)}
           />
         ),
-        float: (props) => (
+        float: ({ field }) => (
           <Input
-            {...props}
+            {...field}
             type="number"
             step="0.01"
             fullWidth
-            onChange={(e) => props.onChange(e.target.value)}
+            onChange={(e) => field.onChange(e.target.value)}
           />
         ),
-        date: (props) => (
+        date: ({ field }) => (
           <Input
-            {...props}
+            {...field}
             type="date"
             fullWidth
-            onChange={(e) => props.onChange(e.target.value)}
+            onChange={(e) => field.onChange(e.target.value)}
           />
         ),
-        string: (props) => {
-          if (props.values && props.values.length > 0)
+        string: ({ field }) => {
+          if (field.values && field.values.length > 0)
             return (
               <Autocomplete
-                {...props}
-                onChange={(value) => props.onChange(value.value)}
+                {...field}
+                onChange={(value) => field.onChange(value.value)}
                 renderValue={(value) => value.label}
-                value={props.values.filter(
-                  (item: { value: string }) => item.value === props.value
+                value={field.values.filter(
+                  (item: { value: string }) => item.value === field.value
                 )}
               />
             );
           return (
             <Input
-              {...props}
+              {...field}
               type="text"
               fullWidth
-              onChange={(e) => props.onChange(e.target.value)}
+              onChange={(e) => field.onChange(e.target.value)}
             />
           );
         },
-        boolean: (props) => (
+        boolean: ({ field }) => (
           <Checkbox
-            {...props}
-            checked={props.value}
-            onChange={(e) => props.onChange(e.target.checked)}
+            {...field}
+            checked={field.value}
+            onChange={(e) => field.onChange(e.target.checked)}
           />
         ),
-        list: (props) => (
+        list: ({ field }) => (
           <Json
-            label={props.label}
-            value={JSON.stringify(props.value)}
-            onChange={(value) => props.onChange(JSON.parse(value))}
+            label={field.label}
+            value={JSON.stringify(field.value)}
+            onChange={(value) => field.onChange(JSON.parse(value))}
           />
         ),
-        link: (props: RenderProps & { ref: LinkRef }) => (
+        link: ({ field }) => (
           <AutocompleteLink
-            {...props}
-            reference={props.ref}
-            onChange={props.onChange}
+            {...field}
+            refLink={field.refLink}
+            onChange={field.onChange}
           />
         ),
-        default: (props: RenderProps & { type: string }) => <></>,
+        default: () => <></>,
       }}
     >
       {props.children}

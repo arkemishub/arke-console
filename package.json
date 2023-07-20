@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@arkejs/client": "2.4.1",
-    "@arkejs/form": "1.4.1",
+    "@arkejs/form": "1.6.0",
     "@arkejs/table": "0.7.2",
     "@arkejs/ui": "0.29.0",
     "@heroicons/react": "^2.0.16",

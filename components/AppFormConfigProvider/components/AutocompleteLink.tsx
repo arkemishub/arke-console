@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { RenderProps } from "@arkejs/form";
 import useClient from "@/arke/useClient";
 import { useEffect, useState } from "react";
 import { TUnit } from "@arkejs/client";
@@ -23,13 +22,14 @@ import toast from "react-hot-toast";
 
 export type LinkRef = { id: string; arke_id: "group" | "arke" };
 
-type AutocompleteLinkProps = RenderProps & {
-  reference: LinkRef;
+type AutocompleteLinkProps = {
+  refLink: LinkRef;
   onChange: (value: any) => void;
+  value: string;
 };
 
 export default function AutocompleteLink(props: AutocompleteLinkProps) {
-  const { reference, onChange } = props;
+  const { refLink, onChange } = props;
   const client = useClient();
   const [values, setValues] = useState<TUnit[]>([]);
 
@@ -37,11 +37,11 @@ export default function AutocompleteLink(props: AutocompleteLinkProps) {
     // getAll: arke / group (id: se é gruppo o arke)
     // filter_keys [OR]
     // params: load_links: true => getAll
-    if (reference?.arke_id === "group") {
+    if (refLink?.arke_id === "group") {
       // TODO: implement getAll by group and add filters with filter_keys
-      // client.unit.getAll(reference.id).then((res) => {
+      // client.unit.getAll(refLink.id).then((res) => {
       client.group
-        .getAllUnits(reference.id)
+        .getAllUnits(refLink.id)
         .then((res) => {
           setValues(res.data.content.items);
         })
@@ -51,9 +51,9 @@ export default function AutocompleteLink(props: AutocompleteLinkProps) {
           })
         );
     }
-    if (reference?.arke_id === "arke") {
+    if (refLink?.arke_id === "arke") {
       client.unit
-        .getAll(reference.id)
+        .getAll(refLink.id)
         .then((res) => {
           setValues(res.data.content.items);
         })

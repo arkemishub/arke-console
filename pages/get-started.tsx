@@ -16,7 +16,7 @@
 
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
-import { Form, FormField } from "@arkejs/form";
+import { Field, Form } from "@arkejs/form";
 import { Autocomplete, Button, Input, Popover } from "@arkejs/ui";
 import React, { useCallback } from "react";
 import { BaseParameter, TBaseParameter, TUnit } from "@arkejs/client";
@@ -99,17 +99,17 @@ function GetStarted({ projects }: { projects: TUnit[] }) {
         <p className="mx-auto max-w-lg text-center text-neutral-400">
           or create a new one
         </p>
-        <Form fields={fields} onSubmit={handleSubmit}>
+        <Form fields={fields as Field[]} onSubmit={handleSubmit}>
           <div className="mx-auto max-w-xl">
             <div className="grid gap-6">
-              <FormField
+              <Form.Field
                 id="label"
-                render={(props) => (
+                render={({ field }) => (
                   <Input
-                    {...props}
+                    {...field}
                     className="w-full"
                     onChange={(e) =>
-                      props.onChange(
+                      field.onChange(
                         cleanId(e.target.value, () =>
                           toast.error(
                             "The entered character is not allowed, it has been replaced with _"
@@ -124,7 +124,7 @@ function GetStarted({ projects }: { projects: TUnit[] }) {
                   />
                 )}
               />
-              <FormField id="description" />
+              <Form.Field id="description" />
             </div>
             <div className="mt-8 flex gap-4">
               <Button className="w-full" color="primary" type="submit">

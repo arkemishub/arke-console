@@ -9,8 +9,8 @@ dependencies:
     specifier: 2.4.1
     version: 2.4.1
   '@arkejs/form':
-    specifier: 1.4.1
-    version: 1.4.1(react-dom@18.2.0)(react@18.2.0)
+    specifier: 1.6.0
+    version: 1.6.0(react-dom@18.2.0)(react@18.2.0)
   '@arkejs/table':
     specifier: 0.7.2
     version: 0.7.2(react-dom@18.2.0)(react@18.2.0)
@@ -140,8 +140,8 @@ packages:
       - debug
     dev: false
 
-  /@arkejs/form@1.4.1(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-c+YQ0m+njvLeYwXr6M9i5uKJP0A+2xmELPJ3zsv9JWzECjZWQi67BlsbqsvrOQM8tPTUAHDjS9v9aX0lkDtLpg==}
+  /@arkejs/form@1.6.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-XDoODO92iBvBINrQaOBxzfF0tB3JS+vqBeJUobI50+8WXCvUQEyRtlCg/7eUMVDusnwllp0fmCwO2oCTKldGKQ==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0

@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-import { Autocomplete, Button, Chip, Dialog } from "@arkejs/ui";
+import { Autocomplete, Button, Dialog } from "@arkejs/ui";
 import React, { useCallback, useEffect, useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import useClient from "@/arke/useClient";
-import { HTTPStatusCode, TBaseParameter, TUnit } from "@arkejs/client";
-import { AddIcon, LinkIcon, TrashIcon } from "@/components/Icon";
+import { HTTPStatusCode, TUnit } from "@arkejs/client";
+import { LinkIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
-import { ParameterAdd } from "@/crud/parameter";
 import { CrudState } from "@/types/crud";
-import { ArkeCrud as ArkeAdd } from "@/crud/arke/ArkeCrud";
 
 function LinkArkeOrGroup({
   open,

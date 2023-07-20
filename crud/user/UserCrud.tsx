@@ -15,7 +15,7 @@
  */
 
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
-import { Form, FormField } from "@arkejs/form";
+import { Field, Form } from "@arkejs/form";
 import { Button, Dialog, Input, Spinner } from "@arkejs/ui";
 import { TBaseParameter, TResponse, TUnit } from "@arkejs/client";
 import useClient from "@/arke/useClient";
@@ -100,7 +100,7 @@ export function UserCrud({
   return (
     <Dialog open={!!open} title={title} onClose={handleClose}>
       <Form
-        fields={fields ?? []}
+        fields={(fields as Field[]) ?? []}
         onSubmit={onFormSubmit}
         style={{ height: "100%" }}
       >
@@ -109,36 +109,36 @@ export function UserCrud({
         ) : (
           <>
             <div className="grid gap-4">
-              <FormField id="username" />
-              <FormField id="type" />
-              <FormField id="first_name" />
-              <FormField id="last_name" />
-              <FormField id="first_access" />
-              <FormField id="phone_number" />
-              <FormField
+              <Form.Field id="username" />
+              <Form.Field id="type" />
+              <Form.Field id="first_name" />
+              <Form.Field id="last_name" />
+              <Form.Field id="first_access" />
+              <Form.Field id="phone_number" />
+              <Form.Field
                 id="address"
-                render={(props) => (
+                render={({ field }) => (
                   <Input
-                    {...props}
+                    {...field}
                     label="Address"
                     className="w-full"
-                    onChange={(e) => props.onChange(e.target.value)}
+                    onChange={(e) => field.onChange(e.target.value)}
                   />
                 )}
               />
-              <FormField id="birth_date" />
-              <FormField id="fiscal_code" />
-              <FormField id="environment" />
+              <Form.Field id="birth_date" />
+              <Form.Field id="fiscal_code" />
+              <Form.Field id="environment" />
               {!unitId && (
-                <FormField
+                <Form.Field
                   id="password"
-                  render={(props) => (
+                  render={({ field }) => (
                     <Input
-                      {...props}
+                      {...field}
                       type="password"
                       label="Password"
                       className="w-full"
-                      onChange={(e) => props.onChange(e.target.value)}
+                      onChange={(e) => field.onChange(e.target.value)}
                     />
                   )}
                 />

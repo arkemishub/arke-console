@@ -15,7 +15,7 @@
  */
 
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
-import { Form, FormField } from "@arkejs/form";
+import { Field, Form } from "@arkejs/form";
 import { Button, Dialog, Select, Spinner } from "@arkejs/ui";
 import { TBaseParameter, TResponse, TUnit } from "@arkejs/client";
 import useClient from "@/arke/useClient";
@@ -45,6 +45,7 @@ export function ParameterAdd({
 
   useEffect(() => {
     setFields([]);
+    setSelectedType(undefined);
     if (open) {
       setLoading(true);
 
@@ -105,7 +106,12 @@ export function ParameterAdd({
           },
         })
         .then((res) => {
-          setFields(res.data.content.parameters);
+          setFields(
+            res.data.content.parameters.map((item) => {
+              item.refLink = item.ref;
+              return item;
+            })
+          );
         })
         .finally(() => setLoading(false));
     },
@@ -132,7 +138,7 @@ export function ParameterAdd({
         }
       />
       <Form
-        fields={fields ?? []}
+        fields={(fields as Field[]) ?? []}
         onSubmit={onFormSubmit}
         style={{ height: "100%" }}
       >
@@ -142,7 +148,7 @@ export function ParameterAdd({
           <>
             <div className="grid gap-4">
               {fields?.map((field) => (
-                <FormField id={field.id as string} key={field.id as string} />
+                <Form.Field id={field.id as string} key={field.id as string} />
               ))}
             </div>
             <div className="mt-4 flex  gap-4">
