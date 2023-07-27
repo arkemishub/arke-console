@@ -108,7 +108,7 @@ export function ParameterAdd({
         .then((res) => {
           setFields(
             res.data.content.parameters.map((item) => {
-              item.refLink = item.ref;
+              item.refLink = item.link_ref;
               return item;
             })
           );

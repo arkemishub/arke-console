@@ -72,7 +72,7 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
         .then((res) => {
           setData(
             res.data.content.parameters.map((item) => {
-              item.refLink = item.ref;
+              item.refLink = item.link_ref;
               return item;
             })
           );
