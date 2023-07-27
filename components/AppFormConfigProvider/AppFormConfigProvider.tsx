@@ -95,11 +95,7 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
           />
         ),
         link: ({ field }) => (
-          <AutocompleteLink
-            {...field}
-            refLink={field.refLink}
-            onChange={field.onChange}
-          />
+          <AutocompleteLink {...field} onChange={field.onChange} />
         ),
         default: () => <></>,
       }}

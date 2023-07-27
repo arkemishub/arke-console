@@ -23,13 +23,13 @@ import toast from "react-hot-toast";
 export type LinkRef = { id: string; arke_id: "group" | "arke" };
 
 type AutocompleteLinkProps = {
-  refLink: LinkRef;
+  link_ref?: LinkRef;
   onChange: (value: any) => void;
   value: string;
 };
 
 export default function AutocompleteLink(props: AutocompleteLinkProps) {
-  const { refLink, onChange } = props;
+  const { link_ref, onChange } = props;
   const client = useClient();
   const [values, setValues] = useState<TUnit[]>([]);
 
@@ -37,11 +37,11 @@ export default function AutocompleteLink(props: AutocompleteLinkProps) {
     // getAll: arke / group (id: se é gruppo o arke)
     // filter_keys [OR]
     // params: load_links: true => getAll
-    if (refLink?.arke_id === "group") {
+    if (link_ref?.arke_id === "group") {
       // TODO: implement getAll by group and add filters with filter_keys
-      // client.unit.getAll(refLink.id).then((res) => {
+      // client.unit.getAll(link_ref.id).then((res) => {
       client.group
-        .getAllUnits(refLink.id)
+        .getAllUnits(link_ref.id)
         .then((res) => {
           setValues(res.data.content.items);
         })
@@ -51,9 +51,9 @@ export default function AutocompleteLink(props: AutocompleteLinkProps) {
           })
         );
     }
-    if (refLink?.arke_id === "arke") {
+    if (link_ref?.arke_id === "arke") {
       client.unit
-        .getAll(refLink.id)
+        .getAll(link_ref.id)
         .then((res) => {
           setValues(res.data.content.items);
         })

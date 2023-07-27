@@ -75,12 +75,7 @@ export function CrudAddEdit(props: CrudProps) {
       ? client.unit.struct(arkeId, unitId, { params: { exclude } })
       : client.arke.struct(arkeId, { params: { exclude } });
     promise.then((res) => {
-      setFields(
-        res.data.content.parameters.map((item) => {
-          item.refLink = item.link_ref;
-          return item;
-        })
-      );
+      setFields(res.data.content.parameters);
       setLoading(false);
       if (res.data.content.parameters.length === 0) {
         toast.error(
