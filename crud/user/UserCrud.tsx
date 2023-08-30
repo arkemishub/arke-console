@@ -110,6 +110,7 @@ export function UserCrud({
           <>
             <div className="grid gap-4">
               <Form.Field id="username" />
+              <Form.Field id="email" />
               <Form.Field id="type" />
               <Form.Field id="first_name" />
               <Form.Field id="last_name" />

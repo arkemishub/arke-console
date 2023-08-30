@@ -74,7 +74,7 @@ export default function Login({ csrfToken }: { csrfToken: string }) {
         />
         <Input
           value={password}
-          type="password"
+          type={!showPassword ? "password" : "text"}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
           fullWidth
@@ -86,7 +86,7 @@ export default function Login({ csrfToken }: { csrfToken: string }) {
               role="presentation"
               onClick={() => setShowPassword(!showPassword)}
             >
-              {showPassword ? (
+              {!showPassword ? (
                 <EyeIcon className="h-5 w-5 stroke-white/50" />
               ) : (
                 <EyeSlashIcon className="h-5 w-5 stroke-white/50" />
