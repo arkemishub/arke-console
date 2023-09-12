@@ -29,6 +29,7 @@ import { Layout } from "@/components/Layout";
 import { PageTitle } from "@/components/PageTitle";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
+import { acceptedRoles } from "@/arke/config";
 
 function UnitDetail({ detail }: { detail: TUnit }) {
   const [crud, setCrud] = useState<CrudState>({
@@ -109,6 +110,7 @@ function UnitDetail({ detail }: { detail: TUnit }) {
 }
 
 export const getServerSideProps: GetServerSideProps = withAuth(
+  acceptedRoles,
   async (context) => {
     const client = getClient(context);
 

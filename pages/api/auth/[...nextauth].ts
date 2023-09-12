@@ -83,6 +83,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
             user: {
               id: user.id,
               email: user.email,
+              arke_id: user.arke_id,
               first_name: user.first_name,
               last_name: user.last_name,
               image: "",

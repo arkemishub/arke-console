@@ -112,7 +112,6 @@ export default function Login({ csrfToken }: { csrfToken: string }) {
 export const getServerSideProps: GetServerSideProps = withLoggedInRedirect(
   async (context) => {
     const providers = await getProviders();
-
     return {
       props: {
         csrfToken: await getCsrfToken(context),

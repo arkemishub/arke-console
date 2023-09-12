@@ -27,8 +27,8 @@ dependencies:
     specifier: 13.2.4
     version: 13.2.4(@babel/core@7.21.4)(react-dom@18.2.0)(react@18.2.0)
   next-auth:
-    specifier: ^4.20.1
-    version: 4.20.1(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^4.22.1
+    version: 4.22.1(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)
   prismjs:
     specifier: ^1.29.0
     version: 1.29.0
@@ -4339,8 +4339,8 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
-  /next-auth@4.20.1(next@13.2.4)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-ZcTUN4qzzZ/zJYgOW0hMXccpheWtAol8QOMdMts+LYRcsPGsqf2hEityyaKyECQVw1cWInb9dF3wYwI5GZdEmQ==}
+  /next-auth@4.22.1(next@13.2.4)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-NTR3f6W7/AWXKw8GSsgSyQcDW6jkslZLH8AiZa5PQ09w1kR8uHtR9rez/E9gAq/o17+p0JYHE8QjF3RoniiObA==}
     peerDependencies:
       next: ^12.2.5 || ^13
       nodemailer: ^6.6.5

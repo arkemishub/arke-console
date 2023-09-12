@@ -28,6 +28,7 @@ import { useRouter } from "next/router";
 import { cleanId } from "../utils/helper";
 import { CubeIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
+import { acceptedRoles } from "@/arke/config";
 
 const fields: Array<TBaseParameter & Record<string, unknown>> = [
   {
@@ -139,6 +140,7 @@ function GetStarted({ projects }: { projects: TUnit[] }) {
 }
 
 export const getServerSideProps: GetServerSideProps = withAuth(
+  acceptedRoles,
   async (context) => {
     const client = getClient(context);
 

@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import NextAuth from 'next-auth';
-import { JWT } from 'next-auth/jwt';
+import NextAuth from "next-auth";
+import { JWT } from "next-auth/jwt";
 
-declare module 'next-auth' {
+declare module "next-auth" {
   interface Session {
     user?: User;
     access_token?: string;
@@ -26,6 +26,7 @@ declare module 'next-auth' {
 
   interface User {
     id?: number;
+    arke_id: string;
     image?: string;
     email: string;
     first_name?: string;
@@ -36,7 +37,7 @@ declare module 'next-auth' {
   }
 }
 
-declare module 'next-auth/jwt' {
+declare module "next-auth/jwt" {
   interface JWT {
     user?: User;
     access_token: string;

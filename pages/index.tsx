@@ -26,6 +26,7 @@ import {
   DocumentationIcon,
   SupportIcon,
 } from "@/components/Icon";
+import { acceptedRoles } from "@/arke/config";
 
 export default function Home() {
   return (
@@ -67,6 +68,9 @@ export default function Home() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = withAuth(() => {
-  return { props: {} };
-});
+export const getServerSideProps: GetServerSideProps = withAuth(
+  acceptedRoles,
+  () => {
+    return { props: {} };
+  }
+);
