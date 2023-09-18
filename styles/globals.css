@@ -154,6 +154,10 @@
     }
 }
 
+html {
+    background: #000;
+}
+
 /*Change text in autofill textbox*/
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
