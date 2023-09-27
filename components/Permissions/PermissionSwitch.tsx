@@ -21,19 +21,26 @@ import toast from "react-hot-toast";
 interface PermissionSwitchProps {
   role: string;
   method: string;
-  checked: unknown | boolean;
+  checked: boolean;
 }
 
 export function PermissionSwitch(props: PermissionSwitchProps) {
   const client = useClient();
   const { role, method } = props;
   const [checked, setChecked] = useState(props.checked);
-  function onChange(e: any) {
-    console.log(role, method, e);
+  function onChange(status: boolean) {
+    console.log(role, method, status);
+    /*client.unit.edit("arke", role, {}).then((res) => console.log(res.data));
     setChecked(!checked);
-    toast.success(`Permission ${role} (${method.toUpperCase()}) updated`);
+    toast.success(`Permission ${role} (${method.toUpperCase()}) updated`);*/
     // TODO: reset check if api call failed
   }
 
-  return <Switch checked={checked} onChange={onChange} color="primary" />;
+  return (
+    <Switch
+      checked={checked}
+      onChange={() => onChange(!checked)}
+      color="primary"
+    />
+  );
 }

@@ -27,34 +27,6 @@ import {
   SupportIcon,
 } from "@/components/Icon";
 import { acceptedRoles } from "@/arke/config";
-import { Table } from "@arkejs/table";
-import { columns } from "@/crud/permission/columns";
-
-function TablePermission() {
-  const dataMock = [
-    {
-      role: "member1",
-      get: true,
-      post: false,
-      put: false,
-      delete: true,
-      filter: { label: "filter", value: "eq(test)" },
-    },
-    {
-      role: "member2",
-      get: false,
-      post: true,
-      put: true,
-      delete: false,
-      filter: { label: "filter", value: "eq(test)" },
-    },
-  ];
-  return (
-    <div>
-      <Table columns={columns} data={dataMock} />
-    </div>
-  );
-}
 
 export default function Home() {
   return (
@@ -91,8 +63,6 @@ export default function Home() {
             icon={<SupportIcon />}
           />
         </div>
-
-        <TablePermission />
       </Layout>
     </>
   );

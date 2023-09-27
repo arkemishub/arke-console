@@ -19,15 +19,22 @@ import { PermissionSwitch } from "@/components/Permissions/PermissionSwitch";
 import { PermissionInput } from "@/components/Permissions/PermissionInput";
 
 export const columns: Column[] = [
-  { id: "role", label: "Role" },
+  {
+    id: "id",
+    label: "Arke ID",
+  },
+  {
+    id: "label",
+    label: "Label",
+  },
   {
     id: "get",
     label: "Get",
     render: (rowData) => (
       <PermissionSwitch
-        role={rowData.role as string}
+        role={rowData.id as string}
         method="get"
-        checked={rowData.get}
+        checked={rowData.metadata?.get}
       />
     ),
   },
@@ -36,9 +43,9 @@ export const columns: Column[] = [
     label: "Post",
     render: (rowData) => (
       <PermissionSwitch
-        role={rowData.role as string}
+        role={rowData.id as string}
         method="post"
-        checked={rowData.post}
+        checked={rowData.metadata?.post}
       />
     ),
   },
@@ -47,9 +54,9 @@ export const columns: Column[] = [
     label: "Put",
     render: (rowData) => (
       <PermissionSwitch
-        role={rowData.role as string}
+        role={rowData.id as string}
         method="put"
-        checked={rowData.put}
+        checked={rowData.metadata?.put}
       />
     ),
   },
@@ -58,9 +65,9 @@ export const columns: Column[] = [
     label: "Delete",
     render: (rowData) => (
       <PermissionSwitch
-        role={rowData.role as string}
+        role={rowData.id as string}
         method="delete"
-        checked={rowData.delete}
+        checked={rowData.metadata?.delete}
       />
     ),
   },
@@ -70,9 +77,8 @@ export const columns: Column[] = [
     render: (rowData) => (
       <PermissionInput
         {...rowData}
-        role={rowData.role as string}
-        // @ts-ignore
-        value={rowData.filter.value}
+        role={rowData.id as string}
+        value={rowData.metadata?.filter}
       />
     ),
   },

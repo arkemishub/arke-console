@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@arkejs/client':
-    specifier: 2.4.1
-    version: 2.4.1
+    specifier: 2.6.0
+    version: 2.6.0
   '@arkejs/form':
     specifier: 1.6.0
     version: 1.6.0(react-dom@18.2.0)(react@18.2.0)
@@ -132,8 +132,8 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
 
-  /@arkejs/client@2.4.1:
-    resolution: {integrity: sha512-BMTeek4vrEuSBUrxF6hk138gMrAW4QadEkWimBD2k0mTkST4EudISTsaJo9HFMD0vFtuOln71BzMClFJzss/yg==}
+  /@arkejs/client@2.6.0:
+    resolution: {integrity: sha512-dj092MWL7Q3jV0F31oRc3+CEr13b85Y7Uypihqcgj77mleAQG6kCg2ngE8GTALI3WtpaBpxOQg5u5ls1BPNzvw==}
     dependencies:
       axios: 1.4.0
     transitivePeerDependencies:

@@ -35,6 +35,8 @@ export function PermissionInput(props: PermissionInputProps) {
   return (
     <Input
       {...props}
+      label=""
+      // @ts-ignore
       itemRef={inputRef}
       value={value}
       onChange={(e) => setValue(e.target.value)}
