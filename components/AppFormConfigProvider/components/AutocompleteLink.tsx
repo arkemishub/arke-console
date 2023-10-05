@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { TUnit } from "@arkejs/client";
 import { Autocomplete } from "@arkejs/ui";
 import toast from "react-hot-toast";
+import Dropzone from "@/components/AppFormConfigProvider/components/Dropzone";
 
 export type LinkRef = { id: string; arke_id: "group" | "arke" };
 
@@ -34,12 +35,7 @@ export default function AutocompleteLink(props: AutocompleteLinkProps) {
   const [values, setValues] = useState<TUnit[]>([]);
 
   useEffect(() => {
-    // getAll: arke / group (id: se é gruppo o arke)
-    // filter_keys [OR]
-    // params: load_links: true => getAll
     if (link_ref?.arke_id === "group") {
-      // TODO: implement getAll by group and add filters with filter_keys
-      // client.unit.getAll(refLink.id).then((res) => {
       client.group
         .getAllUnits(link_ref.id)
         .then((res) => {
@@ -77,22 +73,28 @@ export default function AutocompleteLink(props: AutocompleteLinkProps) {
   }
 
   return (
-    <Autocomplete
-      {...props}
-      onChange={(value) => {
-        if (Array.isArray(value)) {
-          onChange((value as TUnit[]).map((item) => item.id));
-        } else {
-          onChange((value as TUnit).id);
-        }
-      }}
-      renderValue={(value) => {
-        return `[${(value as TUnit).arke_id}] ${
-          (value as TUnit).label ?? (value as TUnit).id
-        }`;
-      }}
-      values={values}
-      value={getValue()}
-    />
+    <>
+      {link_ref.id === "arke_file" ? (
+        <Dropzone {...props} onChange={(files) => onChange(files[0])} />
+      ) : (
+        <Autocomplete
+          {...props}
+          onChange={(value) => {
+            if (Array.isArray(value)) {
+              onChange((value as TUnit[]).map((item) => item.id));
+            } else {
+              onChange((value as TUnit).id);
+            }
+          }}
+          renderValue={(value) => {
+            return `[${(value as TUnit).arke_id}] ${
+              (value as TUnit).label ?? (value as TUnit).id
+            }`;
+          }}
+          values={values}
+          value={getValue()}
+        />
+      )}
+    </>
   );
 }

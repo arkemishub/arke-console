@@ -17,9 +17,7 @@
 import { ReactNode } from "react";
 import { FormConfigProvider as FCProvider } from "@arkejs/form";
 import { Autocomplete, Checkbox, Input, Json } from "@arkejs/ui";
-import AutocompleteLink, {
-  LinkRef,
-} from "@/components/AppFormConfigProvider/components/AutocompleteLink";
+import AutocompleteLink from "@/components/AppFormConfigProvider/components/AutocompleteLink";
 
 export default function AppFormConfigProvider(props: { children: ReactNode }) {
   return (
@@ -94,7 +92,7 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
             onChange={(value) => field.onChange(JSON.parse(value))}
           />
         ),
-        link: ({ field }) => (
+        link: ({ field }: any) => (
           <AutocompleteLink {...field} onChange={field.onChange} />
         ),
         default: () => <></>,
