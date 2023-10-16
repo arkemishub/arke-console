@@ -84,6 +84,13 @@ function UnitsTab({ arke }: { arke: TUnit }) {
           setData(res.data.content.items);
           setCount(res.data.content.count);
           setIsLoading(false);
+        })
+        .catch((err) => {
+          if (err.response.status === 403) {
+            toast.error(`You've not permission to get units`, {
+              id: "permission_error",
+            });
+          }
         });
     },
     [arke.id]
