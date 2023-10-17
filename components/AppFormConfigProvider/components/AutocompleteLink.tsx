@@ -74,7 +74,7 @@ export default function AutocompleteLink(props: AutocompleteLinkProps) {
 
   return (
     <>
-      {link_ref.id === "arke_file" ? (
+      {link_ref?.id === "arke_file" ? (
         <Dropzone {...props} onChange={(files) => onChange(files[0])} />
       ) : (
         <Autocomplete
