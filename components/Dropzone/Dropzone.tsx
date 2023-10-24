@@ -104,6 +104,7 @@ export default function Dropzone(props: DropzoneProps) {
           value && (
             <ul>
               {/*// TODO: check value of backend with load_images */}
+              {/*// @ts-ignore */}
               <File path={value.path} size={1000000} />
             </ul>
           )

@@ -17,6 +17,7 @@
 import { Column } from "@arkejs/table";
 import { PermissionSwitch } from "@/components/Permissions/PermissionSwitch";
 import { PermissionInput } from "@/components/Permissions/PermissionInput";
+import { TUnit } from "@arkejs/client";
 
 export const columns: Column[] = [
   {
@@ -30,7 +31,7 @@ export const columns: Column[] = [
   {
     id: "get",
     label: "Get",
-    render: (rowData) => (
+    render: (rowData: any) => (
       <PermissionSwitch
         role={rowData.id as string}
         method="get"
@@ -41,7 +42,7 @@ export const columns: Column[] = [
   {
     id: "post",
     label: "Post",
-    render: (rowData) => (
+    render: (rowData: any) => (
       <PermissionSwitch
         role={rowData.id as string}
         method="post"
@@ -52,7 +53,7 @@ export const columns: Column[] = [
   {
     id: "put",
     label: "Put",
-    render: (rowData) => (
+    render: (rowData: any) => (
       <PermissionSwitch
         role={rowData.id as string}
         method="put"
@@ -63,7 +64,7 @@ export const columns: Column[] = [
   {
     id: "delete",
     label: "Delete",
-    render: (rowData) => (
+    render: (rowData: any) => (
       <PermissionSwitch
         role={rowData.id as string}
         method="delete"
@@ -74,7 +75,7 @@ export const columns: Column[] = [
   {
     id: "filter",
     label: "Filter",
-    render: (rowData) => (
+    render: (rowData: any) => (
       <PermissionInput
         {...rowData}
         role={rowData.id as string}

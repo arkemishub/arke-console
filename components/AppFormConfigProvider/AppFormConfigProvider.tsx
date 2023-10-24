@@ -95,10 +95,14 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
         ),
         link: ({ field }: any) =>
           field?.link_ref?.id === "arke_file" ? (
-            <Dropzone
-              {...field}
-              onChange={(files) => field?.onChange(files[0])}
-            />
+            <>
+              <Dropzone
+                {...field}
+                onChange={(files) => {
+                  field?.onChange(files?.[0] ?? null);
+                }}
+              />
+            </>
           ) : (
             <AutocompleteLink {...field} onChange={field.onChange} />
           ),
