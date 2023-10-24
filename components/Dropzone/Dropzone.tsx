@@ -18,6 +18,7 @@ import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { ArrowUpTrayIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
+import { formatBytes } from "@/utils/file";
 interface DropzoneProps {
   value?: string;
   label?: string;
@@ -102,6 +103,7 @@ export default function Dropzone(props: DropzoneProps) {
         ) : (
           value && (
             <ul>
+              {/*// TODO: check value of backend with load_images */}
               <File path={value.path} size={1000000} />
             </ul>
           )
@@ -109,16 +111,4 @@ export default function Dropzone(props: DropzoneProps) {
       </aside>
     </>
   );
-}
-
-function formatBytes(bytes: number, decimals = 2) {
-  if (!+bytes) return "0 Bytes";
-
-  const k = 1024;
-  const dm = decimals < 0 ? 0 : decimals;
-  const sizes = ["Bytes", "Kb", "Mb", "Gb", "Tb", "Pb", "Eb", "Zb", "Yb"];
-
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))}${sizes[i]}`;
 }
