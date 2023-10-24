@@ -24,6 +24,10 @@ interface DropzoneProps {
   onChange?(files: File[]): void;
 }
 
+interface AcceptedFile extends File {
+  path?: string;
+}
+
 const maxSize = 5243000; // 5Mb as bytes
 export default function Dropzone(props: DropzoneProps) {
   const { value, label, onChange } = props;
@@ -89,18 +93,18 @@ export default function Dropzone(props: DropzoneProps) {
         </section>
       )}
       <aside className="grid gap-2">
-        {selectedFiles.length > 0 && (
+        {selectedFiles.length > 0 ? (
           <ul>
-            {acceptedFiles.map((file, index) => (
-              <File key={index} {...file} />
+            {acceptedFiles.map((file: AcceptedFile, index) => (
+              <File key={index} path={file.path} size={file.size} />
             ))}
           </ul>
-        )}
-        {value && (
-          <ul>
-            {/* TODO: have to modify value and size with real info */}
-            <File path={value} size={1000000} />
-          </ul>
+        ) : (
+          value && (
+            <ul>
+              <File path={value.path} size={1000000} />
+            </ul>
+          )
         )}
       </aside>
     </>
