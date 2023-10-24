@@ -30,7 +30,7 @@ import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
 import { getClient } from "@/arke/getClient";
-import { Layout } from "@/components/Layout";
+import { ProjectLayout } from "@/components/Layout";
 import { Table } from "@/components/Table";
 import { AddIcon, EditIcon, TrashIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
@@ -108,7 +108,7 @@ function Parameters(props: { parameters: TUnit[]; count: number }) {
   );
 
   return (
-    <Layout>
+    <ProjectLayout>
       <PageTitle
         title="Parameters"
         action={
@@ -250,7 +250,7 @@ function Parameters(props: { parameters: TUnit[]; count: number }) {
           setCrud((p) => ({ ...p, delete: false }));
         }}
       />
-    </Layout>
+    </ProjectLayout>
   );
 }
 

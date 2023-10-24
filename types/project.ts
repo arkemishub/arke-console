@@ -13,13 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { TUnit } from "@arkejs/client";
 
-import { render } from "@testing-library/react";
-import Sidebar from "@/components/Sidebar/Sidebar";
-
-describe("Sidebar", () => {
-  test("should render", () => {
-    const { getByText } = render(<Sidebar />);
-    expect(getByText("Dashboard")).toBeInTheDocument();
-  });
-});
+export interface Project extends TUnit {
+  label: string;
+  description: string;
+}

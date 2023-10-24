@@ -19,11 +19,11 @@ import useClient from "@/arke/useClient";
 import { useCallback, useState } from "react";
 import { Client, TUnit } from "@arkejs/client";
 import {
-  UserCrud as UserAdd,
-  UserCrud as UserEdit,
-  UserDelete,
+  ArkeCrud as ArkeAdd,
+  ArkeCrud as ArkeEdit,
+  ArkeDelete,
   columns,
-} from "@/crud/user";
+} from "@/crud/arke";
 import { CrudState } from "@/types/crud";
 import { PageTitle } from "@/components/PageTitle";
 import { Button } from "@arkejs/ui";
@@ -31,7 +31,7 @@ import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { getClient } from "@/arke/getClient";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
-import { Layout } from "@/components/Layout";
+import { ProjectLayout } from "@/components/Layout";
 import { Table } from "@/components/Table";
 import { AddIcon, EditIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
@@ -45,8 +45,7 @@ const fetchArke = async (
   filters?: Filter[],
   sort?: Sort[]
 ) => {
-  return client.unit.getAll("user", {
-    headers: { "Arke-Project-Key": "arke_system" },
+  return client.arke.getAll({
     params: {
       filter:
         filters && filters?.length > 0
@@ -61,9 +60,9 @@ const fetchArke = async (
   });
 };
 
-function Users(props: { data: TUnit[]; count: number }) {
-  const [isLoading, setIsLoading] = useState(false);
+function Arke(props: { data: TUnit[]; count: number }) {
   const [data, setData] = useState<TUnit[] | undefined>(props.data);
+  const [isLoading, setIsLoading] = useState(false);
   const [count, setCount] = useState<number | undefined>(props.count);
   const client = useClient();
 
@@ -74,10 +73,10 @@ function Users(props: { data: TUnit[]; count: number }) {
   });
 
   const {
+    sort,
     setFilters,
     tableProps,
     totalCount,
-    sort,
     setSort,
     filters,
     goToPage,
@@ -112,9 +111,9 @@ function Users(props: { data: TUnit[]; count: number }) {
   );
 
   return (
-    <Layout>
+    <ProjectLayout>
       <PageTitle
-        title="Users"
+        title="Arke"
         action={
           <Button
             color="primary"
@@ -122,14 +121,14 @@ function Users(props: { data: TUnit[]; count: number }) {
               setCrud((prevState) => ({ ...prevState, add: true }))
             }
           >
-            Add User
+            Add Arke
           </Button>
         }
       />
       {data && (
         <Table
-          loading={isLoading}
           data={data}
+          loading={isLoading}
           actions={{
             label: "",
             actions: [
@@ -170,7 +169,7 @@ function Users(props: { data: TUnit[]; count: number }) {
                 <AddIcon className="h-12 w-12 text-primary" />
               </div>
               <span className="mt-4 text-xl">
-                Create your first User to get started.
+                Create your first Arke to get started.
               </span>
               Do you need a hand? Check out our documentation.
               <div className="mt-4 flex">
@@ -180,7 +179,7 @@ function Users(props: { data: TUnit[]; count: number }) {
                     setCrud((prevState) => ({ ...prevState, add: true }))
                   }
                 >
-                  Add User
+                  Add Arke
                 </Button>
               </div>
             </div>
@@ -188,50 +187,48 @@ function Users(props: { data: TUnit[]; count: number }) {
           totalCount={totalCount}
         />
       )}
-
-      <UserAdd
+      <ArkeAdd
         title={
           <div className="flex items-center gap-4">
             <AddIcon className="text-primary" />
-            Add User
+            Add Arke
           </div>
         }
         open={crud.add}
         onClose={() => setCrud((p) => ({ ...p, add: false }))}
-        onSubmit={() => {
+        onSubmit={(res) => {
           loadData();
-          toast.success(`User created correctly`);
+          toast.success(`Arke ${res.data.content.id} created correctly`);
           setCrud((p) => ({ ...p, add: false }));
         }}
       />
-      <UserEdit
+      <ArkeEdit
         title={
           <div className="flex items-center gap-4">
             <EditIcon className="text-primary" />
-            Edit User
+            Edit Arke
           </div>
         }
         open={!!crud.edit}
-        unitId={crud.edit as string}
+        arkeId={crud.edit as string}
         onClose={() => setCrud((p) => ({ ...p, edit: false }))}
-        onSubmit={() => {
+        onSubmit={(res) => {
           loadData();
-          toast.success(`User edited correctly`);
+          toast.success(`Arke ${res.data.content.id} edited correctly`);
           setCrud((p) => ({ ...p, edit: false }));
         }}
       />
-      <UserDelete
-        title="Delete User"
+      <ArkeDelete
         open={!!crud.delete}
         onClose={() => setCrud((p) => ({ ...p, delete: false }))}
-        unitId={crud.delete as string}
-        onSubmit={() => {
+        arkeId={crud.delete as string}
+        onDelete={() => {
           loadData();
-          toast.success(`User deleted correctly`);
+          toast.success(`Arke deleted correctly`);
           setCrud((p) => ({ ...p, delete: false }));
         }}
       />
-    </Layout>
+    </ProjectLayout>
   );
 }
 
@@ -250,4 +247,4 @@ export const getServerSideProps: GetServerSideProps = withAuth(
   }
 );
 
-export default Users;
+export default Arke;

@@ -19,7 +19,7 @@ import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import { getToken } from "next-auth/jwt";
 import { getCookie } from "cookies-next";
-import { getCookieName } from "../utils/auth";
+import { getCookieName } from "@/utils/auth";
 import toast from "react-hot-toast";
 
 const getServerUrl = () => {
@@ -36,17 +36,23 @@ const getServerUrl = () => {
 const getProjectId = (context?: {
   req: GetServerSidePropsContext["req"];
   res: GetServerSidePropsContext["res"];
-}) =>
-  (process.env.NEXT_PUBLIC_ARKE_PROJECT ||
-    getCookie("arke_project", {
-      req: context?.req,
-      res: context?.res,
-    })?.toString()) ??
-  "";
+  query?: any;
+}) => {
+  const project = context?.query?.project ?? "arke_system";
+  return (
+    (project ||
+      getCookie("arke_project", {
+        req: context?.req,
+        res: context?.res,
+      })?.toString()) ??
+    ""
+  );
+};
 
 export const getClient = (context?: {
   req: GetServerSidePropsContext["req"];
   res: GetServerSidePropsContext["res"];
+  query?: Record<string, unknown>;
 }): Client => {
   const serverUrl = getServerUrl();
   return new Client({

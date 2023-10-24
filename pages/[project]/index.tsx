@@ -18,7 +18,7 @@ import Head from "next/head";
 
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
-import { Layout } from "@/components/Layout";
+import { ProjectLayout } from "@/components/Layout";
 import { PageTitle } from "@/components/PageTitle";
 import { HomepageCard } from "@/components/HomepageCard";
 import {
@@ -27,21 +27,15 @@ import {
   SupportIcon,
 } from "@/components/Icon";
 import { acceptedRoles } from "@/arke/config";
-import Divider from "@/components/Divider/Divider";
-import ProjectCard from "@/components/ProjectCard/ProjectCard";
-import { PlusIcon } from "@heroicons/react/24/outline";
-import React from "react";
-import { getClient } from "@/arke/getClient";
-import { Project } from "@/types/project";
 
-export default function Home({ projects }: { projects: Project[] }) {
+export default function Dashboard() {
   return (
     <>
       <Head>
         <title>Arke Console</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>
+      <ProjectLayout>
         <PageTitle showBreadcrumb={false} title="Dashboard" />
         <div className="grid grid-cols-3 gap-4">
           <HomepageCard
@@ -69,43 +63,14 @@ export default function Home({ projects }: { projects: Project[] }) {
             icon={<SupportIcon />}
           />
         </div>
-
-        <div className="mt-6">
-          <Divider />
-        </div>
-
-        <div className="grid grid-cols-5 gap-4 py-6">
-          <div
-            className="relative flex cursor-pointer flex-col items-center justify-center rounded-theme
-           border border-neutral bg-gradient-to-b from-background-400 to-background"
-          >
-            <PlusIcon className="w-10 text-primary" />
-            <p className="mt-2 uppercase text-primary">New project</p>
-          </div>
-
-          {projects.map((project) => (
-            <ProjectCard
-              key={project.arke_id}
-              name={project.label}
-              description={project.description}
-              href={`/${project.id}/arke`}
-            />
-          ))}
-        </div>
-      </Layout>
+      </ProjectLayout>
     </>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = withAuth(
   acceptedRoles,
-  async (context) => {
-    const client = getClient(context);
-    const projects = await client.unit.getAll("arke_project");
-    return {
-      props: {
-        projects: projects.data.content.items,
-      },
-    };
+  () => {
+    return { props: {} };
   }
 );

@@ -14,12 +14,4 @@
  * limitations under the License.
  */
 
-import { render } from "@testing-library/react";
-import Sidebar from "@/components/Sidebar/Sidebar";
-
-describe("Sidebar", () => {
-  test("should render", () => {
-    const { getByText } = render(<Sidebar />);
-    expect(getByText("Dashboard")).toBeInTheDocument();
-  });
-});
+export { default as ProjectSidebar } from "./ProjectSidebar";

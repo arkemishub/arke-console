@@ -20,9 +20,9 @@ import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
 import { getClient } from "@/arke/getClient";
 import { UnitsTab } from "@/components/UnitsTab";
-import { Layout } from "@/components/Layout";
+import { ProjectLayout } from "@/components/Layout";
 import { PageTitle } from "@/components/PageTitle";
-import { AssignParametersTab } from "components/AssignParametersTab";
+import { AssignParametersTab } from "@/components/AssignParametersTab";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { CodeBracketIcon } from "@heroicons/react/24/outline";
@@ -53,7 +53,7 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
   }, [router.asPath]);
 
   return (
-    <Layout>
+    <ProjectLayout>
       <>
         <PageTitle
           title={detail?.label as string}
@@ -107,7 +107,7 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
         open={isApiDocsDrawerOpen}
         onClose={() => setIsApiDocsOpen(false)}
       />
-    </Layout>
+    </ProjectLayout>
   );
 }
 

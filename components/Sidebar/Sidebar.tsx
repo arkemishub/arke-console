@@ -14,37 +14,19 @@
  * limitations under the License.
  */
 
-import { ElementType, useMemo } from "react";
 import Link from "next/link";
-import {
-  ArrowLeftOnRectangleIcon,
-  TagIcon,
-  UsersIcon,
-  Squares2X2Icon,
-  KeyIcon,
-} from "@heroicons/react/24/outline";
+import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
-import { twMerge } from "tailwind-merge";
 import Image from "next/image";
 import { CopyIcon, HomeIcon } from "@/components/Icon";
 import { Button, Input } from "@arkejs/ui";
 import { getCookie } from "cookies-next";
 import toast from "react-hot-toast";
-import { CompassIcon } from "@/components/Icon/CompassIcon";
-import { ArkeIcon } from "@/components/Icon/ArkeIcon";
+import SidebarItem from "@/components/Sidebar/SidebarItem";
 
 function Sidebar() {
-  const project =
-    process.env.NEXT_PUBLIC_ARKE_PROJECT ??
-    getCookie("arke_project")?.toString();
-
-  const handleCopy = () => {
-    if (project) {
-      navigator.clipboard
-        .writeText(project)
-        .then(() => toast.success("Project ID copied to clipboard"));
-    }
-  };
+  const { query } = useRouter();
+  const project = query.project ?? getCookie("arke_project")?.toString();
 
   return (
     <div className="h-full p-6">
@@ -64,33 +46,47 @@ function Sidebar() {
           </div>
         </Link>
         <ul className="mt-8 flex h-full flex-col">
-          <li className="relative mx-2 mb-8">
-            <span className="mb-2 block text-xs text-neutral-400">
-              Active Project
-            </span>
-            <Input
-              value={project}
-              readOnly
-              className="project__input"
-              suffixAdornment={
-                <Button onClick={handleCopy} className="p-0">
-                  <CopyIcon className="h-5 w-5" />
-                </Button>
-              }
-            />
-          </li>
-
           <SidebarItem icon={HomeIcon} label="Dashboard" href="/" />
-          <SidebarItem icon={ArkeIcon} label="Arke" href="/arke" />
-          <SidebarItem icon={TagIcon} label="Parameters" href="/parameters" />
-          <SidebarItem icon={Squares2X2Icon} label="Groups" href="/groups" />
-          <SidebarItem icon={UsersIcon} label="Users" href="/users" />
-          <SidebarItem icon={KeyIcon} label="Permissions" href="/permissions" />
-          <SidebarItem
-            icon={CompassIcon}
-            label="Visual schema"
-            href="/visual-schema"
-          />
+
+          {/*<p className="p-4">Account</p>
+          <div className="ml-4 border-l border-gray-500 pl-2">
+            <SidebarItem
+              // icon={HomeIcon}
+              label="Profile"
+              href="/profile"
+            />
+            <SidebarItem
+              // icon={SettingsIcon}
+              label="Preferences"
+              href="/preferences"
+            />
+          </div>*/}
+
+          <p className="p-4">Documentation</p>
+          <div className="ml-4 border-l border-gray-500 pl-2">
+            <SidebarItem
+              // icon={ProfileIcon}
+              label="Guide"
+              href="https://arkemishub.github.io/docs"
+              target="_blank"
+            />
+          </div>
+
+          <p className="p-4">Support</p>
+          <div className="ml-4 border-l border-gray-500 pl-2">
+            <SidebarItem
+              // icon={WarningIcon}
+              label="Report a problem"
+              href="https://github.com/arkemishub"
+              target="_blank"
+            />
+            <SidebarItem
+              // icon={SupportChatIcon}
+              label="Support chat"
+              href="https://discord.com/invite/947C6JArtM"
+              target="_blank"
+            />
+          </div>
 
           <SidebarItem
             icon={ArrowLeftOnRectangleIcon}
@@ -101,39 +97,6 @@ function Sidebar() {
         </ul>
       </aside>
     </div>
-  );
-}
-
-function SidebarItem({
-  icon,
-  label,
-  href,
-  className,
-}: {
-  icon: ElementType;
-  label: string;
-  href: string;
-  className?: string;
-}) {
-  const router = useRouter();
-
-  const isActive = useMemo(() => router.asPath === href, [href, router]);
-
-  const Icon = icon;
-  return (
-    <li className={twMerge("px-2 py-1", className)}>
-      <Link
-        href={href}
-        className={twMerge(
-          "flex items-center gap-3 p-2 text-neutral-400",
-          isActive &&
-            "rounded-theme border-background bg-gradient-to-r from-primary-800 to-transparent text-background-contrast"
-        )}
-      >
-        <Icon className="h-5 w-5" />
-        <span>{label}</span>
-      </Link>
-    </li>
   );
 }
 

@@ -13,5 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+interface DividerProps {
+  className?: string;
+}
+const Divider = (props: DividerProps) => {
+  return (
+    <div
+      className={
+        "h-[1px] w-full bg-gradient-to-r from-transparent via-primary to-transparent"
+      }
+    />
+  );
+};
 
-export { default as Sidebar } from "./Sidebar";
+export default Divider;

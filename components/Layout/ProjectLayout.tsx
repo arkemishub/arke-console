@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-import { render } from "@testing-library/react";
-import Sidebar from "@/components/Sidebar/Sidebar";
+import { PropsWithChildren } from "react";
+import { ProjectSidebar } from "components/Sidebar/ProjectSidebar";
 
-describe("Sidebar", () => {
-  test("should render", () => {
-    const { getByText } = render(<Sidebar />);
-    expect(getByText("Dashboard")).toBeInTheDocument();
-  });
-});
+function ProjectLayout({ children }: PropsWithChildren<{}>) {
+  return (
+    <>
+      <div className="grid h-screen grid-cols-[300px_auto]">
+        <ProjectSidebar />
+        <div className="flex-1 overflow-y-auto p-6 pt-0">{children}</div>
+      </div>
+    </>
+  );
+}
+
+export default ProjectLayout;

@@ -15,14 +15,13 @@
  */
 
 import { PropsWithChildren } from "react";
-import { Sidebar } from "@/components/Sidebar";
-
+import Sidebar from "@/components/Sidebar/Sidebar";
 function Layout({ children }: PropsWithChildren<{}>) {
   return (
     <>
       <div className="grid h-screen grid-cols-[300px_auto]">
         <Sidebar />
-        <div className="flex-1 overflow-y-auto p-6">{children}</div>
+        <div className="flex-1 overflow-y-auto p-6 pt-0">{children}</div>
       </div>
     </>
   );

@@ -54,11 +54,8 @@ export default function Login({ csrfToken }: { csrfToken: string }) {
   }
 
   return (
-    <div className="h-screen w-screen">
-      <form
-        onSubmit={onSignIn}
-        className="m-auto grid w-[400px] gap-4 pt-[20%]"
-      >
+    <div className="flex h-screen w-screen items-center justify-center">
+      <form onSubmit={onSignIn} className="m-auto grid w-[400px] gap-4">
         <h1 className="mb-2 text-center text-xl">Login</h1>
         <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
         <Input

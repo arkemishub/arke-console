@@ -25,7 +25,7 @@ import {
   CrudAddEdit as UnitEdit,
   CrudDelete as UnitDelete,
 } from "@/crud/common";
-import { Layout } from "@/components/Layout";
+import { ProjectLayout } from "@/components/Layout";
 import { PageTitle } from "@/components/PageTitle";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
@@ -39,7 +39,7 @@ function UnitDetail({ detail }: { detail: TUnit }) {
   const router = useRouter();
 
   return (
-    <Layout>
+    <ProjectLayout>
       <PageTitle
         title={detail?.id as string}
         action={
@@ -105,7 +105,7 @@ function UnitDetail({ detail }: { detail: TUnit }) {
           void router.push(`/arke/${detail.arke_id}#units`);
         }}
       />
-    </Layout>
+    </ProjectLayout>
   );
 }
 

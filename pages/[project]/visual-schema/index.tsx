@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Layout } from "@/components/Layout";
+import { ProjectLayout } from "@/components/Layout";
 import ReactFlow, {
   addEdge,
   MiniMap,
@@ -151,7 +151,7 @@ function VisualSchema() {
   }, []);
 
   return (
-    <Layout>
+    <ProjectLayout>
       <RightClickMenuContext
         onCreateArke={() => setArkeCrud((p) => ({ ...p, add: true }))}
       >
@@ -253,7 +253,7 @@ function VisualSchema() {
           />
         </>
       )}
-    </Layout>
+    </ProjectLayout>
   );
 }
 

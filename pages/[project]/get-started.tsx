@@ -25,7 +25,7 @@ import Image from "next/image";
 import { getClient } from "@/arke/getClient";
 import { setCookie } from "cookies-next";
 import { useRouter } from "next/router";
-import { cleanId } from "../utils/helper";
+import { cleanId } from "@/utils/helper";
 import { CubeIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
