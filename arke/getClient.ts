@@ -38,7 +38,7 @@ const getProjectId = (context?: {
   res: GetServerSidePropsContext["res"];
   query?: any;
 }) => {
-  const project = context?.query?.project ?? "arke_system";
+  const project = context?.query?.project;
   return (
     (project ||
       getCookie("arke_project", {

@@ -25,6 +25,7 @@ import { arkeUnitsColumns } from "@/crud/arke";
 import { AddIcon } from "@/components/Icon";
 import { Table } from "@/components/Table";
 import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 const PAGE_SIZE = 10;
 
@@ -38,6 +39,8 @@ function UnitsTab({ arke }: { arke: TUnit }) {
   const [data, setData] = useState<TUnit[] | undefined>(undefined);
   const [count, setCount] = useState<number | undefined>(undefined);
   const client = useClient();
+  const router = useRouter();
+  const { project } = router.query;
   const {
     setFilters,
     tableProps,
@@ -54,7 +57,7 @@ function UnitsTab({ arke }: { arke: TUnit }) {
             type: "custom",
             pageSize: PAGE_SIZE,
           },
-          columns: arkeUnitsColumns,
+          columns: arkeUnitsColumns(project as string),
           sorting: {
             sortable: true,
             type: "custom",

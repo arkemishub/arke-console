@@ -36,6 +36,7 @@ import { Table } from "@/components/Table";
 import { AddIcon, EditIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
+import { useRouter } from "next/router";
 
 const PAGE_SIZE = 10;
 
@@ -64,13 +65,14 @@ function Arke(props: { data: TUnit[]; count: number }) {
   const [data, setData] = useState<TUnit[] | undefined>(props.data);
   const [isLoading, setIsLoading] = useState(false);
   const [count, setCount] = useState<number | undefined>(props.count);
-  const client = useClient();
-
   const [crud, setCrud] = useState<CrudState>({
     add: false,
     edit: false,
     delete: false,
   });
+  const client = useClient();
+  const router = useRouter();
+  const { project } = router.query;
 
   const {
     sort,
@@ -89,7 +91,7 @@ function Arke(props: { data: TUnit[]; count: number }) {
             type: "custom",
             pageSize: PAGE_SIZE,
           },
-          columns,
+          columns: columns(project as string),
           sorting: {
             sortable: true,
             type: "custom",
