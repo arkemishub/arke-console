@@ -21,6 +21,7 @@ import { getToken } from "next-auth/jwt";
 import { getCookie } from "cookies-next";
 import { getCookieName } from "@/utils/auth";
 import toast from "react-hot-toast";
+import { NextParsedUrlQuery } from "next/dist/server/request-meta";
 
 const getServerUrl = () => {
   if (
@@ -38,7 +39,6 @@ const getProjectId = (context?: {
   res: GetServerSidePropsContext["res"];
   query?: any;
 }) => {
-  // TODO: check this
   const project = context?.query?.project ?? "arke_system";
   return (
     (project ||
@@ -53,7 +53,7 @@ const getProjectId = (context?: {
 export const getClient = (context?: {
   req: GetServerSidePropsContext["req"];
   res: GetServerSidePropsContext["res"];
-  query?: Record<string, unknown>;
+  query?: NextParsedUrlQuery;
 }): Client => {
   const serverUrl = getServerUrl();
   return new Client({
