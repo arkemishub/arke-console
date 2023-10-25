@@ -15,7 +15,7 @@
  */
 import { TUnit } from "@arkejs/client";
 
-export interface Project extends TUnit {
+export interface TProject extends TUnit {
   label: string;
   description: string;
 }

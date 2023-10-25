@@ -22,6 +22,7 @@ import { Layout } from "@/components/Layout";
 import { PageTitle } from "@/components/PageTitle";
 import { HomepageCard } from "@/components/HomepageCard";
 import {
+  AddIcon,
   AdvantagesIcon,
   DocumentationIcon,
   SupportIcon,
@@ -30,11 +31,33 @@ import { acceptedRoles } from "@/arke/config";
 import Divider from "@/components/Divider/Divider";
 import ProjectCard from "@/components/ProjectCard/ProjectCard";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import React from "react";
+import React, { useState } from "react";
 import { getClient } from "@/arke/getClient";
-import { Project } from "@/types/project";
+import { TProject } from "@/types/project";
+import toast from "react-hot-toast";
+import { CrudState } from "@/types/crud";
+import useClient from "@/arke/useClient";
+import {
+  CrudAddEdit as ProjectAdd,
+  CrudAddEdit as ProjectEdit,
+  CrudDelete as ProjectDelete,
+} from "@/crud/common";
 
-export default function Home({ projects }: { projects: Project[] }) {
+export default function Home(props: { projects: TProject[] }) {
+  const client = useClient();
+  const [projects, setProjects] = useState<TProject[]>(props.projects);
+  const [crud, setCrud] = useState<CrudState>({
+    add: false,
+    edit: false,
+    delete: false,
+  });
+
+  function loadData() {
+    client.unit
+      .getAll("arke_project")
+      .then((res) => setProjects(res.data.content.items as TProject[]));
+  }
+
   return (
     <>
       <Head>
@@ -78,6 +101,7 @@ export default function Home({ projects }: { projects: Project[] }) {
           <div
             className="relative flex cursor-pointer flex-col items-center justify-center rounded-theme
            border border-neutral bg-gradient-to-b from-background-400 to-background"
+            onClick={() => setCrud((p) => ({ ...p, add: true }))}
           >
             <PlusIcon className="w-10 text-primary" />
             <p className="mt-2 uppercase text-primary">New project</p>
@@ -91,6 +115,35 @@ export default function Home({ projects }: { projects: Project[] }) {
               href={`/${project.id}/arke`}
             />
           ))}
+
+          <ProjectAdd
+            arkeId="project"
+            title={
+              <div className="flex items-center gap-4">
+                <AddIcon className="text-primary" />
+                Add User
+              </div>
+            }
+            open={crud.add}
+            onClose={() => setCrud((p) => ({ ...p, add: false }))}
+            onSubmit={() => {
+              loadData();
+              toast.success(`Project created correctly`);
+              setCrud((p) => ({ ...p, add: false }));
+            }}
+          />
+          <ProjectDelete
+            arkeId="project"
+            title="Delete Project"
+            open={!!crud.delete}
+            onClose={() => setCrud((p) => ({ ...p, delete: false }))}
+            unitId={crud.delete as string}
+            onSubmit={() => {
+              loadData();
+              toast.success(`Project deleted correctly`);
+              setCrud((p) => ({ ...p, delete: false }));
+            }}
+          />
         </div>
       </Layout>
     </>
