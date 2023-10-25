@@ -97,7 +97,7 @@ function ProjectSidebar() {
           <SidebarItem
             icon={UsersIcon}
             label="Members"
-            href={`/${project}/users`}
+            href={`/${project}/members`}
           />
           <SidebarItem
             icon={KeyIcon}

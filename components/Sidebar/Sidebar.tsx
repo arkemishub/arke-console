@@ -62,6 +62,15 @@ function Sidebar() {
             />
           </div>*/}
 
+          <p className="p-4">Organization</p>
+          <div className="ml-4 border-l border-gray-500 pl-2">
+            <SidebarItem
+              // icon={WarningIcon}
+              label="Users"
+              href="/users"
+            />
+          </div>
+
           <p className="p-4">Documentation</p>
           <div className="ml-4 border-l border-gray-500 pl-2">
             <SidebarItem

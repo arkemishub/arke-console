@@ -31,7 +31,7 @@ import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { getClient } from "@/arke/getClient";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
-import { ProjectLayout } from "@/components/Layout";
+import { Layout } from "@/components/Layout";
 import { Table } from "@/components/Table";
 import { AddIcon, EditIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
@@ -112,7 +112,7 @@ function Users(props: { data: TUnit[]; count: number }) {
   );
 
   return (
-    <ProjectLayout>
+    <Layout>
       <PageTitle
         title="Users"
         action={
@@ -231,7 +231,7 @@ function Users(props: { data: TUnit[]; count: number }) {
           setCrud((p) => ({ ...p, delete: false }));
         }}
       />
-    </ProjectLayout>
+    </Layout>
   );
 }
 
