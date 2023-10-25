@@ -20,19 +20,8 @@ import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
 import { Layout } from "@/components/Layout";
 import { PageTitle } from "@/components/PageTitle";
-import { HomepageCard } from "@/components/HomepageCard";
-import {
-  AdvantagesIcon,
-  DocumentationIcon,
-  SupportIcon,
-} from "@/components/Icon";
 import { acceptedRoles } from "@/arke/config";
-import Divider from "@/components/Divider/Divider";
-import ProjectCard from "@/components/ProjectCard/ProjectCard";
-import { PlusIcon } from "@heroicons/react/24/outline";
 import React from "react";
-import { getClient } from "@/arke/getClient";
-import { Project } from "@/types/project";
 
 export default function Preferences() {
   return (
