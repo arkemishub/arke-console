@@ -17,13 +17,18 @@
 import { render } from "@testing-library/react";
 import { ProjectSidebar } from "@/components/Sidebar/ProjectSidebar/index";
 
+const useRouter = jest.spyOn(require("next/router"), "useRouter");
+
 describe("ProjectSidebar", () => {
   test("should render", () => {
+    useRouter.mockImplementationOnce(() => ({
+      query: { project: "test-project" },
+    }));
     const { getByText } = render(<ProjectSidebar />);
-    expect(getByText("Dashboard")).toBeInTheDocument();
+    expect(getByText("Return to Dashboard")).toBeInTheDocument();
     expect(getByText("Arke")).toBeInTheDocument();
     expect(getByText("Parameters")).toBeInTheDocument();
-    expect(getByText("Users")).toBeInTheDocument();
+    expect(getByText("Members")).toBeInTheDocument();
     expect(getByText("Logout")).toBeInTheDocument();
   });
 });

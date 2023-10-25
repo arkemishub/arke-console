@@ -21,5 +21,8 @@ describe("Sidebar", () => {
   test("should render", () => {
     const { getByText } = render(<Sidebar />);
     expect(getByText("Dashboard")).toBeInTheDocument();
+    expect(getByText("Guide")).toBeInTheDocument();
+    expect(getByText("Report a problem")).toBeInTheDocument();
+    expect(getByText("Support chat")).toBeInTheDocument();
   });
 });
