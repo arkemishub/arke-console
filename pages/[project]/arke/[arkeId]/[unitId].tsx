@@ -37,6 +37,9 @@ function UnitDetail({ detail }: { detail: TUnit }) {
     delete: false,
   });
   const router = useRouter();
+  const {
+    query: { project },
+  } = router;
 
   return (
     <ProjectLayout>
@@ -102,7 +105,7 @@ function UnitDetail({ detail }: { detail: TUnit }) {
         onSubmit={() => {
           toast.success(`Unit deleted correctly`);
           setCrud((prevState) => ({ ...prevState, delete: false }));
-          void router.push(`/arke/${detail.arke_id}#units`);
+          void router.push(`/${project}/arke/${detail.arke_id}#units`);
         }}
       />
     </ProjectLayout>

@@ -43,6 +43,9 @@ export function CrudAddEdit(props: CrudProps) {
   const [loading, setLoading] = useState(true);
   const { arkeId, open, title, unitId, onClose, onSubmit, include } = props;
   const router = useRouter();
+  const {
+    query: { project },
+  } = router;
 
   const onFormSubmit = useCallback(
     (data: Record<string, unknown>) => {
@@ -99,7 +102,7 @@ export function CrudAddEdit(props: CrudProps) {
             id: "error_unit_no_parameters",
           }
         );
-        void router.push(`/arke/${arkeId}#parameters`);
+        void router.push(`/${project}/arke/${arkeId}#parameters`);
       }
     });
   }, [unitId, arkeId, client]);
