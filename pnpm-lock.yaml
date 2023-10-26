@@ -9,11 +9,11 @@ dependencies:
     specifier: 2.6.2
     version: 2.6.2
   '@arkejs/form':
-    specifier: 1.6.0
-    version: 1.6.0(react-dom@18.2.0)(react@18.2.0)
+    specifier: 1.6.2
+    version: 1.6.2(react-dom@18.2.0)(react@18.2.0)
   '@arkejs/table':
-    specifier: 0.7.2
-    version: 0.7.2(react-dom@18.2.0)(react@18.2.0)
+    specifier: 0.8.0
+    version: 0.8.0(react-dom@18.2.0)(react@18.2.0)
   '@arkejs/ui':
     specifier: 0.29.0
     version: 0.29.0(date-fns@2.30.0)(monaco-editor@0.39.0)(react-dom@18.2.0)(react@18.2.0)(tailwindcss@3.2.7)
@@ -143,8 +143,8 @@ packages:
       - debug
     dev: false
 
-  /@arkejs/form@1.6.0(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-XDoODO92iBvBINrQaOBxzfF0tB3JS+vqBeJUobI50+8WXCvUQEyRtlCg/7eUMVDusnwllp0fmCwO2oCTKldGKQ==}
+  /@arkejs/form@1.6.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-u7bK5XtBaI2Uum9iUhhisQhtF8ytqEw+qlW3LjFHQHgT1vUCzyvXxPTfFZXkrmVzwdjOFAHTf2VxXkxqPXP/2w==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -154,8 +154,8 @@ packages:
       react-hook-form: 7.43.7(react@18.2.0)
     dev: false
 
-  /@arkejs/table@0.7.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-ov6CizyDi1zfZYXdKHiWce4Vr9kdzNQ0NPYX7QUs7tVyVi7LOVhpKmngvn1raJ1YbB3oN+SRYIJQTYVxamK6Yw==}
+  /@arkejs/table@0.8.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-pJIsayrsZYzthTFScyd0Tmr0i05binFlaTgc8oUdIVYlrudXY/cht6xdujYzftxYFja7MmLdGwlgatkOH+0lIw==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0

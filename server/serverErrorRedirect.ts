@@ -14,27 +14,19 @@
  * limitations under the License.
  */
 
-import { Column, ColumnType } from "@arkejs/table";
+import type { GetServerSidePropsResult } from "next";
 
-export const columns: Column[] = [
-  {
-    label: "Name",
-    id: "first_name",
-    type: ColumnType.String,
-  },
-  {
-    label: "Type",
-    id: "arke_id",
-    type: ColumnType.String,
-  },
-  {
-    label: "Email",
-    id: "email",
-    type: ColumnType.String,
-    render: (rowData) => (
-      <a className="text-primary" href={`mailto:${rowData.email}`}>
-        {rowData.email as string}
-      </a>
-    ),
-  },
-];
+export default function serverErrorRedirect(
+  error: any
+): GetServerSidePropsResult<any> {
+  if (error?.response?.status === 401) {
+    return {
+      redirect: {
+        destination: "/logout",
+        permanent: false,
+      },
+    };
+  }
+
+  return { notFound: true };
+}

@@ -42,7 +42,7 @@ export default function SidebarItem({
         href={href}
         target={target}
         className={twMerge(
-          "flex items-center gap-3 p-2 text-neutral-400",
+          "flex items-center gap-3 p-2 px-3 text-neutral-400",
           isActive &&
             "rounded-theme border-background bg-gradient-to-r from-primary-800 to-transparent text-background-contrast"
         )}

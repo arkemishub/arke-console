@@ -15,3 +15,5 @@
  */
 
 export * from "./columns";
+export * from "./UserCrud";
+export * from "./UserDelete";
