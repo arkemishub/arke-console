@@ -31,6 +31,7 @@ export interface CrudProps {
   onClose(): void;
   onSubmit(data: TResponse<TUnit>): void;
   include?: string[];
+  exclude?: string[];
 }
 
 let didInit = false;
@@ -77,6 +78,7 @@ export function CrudAddEdit(props: CrudProps) {
       "inserted_at",
       "updated_at",
       "parameters",
+      "persistence",
     ].filter((item) => !include?.includes(item));
 
     const promise = unitId

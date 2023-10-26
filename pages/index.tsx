@@ -118,11 +118,11 @@ export default function Home(props: { projects: TProject[] }) {
           ))}
 
           <ProjectAdd
-            arkeId="project"
+            arkeId="arke_project"
             title={
               <div className="flex items-center gap-4">
                 <AddIcon className="text-primary" />
-                Add User
+                Add Project
               </div>
             }
             open={crud.add}
