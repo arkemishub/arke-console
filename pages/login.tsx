@@ -28,6 +28,7 @@ import {
   LockClosedIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 export default function Login({ csrfToken }: { csrfToken: string }) {
   const [username, setUsername] = useState("");
@@ -56,7 +57,13 @@ export default function Login({ csrfToken }: { csrfToken: string }) {
   return (
     <div className="flex h-screen w-screen items-center justify-center">
       <form onSubmit={onSignIn} className="m-auto grid w-[400px] gap-4">
-        <h1 className="mb-2 text-center text-xl">Login</h1>
+        <Image
+          src={"/arke_logo.svg"}
+          alt="logo"
+          height={40}
+          width={120}
+          className="m-auto mb-4"
+        />
         <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
         <Input
           type="text"
