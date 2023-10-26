@@ -33,6 +33,7 @@ import { acceptedRoles } from "@/arke/config";
 import { TFile } from "@/types/file";
 import dynamic from "next/dynamic";
 import { isImage } from "@/utils/file";
+import Image from "next/image";
 
 const Json = dynamic(() => import("@arkejs/ui").then((module) => module.Json), {
   ssr: false,
@@ -58,9 +59,13 @@ function UnitDetail({ detail }: { detail: TUnit }) {
               target="_blank"
               className="cursor-pointer"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               {isImage(value.extension) && (
-                <img alt={value.id} src={value?.signed_url} className="h-24" />
+                <Image
+                  alt={value.id}
+                  src={value?.signed_url}
+                  width={100}
+                  height={100}
+                />
               )}
             </a>
             <div className="w-full">

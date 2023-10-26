@@ -37,8 +37,8 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
   const [isApiDocsDrawerOpen, setIsApiDocsOpen] = useState(false);
   const router = useRouter();
   const tabs = [
-    { value: 0, id: "parameters", label: "Parameters" },
-    { value: 1, id: "units", label: "Units" },
+    { value: 0, id: "units", label: "Units" },
+    { value: 1, id: "parameters", label: "Parameters" },
     { value: 2, id: "struct", label: "Struct" },
   ];
   const getTab = (value: string | number, key: "id" | "value" = "id") =>
@@ -46,8 +46,8 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
   const activeTab = useMemo(() => {
     const hash = router.asPath.split("#")[1];
     if (hash) {
-      if (hash === "parameters") return getTab("parameters")?.value;
       if (hash === "units") return getTab("units")?.value;
+      if (hash === "parameters") return getTab("parameters")?.value;
       if (hash === "struct") return getTab("struct")?.value;
     }
   }, [router.asPath]);
@@ -78,10 +78,10 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
             <Tabs.Tab key={tab.id}>{tab.label}</Tabs.Tab>
           ))}
           <Tabs.TabPanel>
-            <AssignParametersTab arke={detail} />
+            <UnitsTab arke={detail} />
           </Tabs.TabPanel>
           <Tabs.TabPanel>
-            <UnitsTab arke={detail} />
+            <AssignParametersTab arke={detail} />
           </Tabs.TabPanel>
           <Tabs.TabPanel>
             <ul>

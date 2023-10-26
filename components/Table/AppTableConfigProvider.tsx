@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { TableConfigProvider } from "@arkejs/table";
 import { isImage } from "@/utils/file";
+import Image from "next/image";
 
 const AppTableConfigProvider = ({ children }: { children: ReactNode }) => {
   return (
@@ -15,10 +16,12 @@ const AppTableConfigProvider = ({ children }: { children: ReactNode }) => {
               <a href={value?.signed_url} target="_blank">
                 {isImage(value.extension) && (
                   <div className="flex items-center gap-4">
-                    <img
+                    <Image
                       alt={value.id}
                       src={value?.signed_url}
                       className="h-12 rounded"
+                      width={40}
+                      height={20}
                     />
                     {value?.name}
                   </div>
