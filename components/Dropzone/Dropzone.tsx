@@ -19,8 +19,10 @@ import { useDropzone } from "react-dropzone";
 import { ArrowUpTrayIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 import { formatBytes } from "@/utils/file";
+import { TFile } from "@/types/file";
+
 interface DropzoneProps {
-  value?: string;
+  value?: TFile;
   label?: string;
   onChange?(files: File[]): void;
 }
@@ -103,9 +105,7 @@ export default function Dropzone(props: DropzoneProps) {
         ) : (
           value && (
             <ul>
-              {/*// TODO: check value of backend with load_images */}
-              {/*// @ts-ignore */}
-              <File path={value.path} size={1000000} />
+              <File path={value.name} size={value.size} />
             </ul>
           )
         )}

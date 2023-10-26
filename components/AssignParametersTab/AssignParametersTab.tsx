@@ -116,7 +116,7 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
             filterable={false}
             data={data}
             {...tableProps}
-            goToPage={(page) => {
+            goToPage={(page: number) => {
               goToPage(page);
               loadData(page);
             }}

@@ -30,6 +30,7 @@ import { PageTitle } from "@/components/PageTitle";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { acceptedRoles } from "@/arke/config";
+import { TFile } from "@/types/file";
 
 function UnitDetail({ detail }: { detail: TUnit }) {
   const [crud, setCrud] = useState<CrudState>({
@@ -40,6 +41,29 @@ function UnitDetail({ detail }: { detail: TUnit }) {
   const {
     query: { project },
   } = router;
+
+  function getValue(value: TFile) {
+    if (typeof value !== "undefined" && value !== null) {
+      if (value?.arke_id === "arke_file") {
+        return (
+          <div className="flex gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              alt={value.id}
+              src={value?.signed_url}
+              width={100}
+              height={100}
+            />
+            <div>{JSON.stringify(value)}</div>
+          </div>
+        );
+      } else {
+        return JSON.stringify(value);
+      }
+    } else {
+      return "-";
+    }
+  }
 
   return (
     <ProjectLayout>
@@ -72,14 +96,13 @@ function UnitDetail({ detail }: { detail: TUnit }) {
             className="mb-2 flex items-center gap-4 rounded-theme bg-background-300 px-4 py-2"
             key={key}
           >
-            <div className="w-[200px] overflow-x-hidden text-ellipsis whitespace-nowrap border-r border-r-neutral text-sm uppercase text-neutral-400">
+            <div
+              className="w-[200px] overflow-x-hidden text-ellipsis whitespace-nowrap border-r border-r-neutral text-sm uppercase text-neutral-400"
+              style={{ minWidth: 200 }}
+            >
               {key}
             </div>
-            <div className="text-sm">
-              {typeof value !== "undefined" && value !== null
-                ? JSON.stringify(value)
-                : "-"}
-            </div>
+            <div className="text-sm">{getValue(value as TFile)}</div>
           </li>
         ))}
       </ul>
@@ -120,7 +143,8 @@ export const getServerSideProps: GetServerSideProps = withAuth(
     try {
       const response = await client.unit.get(
         context.query.arkeId as string,
-        context.query.unitId as string
+        context.query.unitId as string,
+        { params: { load_links: true, load_files: true } }
       );
 
       return { props: { detail: response.data.content } };
