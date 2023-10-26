@@ -132,6 +132,7 @@ export const getTableColumns = async (params: GetTableParams) => {
       limit: DEFAULT_PAGE_SIZE,
       order: sort?.map((sort) => `${sort.columnId};${sort.type}`),
       load_links: true,
+      load_files: true,
     },
   };
 

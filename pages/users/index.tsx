@@ -36,6 +36,7 @@ import { Table } from "@/components/Table";
 import { AddIcon, EditIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
+import EmptyState from "@/components/Table/EmptyState";
 
 const PAGE_SIZE = 10;
 
@@ -165,25 +166,18 @@ function Users(props: { data: TUnit[]; count: number }) {
             loadData(currentPage, filters, sort);
           }}
           noResult={
-            <div className="flex flex-col items-center p-4 py-8 text-center">
-              <div className="rounded-full bg-background-400 p-6">
-                <AddIcon className="h-12 w-12 text-primary" />
+            data.length === 0 && filters.length === 0 ? (
+              <EmptyState
+                name="User"
+                onCreate={() =>
+                  setCrud((prevState) => ({ ...prevState, add: true }))
+                }
+              />
+            ) : (
+              <div className="flex h-20 items-center justify-center">
+                No result found
               </div>
-              <span className="mt-4 text-xl">
-                Create your first User to get started.
-              </span>
-              Do you need a hand? Check out our documentation.
-              <div className="mt-4 flex">
-                <Button
-                  className="border"
-                  onClick={() =>
-                    setCrud((prevState) => ({ ...prevState, add: true }))
-                  }
-                >
-                  Add User
-                </Button>
-              </div>
-            </div>
+            )
           }
           totalCount={totalCount}
         />

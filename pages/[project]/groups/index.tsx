@@ -37,6 +37,7 @@ import { AddIcon, EditIcon, TrashIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
 import { getTableConfig, getTableData } from "@/utils/tableUtils";
+import EmptyState from "@/components/Table/EmptyState";
 
 function Groups(props: { groups: TUnit[]; count: number }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -138,25 +139,18 @@ function Groups(props: { groups: TUnit[]; count: number }) {
           loadData(currentPage, filters, sort);
         }}
         noResult={
-          <div className="flex flex-col items-center p-4 py-8 text-center">
-            <div className="rounded-full bg-background-400 p-6">
-              <AddIcon className="h-12 w-12 text-primary" />
+          groups.length === 0 && filters.length === 0 ? (
+            <EmptyState
+              name="Group"
+              onCreate={() =>
+                setCrud((prevState) => ({ ...prevState, add: true }))
+              }
+            />
+          ) : (
+            <div className="flex h-20 items-center justify-center">
+              No result found
             </div>
-            <span className="mt-4 text-xl">
-              Create your first Group to get started.
-            </span>
-            Do you need a hand? Check out our documentation.
-            <div className="mt-4 flex">
-              <Button
-                className="border"
-                onClick={() =>
-                  setCrud((prevState) => ({ ...prevState, add: true }))
-                }
-              >
-                Add Group
-              </Button>
-            </div>
-          </div>
+          )
         }
       />
 

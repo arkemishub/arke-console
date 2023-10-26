@@ -27,7 +27,7 @@ import { Spinner } from "@arkejs/ui";
 
 function Table(
   props: Pick<ITableProps, "columns" | "data" | "actions" | "noResult"> &
-    Omit<IUseTableData<any, any>, "tableProps"> & {
+    Omit<IUseTableData<any, any, true>, "tableProps"> & {
       onFiltersChange?: (filters: Filter[]) => void;
       onSortChange?: (sort: Sort[]) => void;
       filterable?: boolean;

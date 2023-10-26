@@ -76,6 +76,11 @@ export const getClient = (context?: {
         },
         (err) => {
           if (err.response) {
+            if (err.response.status === HTTPStatusCode.Forbidden) {
+              toast.error(`You've not permission`, {
+                id: "permission_error",
+              });
+            }
             if (err.response.status === HTTPStatusCode.InternalServerError) {
               toast.error(
                 `${err.message}: ${err.response.data?.errors?.detail}`

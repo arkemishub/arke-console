@@ -30,6 +30,7 @@ import { AddIcon } from "@/components/Icon";
 import { ProjectLayout } from "@/components/Layout";
 import serverErrorRedirect from "@/server/serverErrorRedirect";
 import { acceptedRoles } from "@/arke/config";
+import EmptyState from "@/components/Table/EmptyState";
 
 export default function Members(props: {
   data: TUnit[];
@@ -146,7 +147,20 @@ export default function Members(props: {
             setSort(sort);
             loadData(currentPage, filters, sort);
           }}
-          noResult="Nessun risultato trovato"
+          noResult={
+            data.length === 0 && filters.length === 0 ? (
+              <EmptyState
+                name="Member"
+                onCreate={() =>
+                  setCrud((prevState) => ({ ...prevState, add: true }))
+                }
+              />
+            ) : (
+              <div className="flex h-20 items-center justify-center">
+                No result found
+              </div>
+            )
+          }
           filterable={false}
         />
       </>

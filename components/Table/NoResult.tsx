@@ -14,28 +14,12 @@
  * limitations under the License.
  */
 
-import { GetServerSideProps } from "next";
-import { withAuth } from "@/server/withAuth";
-import { acceptedRoles } from "@/arke/config";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+const NoResult = () => {
+  return (
+    <div className="flex h-20 items-center justify-center">
+      <p>No result found</p>
+    </div>
+  );
+};
 
-export default function Dashboard() {
-  const router = useRouter();
-  const {
-    push,
-    query: { project },
-  } = router;
-
-  useEffect(() => {
-    void push(`${project}/arke`);
-  }, []);
-  return <></>;
-}
-
-export const getServerSideProps: GetServerSideProps = withAuth(
-  acceptedRoles,
-  () => {
-    return { props: {} };
-  }
-);
+export default NoResult;

@@ -31,6 +31,11 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { acceptedRoles } from "@/arke/config";
 import { TFile } from "@/types/file";
+import dynamic from "next/dynamic";
+
+const Json = dynamic(() => import("@arkejs/ui").then((module) => module.Json), {
+  ssr: false,
+});
 
 function UnitDetail({ detail }: { detail: TUnit }) {
   const [crud, setCrud] = useState<CrudState>({
@@ -46,22 +51,28 @@ function UnitDetail({ detail }: { detail: TUnit }) {
     if (typeof value !== "undefined" && value !== null) {
       if (value?.arke_id === "arke_file") {
         return (
-          <div className="flex gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              alt={value.id}
-              src={value?.signed_url}
-              width={100}
-              height={100}
-            />
-            <div>{JSON.stringify(value)}</div>
+          <div className="flex w-full items-center gap-6">
+            <a
+              href={value?.signed_url}
+              target="_blank"
+              className="cursor-pointer"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img alt={value.id} src={value?.signed_url} className="h-24" />
+            </a>
+            <div className="w-full">
+              <Json
+                value={JSON.stringify(value, null, "\t") ?? ""}
+                className="h-28 w-80"
+              />
+            </div>
           </div>
         );
       } else {
-        return JSON.stringify(value);
+        return <div className="text-sm">{JSON.stringify(value)}</div>;
       }
     } else {
-      return "-";
+      return <div className="text-sm">-</div>;
     }
   }
 
@@ -102,7 +113,7 @@ function UnitDetail({ detail }: { detail: TUnit }) {
             >
               {key}
             </div>
-            <div className="text-sm">{getValue(value as TFile)}</div>
+            {getValue(value as TFile)}
           </li>
         ))}
       </ul>
