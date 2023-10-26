@@ -14,32 +14,242 @@
  * limitations under the License.
  */
 
-import Head from "next/head";
+import { Filter, Sort, useTable } from "@arkejs/table";
+import useClient from "@/arke/useClient";
+import { useCallback, useState } from "react";
+import { Client, TUnit } from "@arkejs/client";
+import {
+  CrudAddEdit as MemberAdd,
+  CrudAddEdit as MemberEdit,
+  CrudDelete as MemberDelete,
+} from "@/crud/common";
+import { CrudState } from "@/types/crud";
+import { PageTitle } from "@/components/PageTitle";
+import { Button } from "@arkejs/ui";
+import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { getClient } from "@/arke/getClient";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
-import { ProjectLayout } from "@/components/Layout";
-import { PageTitle } from "@/components/PageTitle";
+import { Layout, ProjectLayout } from "@/components/Layout";
+import { Table } from "@/components/Table";
+import { AddIcon, EditIcon } from "@/components/Icon";
+import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
-import React from "react";
-export default function Members() {
+import { columns } from "@/crud/member";
+
+const PAGE_SIZE = 10;
+
+const fetchArke = async (
+  client: Client,
+  page?: number,
+  filters?: Filter[],
+  sort?: Sort[]
+) => {
+  return client.group.getAllUnits("member_group", {
+    params: {
+      filter:
+        filters && filters?.length > 0
+          ? `and(${filters.map(
+              (f) => `${f.operator}(${f.columnId},${f.value})`
+            )})`
+          : null,
+      offset: (page ?? 0) * PAGE_SIZE,
+      limit: PAGE_SIZE,
+      order: sort?.map((sort) => `${sort.columnId};${sort.type}`),
+    },
+  });
+};
+
+function Members(props: { data: TUnit[]; count: number }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState<TUnit[] | undefined>(props.data);
+  const [count, setCount] = useState<number | undefined>(props.count);
+  const client = useClient();
+  const [crud, setCrud] = useState<CrudState>({
+    add: false,
+    edit: false,
+    delete: false,
+  });
+
+  const {
+    setFilters,
+    tableProps,
+    totalCount,
+    sort,
+    setSort,
+    filters,
+    goToPage,
+    currentPage,
+  } = useTable(
+    typeof count !== "undefined"
+      ? {
+          pagination: {
+            totalCount: count,
+            type: "custom",
+            pageSize: PAGE_SIZE,
+          },
+          columns,
+          sorting: {
+            sortable: true,
+            type: "custom",
+          },
+        }
+      : null
+  );
+
+  const loadData = useCallback(
+    (page?: number, filters?: Filter[], sort?: Sort[]) => {
+      setIsLoading(true);
+      fetchArke(client, page, filters, sort).then((res) => {
+        setData(res.data.content.items);
+        setCount(res.data.content.count);
+        setIsLoading(false);
+      });
+    },
+    []
+  );
+
   return (
-    <>
-      <Head>
-        <title>Arke Console - Members</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <ProjectLayout>
-        <PageTitle title="Members" />
-      </ProjectLayout>
-    </>
+    <ProjectLayout>
+      <PageTitle
+        title="Members"
+        action={
+          <Button
+            color="primary"
+            onClick={() =>
+              setCrud((prevState) => ({ ...prevState, add: true }))
+            }
+          >
+            Add Member
+          </Button>
+        }
+      />
+      {data && (
+        <Table
+          loading={isLoading}
+          data={data}
+          actions={{
+            label: "",
+            actions: [
+              {
+                content: <PencilIcon className="h-4 w-4" />,
+                onClick: (rowData) =>
+                  setCrud((prevState) => ({
+                    ...prevState,
+                    edit: rowData?.id as string,
+                  })),
+              },
+              {
+                content: <XMarkIcon className="h-4 w-4" />,
+                onClick: (rowData) =>
+                  setCrud((prevState) => ({
+                    ...prevState,
+                    delete: rowData?.id as string,
+                  })),
+              },
+            ],
+          }}
+          {...tableProps}
+          goToPage={(page) => {
+            goToPage(page);
+            loadData(page, filters, sort);
+          }}
+          onFiltersChange={(filters) => {
+            setFilters(filters);
+            loadData(currentPage, filters, sort);
+          }}
+          onSortChange={(sort) => {
+            setSort(sort);
+            loadData(currentPage, filters, sort);
+          }}
+          noResult={
+            <div className="flex flex-col items-center p-4 py-8 text-center">
+              <div className="rounded-full bg-background-400 p-6">
+                <AddIcon className="h-12 w-12 text-primary" />
+              </div>
+              <span className="mt-4 text-xl">
+                Create your first Member to get started.
+              </span>
+              Do you need a hand? Check out our documentation.
+              <div className="mt-4 flex">
+                <Button
+                  className="border"
+                  onClick={() =>
+                    setCrud((prevState) => ({ ...prevState, add: true }))
+                  }
+                >
+                  Add Member
+                </Button>
+              </div>
+            </div>
+          }
+          totalCount={totalCount}
+        />
+      )}
+
+      <MemberAdd
+        arkeId="member_group"
+        title={
+          <div className="flex items-center gap-4">
+            <AddIcon className="text-primary" />
+            Add Member
+          </div>
+        }
+        open={crud.add}
+        onClose={() => setCrud((p) => ({ ...p, add: false }))}
+        onSubmit={() => {
+          loadData();
+          toast.success(`Member created correctly`);
+          setCrud((p) => ({ ...p, add: false }));
+        }}
+      />
+      <MemberEdit
+        arkeId="member_group"
+        title={
+          <div className="flex items-center gap-4">
+            <EditIcon className="text-primary" />
+            Edit Member
+          </div>
+        }
+        open={!!crud.edit}
+        unitId={crud.edit as string}
+        onClose={() => setCrud((p) => ({ ...p, edit: false }))}
+        onSubmit={() => {
+          loadData();
+          toast.success(`Member edited correctly`);
+          setCrud((p) => ({ ...p, edit: false }));
+        }}
+      />
+      <MemberDelete
+        arkeId="member_group"
+        title="Delete Member"
+        open={!!crud.delete}
+        onClose={() => setCrud((p) => ({ ...p, delete: false }))}
+        unitId={crud.delete as string}
+        onSubmit={() => {
+          loadData();
+          toast.success(`Member deleted correctly`);
+          setCrud((p) => ({ ...p, delete: false }));
+        }}
+      />
+    </ProjectLayout>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = withAuth(
   acceptedRoles,
-  () => {
+  async (context) => {
+    const client = getClient(context);
+    const response = await fetchArke(client);
+
+    console.log(response);
     return {
-      props: {},
+      props: {
+        data: response.data.content.items,
+        count: response.data.content.count,
+      },
     };
   }
 );
+
+export default Members;
