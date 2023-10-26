@@ -10,17 +10,18 @@
     "test": "jest --silent"
   },
   "dependencies": {
-    "@arkejs/client": "2.4.1",
+    "@arkejs/client": "2.6.2",
     "@arkejs/form": "1.6.0",
     "@arkejs/table": "0.7.2",
     "@arkejs/ui": "0.29.0",
     "@heroicons/react": "^2.0.16",
     "cookies-next": "^2.1.1",
     "next": "13.2.4",
-    "next-auth": "^4.20.1",
+    "next-auth": "^4.22.1",
     "prismjs": "^1.29.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.43.7",
     "react-hot-toast": "2.4.1",
     "reactflow": "^11.7.4"

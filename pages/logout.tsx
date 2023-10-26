@@ -21,7 +21,7 @@ import { deleteCookie } from "cookies-next";
 export default function Logout() {
   useEffect(() => {
     deleteCookie("arke_project");
-    signOut({ callbackUrl: "/login" });
+    void signOut({ callbackUrl: "/login" });
   }, []);
 
   return (

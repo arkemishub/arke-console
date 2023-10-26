@@ -34,6 +34,7 @@ import { Layout } from "@/components/Layout";
 import { Table } from "@/components/Table";
 import { AddIcon, EditIcon, TrashIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
+import { acceptedRoles } from "@/arke/config";
 
 const PAGE_SIZE = 10;
 
@@ -254,6 +255,7 @@ function Parameters(props: { parameters: TUnit[]; count: number }) {
 }
 
 export const getServerSideProps: GetServerSideProps = withAuth(
+  acceptedRoles,
   async (context) => {
     const client = getClient(context);
 

@@ -27,6 +27,7 @@ import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { CodeBracketIcon } from "@heroicons/react/24/outline";
 import dynamic from "next/dynamic";
+import { acceptedRoles } from "@/arke/config";
 const ApiDocsDrawer = dynamic(
   () => import("@/components/ApiDocs").then((mod) => mod.ApiDocsDrawer),
   { ssr: false }
@@ -111,6 +112,7 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
 }
 
 export const getServerSideProps: GetServerSideProps = withAuth(
+  acceptedRoles,
   async (context) => {
     const client = getClient(context);
 

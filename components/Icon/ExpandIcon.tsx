@@ -14,33 +14,23 @@
  * limitations under the License.
  */
 
-import NextAuth from "next-auth";
-import { JWT } from "next-auth/jwt";
-
-declare module "next-auth" {
-  interface Session {
-    user?: User;
-    access_token?: string;
-    refresh_token?: string;
-  }
-
-  interface User {
-    id?: number;
-    arke_id: string;
-    image?: string;
-    email: string;
-    first_name?: string;
-    last_name?: string;
-    project: string;
-    access_token: string;
-    refresh_token: string;
-  }
-}
-
-declare module "next-auth/jwt" {
-  interface JWT {
-    user?: User;
-    access_token: string;
-    refresh_token: string;
-  }
+export function ExpandIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      <path
+        d="M19 9L12.7071 15.2929C12.3166 15.6834 11.6834 15.6834 11.2929 15.2929L5 9"
+        stroke="#fff"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
 }

@@ -21,6 +21,7 @@ import {
   TagIcon,
   UsersIcon,
   Squares2X2Icon,
+  KeyIcon,
 } from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import { twMerge } from "tailwind-merge";
@@ -84,6 +85,7 @@ function Sidebar() {
           <SidebarItem icon={TagIcon} label="Parameters" href="/parameters" />
           <SidebarItem icon={Squares2X2Icon} label="Groups" href="/groups" />
           <SidebarItem icon={UsersIcon} label="Users" href="/users" />
+          <SidebarItem icon={KeyIcon} label="Permissions" href="/permissions" />
           <SidebarItem
             icon={CompassIcon}
             label="Visual schema"

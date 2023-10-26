@@ -55,6 +55,10 @@
         @apply btn p-2 rounded-full inline-block
     }
 
+    .permission-table .arke__table__actions {
+        @apply h-16
+    }
+
     .tabs__list {
         @apply bg-background-400 w-auto inline-flex gap-2 p-2 rounded-theme
     }
@@ -152,6 +156,10 @@
     .autocomplete__clear > svg {
         @apply stroke-white
     }
+}
+
+html {
+    background: #000;
 }
 
 /*Change text in autofill textbox*/

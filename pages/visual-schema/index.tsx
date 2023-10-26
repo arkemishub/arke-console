@@ -44,6 +44,7 @@ import { CrudState } from "@/types/crud";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
 import NoDataNode from "@/components/VisualSchema/NoDataNode";
+import { acceptedRoles } from "@/arke/config";
 
 const PAGE_SIZE = 100;
 const fetchArke = async (
@@ -256,10 +257,13 @@ function VisualSchema() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = withAuth(() => {
-  return {
-    props: {},
-  };
-});
+export const getServerSideProps: GetServerSideProps = withAuth(
+  acceptedRoles,
+  () => {
+    return {
+      props: {},
+    };
+  }
+);
 
 export default VisualSchema;

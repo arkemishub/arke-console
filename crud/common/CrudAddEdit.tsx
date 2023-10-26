@@ -21,6 +21,7 @@ import { TBaseParameter, TResponse, TUnit } from "@arkejs/client";
 import { Button, Dialog, Spinner } from "@arkejs/ui";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
+import { containsFile } from "@/utils/file";
 
 export interface CrudProps {
   unitId?: string;
@@ -44,9 +45,16 @@ export function CrudAddEdit(props: CrudProps) {
 
   const onFormSubmit = useCallback(
     (data: Record<string, unknown>) => {
+      const formData = new FormData();
+      if (containsFile(data)) {
+        Object.keys(data).map((key) => {
+          formData.append(key, data[key] as Blob);
+        });
+      }
+      const payload = containsFile(data) ? formData : data;
       const promise = !unitId
-        ? client.unit.create(arkeId, data)
-        : client.unit.edit(arkeId, unitId as string, data);
+        ? client.unit.create(arkeId, payload)
+        : client.unit.edit(arkeId, unitId as string, payload);
       promise.then(
         (res) => onSubmit(res),
         (err) =>

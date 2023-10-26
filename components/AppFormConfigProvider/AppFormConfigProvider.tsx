@@ -17,9 +17,8 @@
 import { ReactNode } from "react";
 import { FormConfigProvider as FCProvider } from "@arkejs/form";
 import { Autocomplete, Checkbox, Input, Json } from "@arkejs/ui";
-import AutocompleteLink, {
-  LinkRef,
-} from "@/components/AppFormConfigProvider/components/AutocompleteLink";
+import AutocompleteLink from "@/components/AppFormConfigProvider/components/AutocompleteLink";
+import Dropzone from "@/components/Dropzone/Dropzone";
 
 export default function AppFormConfigProvider(props: { children: ReactNode }) {
   return (
@@ -94,13 +93,19 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
             onChange={(value) => field.onChange(JSON.parse(value))}
           />
         ),
-        link: ({ field }) => (
-          <AutocompleteLink
-            {...field}
-            refLink={field.refLink}
-            onChange={field.onChange}
-          />
-        ),
+        link: ({ field }: any) =>
+          field?.link_ref?.id === "arke_file" ? (
+            <>
+              <Dropzone
+                {...field}
+                onChange={(files) => {
+                  field?.onChange(files?.[0] ?? null);
+                }}
+              />
+            </>
+          ) : (
+            <AutocompleteLink {...field} onChange={field.onChange} />
+          ),
         default: () => <></>,
       }}
     >

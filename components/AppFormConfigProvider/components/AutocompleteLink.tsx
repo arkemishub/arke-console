@@ -19,52 +19,19 @@ import { useEffect, useState } from "react";
 import { TUnit } from "@arkejs/client";
 import { Autocomplete } from "@arkejs/ui";
 import toast from "react-hot-toast";
-
-export type LinkRef = { id: string; arke_id: "group" | "arke" };
+import { LinkRef } from "@/types/link";
+import useLinkRef from "@/hooks/useLinkRef";
 
 type AutocompleteLinkProps = {
-  refLink: LinkRef;
+  link_ref: LinkRef;
   onChange: (value: any) => void;
   value: string;
 };
 
 export default function AutocompleteLink(props: AutocompleteLinkProps) {
-  const { refLink, onChange } = props;
+  const { link_ref, onChange } = props;
   const client = useClient();
-  const [values, setValues] = useState<TUnit[]>([]);
-
-  useEffect(() => {
-    // getAll: arke / group (id: se é gruppo o arke)
-    // filter_keys [OR]
-    // params: load_links: true => getAll
-    if (refLink?.arke_id === "group") {
-      // TODO: implement getAll by group and add filters with filter_keys
-      // client.unit.getAll(refLink.id).then((res) => {
-      client.group
-        .getAllUnits(refLink.id)
-        .then((res) => {
-          setValues(res.data.content.items);
-        })
-        .catch(() =>
-          toast.error("Something went wrong during group retrieval", {
-            id: "error_link_group",
-          })
-        );
-    }
-    if (refLink?.arke_id === "arke") {
-      client.unit
-        .getAll(refLink.id)
-        .then((res) => {
-          setValues(res.data.content.items);
-        })
-        .catch(() =>
-          toast.error("Something went wrong during arke retrieval", {
-            id: "error_link_arke",
-          })
-        );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { values } = useLinkRef(link_ref);
 
   function getValue() {
     if (Array.isArray(props.value)) {
@@ -77,22 +44,24 @@ export default function AutocompleteLink(props: AutocompleteLinkProps) {
   }
 
   return (
-    <Autocomplete
-      {...props}
-      onChange={(value) => {
-        if (Array.isArray(value)) {
-          onChange((value as TUnit[]).map((item) => item.id));
-        } else {
-          onChange((value as TUnit).id);
-        }
-      }}
-      renderValue={(value) => {
-        return `[${(value as TUnit).arke_id}] ${
-          (value as TUnit).label ?? (value as TUnit).id
-        }`;
-      }}
-      values={values}
-      value={getValue()}
-    />
+    <>
+      <Autocomplete
+        {...props}
+        onChange={(value) => {
+          if (Array.isArray(value)) {
+            onChange((value as TUnit[]).map((item) => item.id));
+          } else {
+            onChange((value as TUnit).id);
+          }
+        }}
+        renderValue={(value) => {
+          return `[${(value as TUnit).arke_id}] ${
+            (value as TUnit).label ?? (value as TUnit).id
+          }`;
+        }}
+        values={values}
+        value={getValue()}
+      />
+    </>
   );
 }
