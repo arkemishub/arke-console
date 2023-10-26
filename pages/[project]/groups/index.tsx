@@ -15,7 +15,7 @@
  */
 
 import { useCallback, useState } from "react";
-import { Client, TUnit } from "@arkejs/client";
+import { TUnit } from "@arkejs/client";
 import useClient from "@/arke/useClient";
 import { CrudState } from "@/types/crud";
 import { Filter, Sort, useTable } from "@arkejs/table";
@@ -36,35 +36,13 @@ import { Table } from "@/components/Table";
 import { AddIcon, EditIcon, TrashIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
-
-const PAGE_SIZE = 10;
-
-const fetchGroups = async (
-  client: Client,
-  page?: number,
-  filters?: Filter[],
-  sort?: Sort[]
-) =>
-  client.unit.getAll("group", {
-    params: {
-      filter:
-        filters && filters?.length > 0
-          ? `and(${filters.map(
-              (f) => `${f.operator}(${f.columnId},${f.value})`
-            )})`
-          : null,
-      offset: (page ?? 0) * PAGE_SIZE,
-      limit: PAGE_SIZE,
-      order: sort?.map((sort) => `${sort.columnId};${sort.type}`),
-    },
-  });
+import { getTableConfig, getTableData } from "@/utils/tableUtils";
 
 function Groups(props: { groups: TUnit[]; count: number }) {
   const [isLoading, setIsLoading] = useState(false);
   const [groups, setGroups] = useState<TUnit[]>(props.groups);
   const [count, setCount] = useState<number>(props.count);
   const client = useClient();
-
   const [crud, setCrud] = useState<CrudState>({
     add: false,
     edit: false,
@@ -79,27 +57,19 @@ function Groups(props: { groups: TUnit[]; count: number }) {
     filters,
     goToPage,
     currentPage,
-  } = useTable(
-    typeof count !== "undefined"
-      ? {
-          pagination: {
-            totalCount: count,
-            type: "custom",
-            pageSize: PAGE_SIZE,
-          },
-          columns,
-          sorting: {
-            type: "custom",
-            sortable: true,
-          },
-        }
-      : null
-  );
+  } = useTable(getTableConfig(columns, count));
 
   const loadData = useCallback(
     (page?: number, filters?: Filter[], sort?: Sort[]) => {
       setIsLoading(true);
-      fetchGroups(client, page, filters, sort).then((res) => {
+      getTableData({
+        client,
+        arkeOrGroup: "arke",
+        arkeOrGroupId: "group",
+        page,
+        filters,
+        sort,
+      }).then((res) => {
         setGroups(res.data.content.items);
         setCount(res.data.content.count);
         setIsLoading(false);
@@ -263,8 +233,12 @@ export const getServerSideProps: GetServerSideProps = withAuth(
     const client = getClient(context);
 
     try {
-      const response = await fetchGroups(client);
-
+      const response = await getTableData({
+        client,
+        arkeOrGroup: "arke",
+        arkeOrGroupId: "group",
+      });
+      console.log(response.data.content.items);
       return {
         props: {
           groups: response.data.content.items,

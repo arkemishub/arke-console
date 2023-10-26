@@ -37,34 +37,12 @@ import { AddIcon, EditIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
 import { useRouter } from "next/router";
-
-const PAGE_SIZE = 10;
-
-const fetchArke = async (
-  client: Client,
-  page?: number,
-  filters?: Filter[],
-  sort?: Sort[]
-) => {
-  return client.arke.getAll({
-    params: {
-      filter:
-        filters && filters?.length > 0
-          ? `and(${filters.map(
-              (f) => `${f.operator}(${f.columnId},${f.value})`
-            )})`
-          : null,
-      offset: (page ?? 0) * PAGE_SIZE,
-      limit: PAGE_SIZE,
-      order: sort?.map((sort) => `${sort.columnId};${sort.type}`),
-    },
-  });
-};
+import { getTableConfig, getTableData } from "@/utils/tableUtils";
 
 function Arke(props: { data: TUnit[]; count: number }) {
   const [data, setData] = useState<TUnit[] | undefined>(props.data);
   const [isLoading, setIsLoading] = useState(false);
-  const [count, setCount] = useState<number | undefined>(props.count);
+  const [count, setCount] = useState<number>(props.count);
   const [crud, setCrud] = useState<CrudState>({
     add: false,
     edit: false,
@@ -83,27 +61,19 @@ function Arke(props: { data: TUnit[]; count: number }) {
     filters,
     goToPage,
     currentPage,
-  } = useTable(
-    typeof count !== "undefined"
-      ? {
-          pagination: {
-            totalCount: count,
-            type: "custom",
-            pageSize: PAGE_SIZE,
-          },
-          columns: columns(project as string),
-          sorting: {
-            sortable: true,
-            type: "custom",
-          },
-        }
-      : null
-  );
+  } = useTable(getTableConfig(columns(project as string), count));
 
   const loadData = useCallback(
     (page?: number, filters?: Filter[], sort?: Sort[]) => {
       setIsLoading(true);
-      fetchArke(client, page, filters, sort).then((res) => {
+      getTableData({
+        client,
+        arkeOrGroup: "arke",
+        arkeOrGroupId: "arke",
+        page,
+        filters,
+        sort,
+      }).then((res) => {
         setData(res.data.content.items);
         setCount(res.data.content.count);
         setIsLoading(false);
@@ -238,7 +208,11 @@ export const getServerSideProps: GetServerSideProps = withAuth(
   acceptedRoles,
   async (context) => {
     const client = getClient(context);
-    const response = await fetchArke(client);
+    const response = await getTableData({
+      client,
+      arkeOrGroup: "arke",
+      arkeOrGroupId: "arke",
+    });
 
     return {
       props: {
