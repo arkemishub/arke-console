@@ -37,7 +37,7 @@ function Table(
   return (
     <div className="relative min-h-[400px]">
       {props.loading && (
-        <div className="absolute top-[110px] z-20  flex h-[calc(100%-110px)] w-full flex-col items-center justify-center gap-4 bg-background">
+        <div className="absolute top-[110px] z-20 flex h-[calc(100%-110px)] w-full flex-col items-center justify-center gap-4 bg-background">
           <p>Loading...</p>
           <Spinner />
         </div>

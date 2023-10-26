@@ -36,3 +36,7 @@ export function formatBytes(bytes: number, decimals = 2) {
 
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))}${sizes[i]}`;
 }
+
+export function isImage(extension: string) {
+  return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(extension);
+}

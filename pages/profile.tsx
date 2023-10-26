@@ -26,7 +26,6 @@ import { getSession } from "next-auth/react";
 import { User } from "next-auth";
 
 export default function Profile({ user }: { user: User }) {
-  console.log(user);
   return (
     <>
       <Head>

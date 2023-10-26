@@ -19,5 +19,6 @@ export interface TFile extends TUnit {
   size: number;
   path: string;
   name: string;
+  extension: string;
   signed_url: string;
 }

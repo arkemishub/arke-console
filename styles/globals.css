@@ -48,7 +48,7 @@
     }
 
     .arke__table__actions {
-        @apply flex
+        @apply flex h-16
     }
 
     .arke__table .arke__table__actions button {

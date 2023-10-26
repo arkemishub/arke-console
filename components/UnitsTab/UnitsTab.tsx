@@ -37,7 +37,15 @@ import {
 import { Simulate } from "react-dom/test-utils";
 import load = Simulate.load;
 import EmptyState from "@/components/Table/EmptyState";
-import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  DocumentMagnifyingGlassIcon,
+  PencilIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import {
+  ListBulletIcon,
+  MagnifyingGlassCircleIcon,
+} from "@heroicons/react/24/solid";
 
 const PAGE_SIZE = 10;
 
@@ -129,6 +137,11 @@ function UnitsTab({ arke }: { arke: TUnit }) {
                       ...prevState,
                       delete: rowData?.id as string,
                     })),
+                },
+                {
+                  content: <DocumentMagnifyingGlassIcon className="h-4 w-4" />,
+                  onClick: (rowData) =>
+                    router.push(`/${project}/arke/${arke.id}/${rowData.id}`),
                 },
               ],
             }}

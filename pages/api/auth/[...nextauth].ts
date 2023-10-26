@@ -103,7 +103,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
           await client.auth.verifyToken(token.access_token);
           return token;
         } catch (e) {
-          console.log(e);
           return await refreshToken(client, token);
         }
       },

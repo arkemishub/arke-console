@@ -37,7 +37,7 @@ function PageTitle({
   const routes = router.asPath.split("/");
 
   return (
-    <div className="sticky top-0 z-10 bg-background py-4 pt-10">
+    <div className="sticky top-0 z-50 bg-background py-4 pt-10">
       <div className={twMerge("flex items-center justify-between ", className)}>
         {title && <h1 className="text-4xl">{title}</h1>}
         {action ?? null}

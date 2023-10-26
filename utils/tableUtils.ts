@@ -57,6 +57,7 @@ export const getTableData = async (params: GetTableParams) => {
       order: sort?.map((sort) => `${sort.columnId};${sort.type}`),
       load_values: true,
       load_links: true,
+      load_files: true,
     },
   };
 

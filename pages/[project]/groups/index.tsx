@@ -232,7 +232,6 @@ export const getServerSideProps: GetServerSideProps = withAuth(
         arkeOrGroup: "arke",
         arkeOrGroupId: "group",
       });
-      console.log(response.data.content.items);
       return {
         props: {
           groups: response.data.content.items,
