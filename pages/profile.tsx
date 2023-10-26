@@ -22,8 +22,11 @@ import { Layout } from "@/components/Layout";
 import { PageTitle } from "@/components/PageTitle";
 import { acceptedRoles } from "@/arke/config";
 import React from "react";
+import { getSession } from "next-auth/react";
+import { User } from "next-auth";
 
-export default function Profile() {
+export default function Profile({ user }: { user: User }) {
+  console.log(user);
   return (
     <>
       <Head>
@@ -39,9 +42,12 @@ export default function Profile() {
 
 export const getServerSideProps: GetServerSideProps = withAuth(
   acceptedRoles,
-  () => {
+  async (context) => {
+    const session = await getSession(context);
     return {
-      props: {},
+      props: {
+        user: session?.user,
+      },
     };
   }
 );

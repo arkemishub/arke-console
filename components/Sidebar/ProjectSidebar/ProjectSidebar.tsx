@@ -78,37 +78,50 @@ function ProjectSidebar() {
             />
           </li>
 
-          <div className="mb-4">
+          <div>
             <SidebarItem icon={HomeIcon} label="Return to Dashboard" href="/" />
           </div>
 
-          <SidebarItem icon={ArkeIcon} label="Arke" href={`/${project}/arke`} />
-          <SidebarItem
-            icon={TagIcon}
-            label="Parameters"
-            href={`/${project}/parameters`}
-          />
-          <SidebarItem
-            icon={Squares2X2Icon}
-            label="Groups"
-            href={`/${project}/groups`}
-          />
+          <p className="p-4">Elements</p>
+          <div className="ml-4 border-l border-gray-500 pl-2">
+            <SidebarItem
+              icon={ArkeIcon}
+              label="Arke"
+              href={`/${project}/arke`}
+            />
+            <SidebarItem
+              icon={TagIcon}
+              label="Parameters"
+              href={`/${project}/parameters`}
+            />
+            <SidebarItem
+              icon={Squares2X2Icon}
+              label="Groups"
+              href={`/${project}/groups`}
+            />
+          </div>
 
-          <SidebarItem
-            icon={UsersIcon}
-            label="Members"
-            href={`/${project}/members`}
-          />
-          <SidebarItem
-            icon={KeyIcon}
-            label="Permissions"
-            href={`/${project}/permissions`}
-          />
-          <SidebarItem
-            icon={CompassIcon}
-            label="Visual schema"
-            href={`/${project}/visual-schema`}
-          />
+          <p className="p-4">Roles</p>
+          <div className="ml-4 border-l border-gray-500 pl-2">
+            <SidebarItem
+              icon={UsersIcon}
+              label="Members"
+              href={`/${project}/members`}
+            />
+            <SidebarItem
+              icon={KeyIcon}
+              label="Permissions"
+              href={`/${project}/permissions`}
+            />
+          </div>
+          <p className="p-4">Tools</p>
+          <div className="ml-4 border-l border-gray-500 pl-2">
+            <SidebarItem
+              icon={CompassIcon}
+              label="Visual schema"
+              href={`/${project}/visual-schema`}
+            />
+          </div>
 
           <SidebarItem
             icon={ArrowLeftOnRectangleIcon}

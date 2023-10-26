@@ -15,7 +15,10 @@
  */
 
 import Link from "next/link";
-import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowLeftOnRectangleIcon,
+  UsersIcon,
+} from "@heroicons/react/24/outline";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { CopyIcon, HomeIcon } from "@/components/Icon";
@@ -23,6 +26,11 @@ import { Button, Input } from "@arkejs/ui";
 import { getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
+import { ProfileIcon } from "@/components/Icon/ProfileIcon";
+import { SettingsIcon } from "@/components/Icon/SettingsIcon";
+import { BookOpenIcon } from "@/components/Icon/BookOpenIcon";
+import { AlertSquareIcon } from "@/components/Icon/AlertSquareIcon";
+import { MessageChatSquareIcon } from "@/components/Icon/MessageChatSquareIcon";
 
 function Sidebar() {
   const { query } = useRouter();
@@ -50,13 +58,9 @@ function Sidebar() {
 
           {/*<p className="p-4">Account</p>
           <div className="ml-4 border-l border-gray-500 pl-2">
+            <SidebarItem icon={ProfileIcon} label="Profile" href="/profile" />
             <SidebarItem
-              // icon={HomeIcon}
-              label="Profile"
-              href="/profile"
-            />
-            <SidebarItem
-              // icon={SettingsIcon}
+              icon={SettingsIcon}
               label="Preferences"
               href="/preferences"
             />
@@ -64,17 +68,13 @@ function Sidebar() {
 
           <p className="p-4">Organization</p>
           <div className="ml-4 border-l border-gray-500 pl-2">
-            <SidebarItem
-              // icon={WarningIcon}
-              label="Users"
-              href="/users"
-            />
+            <SidebarItem icon={UsersIcon} label="Users" href="/users" />
           </div>
 
           <p className="p-4">Documentation</p>
           <div className="ml-4 border-l border-gray-500 pl-2">
             <SidebarItem
-              // icon={ProfileIcon}
+              icon={BookOpenIcon}
               label="Guide"
               href="https://arkemishub.github.io/docs"
               target="_blank"
@@ -84,13 +84,13 @@ function Sidebar() {
           <p className="p-4">Support</p>
           <div className="ml-4 border-l border-gray-500 pl-2">
             <SidebarItem
-              // icon={WarningIcon}
+              icon={AlertSquareIcon}
               label="Report a problem"
               href="https://github.com/arkemishub"
               target="_blank"
             />
             <SidebarItem
-              // icon={SupportChatIcon}
+              icon={MessageChatSquareIcon}
               label="Support chat"
               href="https://discord.com/invite/947C6JArtM"
               target="_blank"

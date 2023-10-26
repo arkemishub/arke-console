@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 import Link from "next/link";
-import { ArkeIcon } from "@/components/Icon/ArkeIcon";
+import Image from "next/image";
+import { Avatar } from "@arkejs/ui";
 
 function ProjectCard({
   name,
   description,
   href,
+  image,
 }: {
   name: string;
   description: string;
   href: string;
+  image: string;
 }) {
   return (
     <Link
@@ -31,7 +34,13 @@ function ProjectCard({
       className="relative cursor-pointer overflow-hidden rounded-theme border border-neutral bg-gradient-to-b from-background-400 to-background text-center"
     >
       <div className="flex h-28 items-center justify-center">
-        <ArkeIcon size={42} />
+        <Image
+          src={image ?? "/arke_logo.svg"}
+          alt="logo"
+          height={40}
+          width={120}
+          className="mx-2"
+        />
       </div>
       <div className="border-t border-neutral p-2 px-4">
         <p className="text-md uppercase">{name}</p>

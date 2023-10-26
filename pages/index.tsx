@@ -78,7 +78,7 @@ export default function Home(props: { projects: TProject[] }) {
           <HomepageCard
             category="Docs"
             title="Documentation"
-            content="Discover Arke’s technical documentation."
+            content="Discover Arke’s official technical documentation."
             href="https://arkemishub.github.io/docs"
             linkText="Learn More"
             icon={<DocumentationIcon />}
@@ -113,6 +113,7 @@ export default function Home(props: { projects: TProject[] }) {
               name={project.label}
               description={project.description}
               href={`/${project.id}/arke`}
+              image={project.image}
             />
           ))}
 

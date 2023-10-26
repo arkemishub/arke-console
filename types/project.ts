@@ -18,4 +18,5 @@ import { TUnit } from "@arkejs/client";
 export interface TProject extends TUnit {
   label: string;
   description: string;
+  image: string;
 }
