@@ -23,7 +23,14 @@ const AppTableConfigProvider = ({ children }: { children: ReactNode }) => {
   return (
     <TableConfigProvider
       components={{
-        string: (value) => <p>{value?.label ?? value}</p>,
+        string: (value) =>
+          value?.value && value?.label ? (
+            <p>
+              {value?.value} ({value?.label})
+            </p>
+          ) : (
+            <p>{value}</p>
+          ),
         // TODO: we have to extend table with link
         // @ts-ignore
         link: (value) => (

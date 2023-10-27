@@ -119,6 +119,7 @@ export default function Home(props: { projects: TProject[] }) {
 
           <ProjectAdd
             arkeId="arke_project"
+            include={["id"]}
             title={
               <div className="flex items-center gap-4">
                 <AddIcon className="text-primary" />
