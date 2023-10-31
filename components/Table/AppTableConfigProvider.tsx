@@ -35,7 +35,7 @@ const AppTableConfigProvider = ({ children }: { children: ReactNode }) => {
         // @ts-ignore
         link: (value) => (
           <>
-            {value.arke_id === "arke_file" && (
+            {value?.arke_id === "arke_file" && (
               <a href={value?.signed_url} target="_blank">
                 {isImage(value.extension) && (
                   <div className="flex items-center gap-4">
