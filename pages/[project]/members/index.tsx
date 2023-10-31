@@ -188,7 +188,7 @@ export default function Members(props: {
             Add member
           </div>
         }
-        open={crud.add}
+        open={crud.add as boolean}
         onClose={() => setCrud((p) => ({ ...p, add: false }))}
         onSubmit={(res) => {
           loadData();
@@ -204,12 +204,12 @@ export default function Members(props: {
             Edit member
           </div>
         }
-        open={crud.add}
-        onClose={() => setCrud((p) => ({ ...p, add: false }))}
+        open={crud.edit as boolean}
+        onClose={() => setCrud((p) => ({ ...p, edit: false }))}
         onSubmit={(res) => {
           loadData();
           toast.success(`Member edited correctly`);
-          setCrud((p) => ({ ...p, add: false }));
+          setCrud((p) => ({ ...p, edit: false }));
         }}
       />
     </ProjectLayout>

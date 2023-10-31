@@ -16,10 +16,11 @@
 
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { Form, useForm } from "@arkejs/form";
-import { Button, Dialog, Spinner, Input, Select } from "@arkejs/ui";
+import { Button, Dialog, Spinner, Input, Select, Alert } from "@arkejs/ui";
 import { TResponse, TUnit } from "@arkejs/client";
 import useStruct from "@/hooks/useStruct";
 import useClient from "@/arke/useClient";
+import toast from "react-hot-toast";
 
 export function MemberCrud({
   open,
@@ -80,18 +81,22 @@ export function MemberCrud({
     delete data.member_type;
 
     const payload = {
+      ...data.member,
       arke_system_user: {
         password: password,
         username: data.member.email,
         email: data.member.email,
       },
-      ...data.member,
     };
     // create or edit member
-    const response = id
-      ? await client.unit.edit(arkeId as string, id, payload)
-      : await client.unit.create(arkeId as string, payload);
-    onSubmit(response);
+    try {
+      const response = id
+        ? await client.unit.edit(arkeId as string, id, payload)
+        : await client.unit.create(arkeId as string, payload);
+      onSubmit(response);
+    } catch (e: any) {
+      toast.error(`Something went wrong`);
+    }
   }
 
   const handleOnClose = useCallback(() => {
@@ -133,22 +138,12 @@ export function MemberCrud({
               />
               {memberType && (
                 <>
-                  <Form.Field id="member.first_name" />
-                  <Form.Field id="member.last_name" />
-                  <Form.Field
-                    id="member.password"
-                    render={({ field }) => <Input {...field} required />}
-                  />
-                  <Form.Field id="member.creator_type" />
-                  <Form.Field
-                    id="member.email"
-                    render={({ field }) => (
-                      <Input
-                        {...field}
-                        onChange={(e) => field.onChange(e.target.value)}
-                      />
-                    )}
-                  />
+                  {fields
+                    // TODO: fix type
+                    .filter((item: any) => item.id !== "member_type")
+                    .map((field: any) => (
+                      <Form.Field key={field.id} id={field.id} />
+                    ))}
                 </>
               )}
             </div>
