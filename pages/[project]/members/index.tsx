@@ -15,7 +15,7 @@
  */
 
 import { useCallback, useState } from "react";
-import { Filter, Sort, useTable } from "@arkejs/table";
+import { Column, Filter, Sort, useTable } from "@arkejs/table";
 import {
   BanknotesIcon,
   PencilIcon,
@@ -38,6 +38,7 @@ import {
   MemberCrud as MemberAdd,
   MemberCrud as MemberEdit,
 } from "@/crud/member/MemberCrud";
+import { CrudDelete as MemberDelete } from "@/crud/common";
 import { columns } from "@/crud/member";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
@@ -63,7 +64,6 @@ export default function Members(props: {
     edit: false,
     delete: false,
   });
-  const [selected, setSelected] = useState<Record<string, unknown>>();
   const {
     setFilters,
     tableProps,
@@ -122,10 +122,9 @@ export default function Members(props: {
           actions={{
             label: "",
             actions: [
-              {
+              /*{
                 content: <PencilIcon className="h-4 w-4" />,
                 onClick: (rowData) => {
-                  setSelected(rowData);
                   setCrud((prevState) => ({
                     ...prevState,
                     edit: rowData?.id as string,
@@ -135,19 +134,12 @@ export default function Members(props: {
               {
                 content: <XMarkIcon className="h-4 w-4" />,
                 onClick: (rowData) => {
-                  setSelected(rowData);
                   setCrud((prevState) => ({
                     ...prevState,
                     delete: rowData?.id as string,
                   }));
                 },
-              },
-              {
-                content: <BanknotesIcon className="h-4 w-4" />,
-                onClick: (rowData) => {
-                  void router.push(`/staff/users/${rowData?.id}/commission`);
-                },
-              },
+              },*/
             ],
           }}
           {...tableProps}
@@ -225,12 +217,12 @@ export const getServerSideProps: GetServerSideProps = withAuth(
       const responseStruct = await getTableColumns({
         client,
         arkeOrGroup: "group",
-        arkeOrGroupId: "member_group",
+        arkeOrGroupId: "arke_auth_member",
       });
       const responseGetAll = await getTableData({
         client,
         arkeOrGroup: "group",
-        arkeOrGroupId: "member_group",
+        arkeOrGroupId: "arke_auth_member",
       });
 
       return {

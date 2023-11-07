@@ -43,7 +43,7 @@ export function MemberCrud({
   const { parameters, loading } = useStruct(memberType, id);
 
   useEffect(() => {
-    client.group.get("member_group").then((res) => {
+    client.group.get("arke_auth_member").then((res) => {
       setMemberTypeList(res.data.content.arke_list as string[]);
     });
   }, []);

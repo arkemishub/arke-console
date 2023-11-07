@@ -21,6 +21,13 @@ export const columns: Column[] = [
     label: "Name",
     id: "first_name",
     type: ColumnType.String,
+    render: (rowData) => (
+      <div>
+        {rowData.fullname
+          ? (rowData.fullname as string)
+          : (rowData.name as string)}
+      </div>
+    ),
   },
   {
     label: "Type",
