@@ -66,7 +66,9 @@ function Permissions(props: { data: TUnit[]; count: number }) {
                   Add Permission
                 </Button>
               </div>
-              <PermissionTable role={item.id} />
+              <div className="pb-12">
+                <PermissionTable role={item.id} />
+              </div>
             </Accordion.Detail>
           </Accordion>
           <hr className="my-2 opacity-20" />
