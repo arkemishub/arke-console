@@ -85,7 +85,7 @@ export default function Members(props: {
       getTableData({
         client,
         arkeOrGroup: "group",
-        arkeOrGroupId: "member_group",
+        arkeOrGroupId: "arke_auth_member",
         page,
         filters,
         sort,

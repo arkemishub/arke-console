@@ -82,8 +82,6 @@ export const getServerSideProps: GetServerSideProps = withAuth(
     const client = getClient(context);
     const fetchMembers = async () => {
       return client.group.topology.getLinks(
-        // TODO: fix it
-        // @ts-ignore
         { id: "arke_auth_member", groupId: "group" },
         LinkDirection.Child,
         {
