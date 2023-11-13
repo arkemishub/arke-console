@@ -138,6 +138,7 @@ export function CrudAddEdit(props: CrudProps) {
                   <Form.Field
                     id="id"
                     {...idField}
+                    required={false}
                     render={({ field }) => (
                       <Input
                         {...field}

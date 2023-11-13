@@ -59,7 +59,16 @@ function UnitsTab({ arke }: { arke: TUnit }) {
       client,
       arkeOrGroupId: arke.id as string,
       arkeOrGroup: "arke",
-    }).then((res) => setColumns(res.data.content.parameters as Column[]));
+      include: ["id"],
+    }).then((res) => {
+      const idColumn = res.data.content.parameters.filter(
+        (item) => item.id === "id"
+      );
+      const columnsWithoutId = res.data.content.parameters.filter(
+        (item) => item.id !== "id"
+      );
+      setColumns([...idColumn, ...columnsWithoutId] as Column[]);
+    });
   }, []);
   const {
     setFilters,

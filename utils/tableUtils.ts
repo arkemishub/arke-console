@@ -32,6 +32,7 @@ export interface GetTableParams {
   sort?: Sort[];
   operator?: "and" | "or";
   arkeOrGroup?: "arke" | "group";
+  include?: string[];
 }
 export const getTableData = async (params: GetTableParams) => {
   const {
@@ -107,6 +108,7 @@ export const getTableColumns = async (params: GetTableParams) => {
     filters,
     sort,
     arkeOrGroup = "arke",
+    include = [],
   } = params;
 
   const exclude = [
@@ -118,7 +120,7 @@ export const getTableColumns = async (params: GetTableParams) => {
     "inserted_at",
     "updated_at",
     "parameters",
-  ];
+  ].filter((item) => !include.includes(item));
 
   const config = {
     params: {
