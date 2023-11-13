@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useClient from "@/arke/useClient";
 import Dropzone from "@/components/Dropzone/Dropzone";
 import { LinkRef } from "@/types/link";
@@ -27,8 +27,9 @@ type FileDropzoneProps = {
 };
 
 const FileDropzone = (props: FileDropzoneProps) => {
-  const { value, onChange } = props;
+  const { onChange } = props;
   const client = useClient();
+  const [value, setValue] = useState<TFile>(props.value);
 
   useEffect(() => {
     if (value) {
@@ -36,13 +37,17 @@ const FileDropzone = (props: FileDropzoneProps) => {
         // @ts-ignore
         // TODO: check value that change
         .get("arke_file", value)
-        .then((res) => onChange(res.data.content));
+        .then((res) => {
+          setValue(res.data.content as TFile);
+          onChange(res.data.content.id);
+        });
     }
   }, []);
 
   return (
     <Dropzone
       {...props}
+      value={value}
       onChange={(files) => {
         onChange(files?.[0] ?? null);
       }}
