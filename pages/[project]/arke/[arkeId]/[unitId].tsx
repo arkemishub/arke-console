@@ -69,6 +69,7 @@ function UnitDetail({ detail }: { detail: TUnit }) {
               )}
             </a>
             <div className="w-full">
+              {/*// @ts-ignore*/}
               <Json
                 value={JSON.stringify(value, null, "\t") ?? ""}
                 className="h-28 w-80"

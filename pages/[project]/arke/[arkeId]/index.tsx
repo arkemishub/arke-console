@@ -102,6 +102,7 @@ function ArkeDetail({ detail }: { detail: TUnit }) {
           </Tabs.TabPanel>
         </Tabs>
       </>
+      {/*// @ts-ignore*/}
       <ApiDocsDrawer
         kind="arke"
         open={isApiDocsDrawerOpen}

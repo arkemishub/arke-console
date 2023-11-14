@@ -17,6 +17,6 @@
 module.exports = {
   useTabs: false,
   tabWidth: 2,
-  plugins: [require('prettier-plugin-tailwindcss')],
-  tailwindConfig: './tailwind.config.js',
+  plugins: [require("prettier-plugin-tailwindcss")],
+  tailwindConfig: "./tailwind.config.js",
 };

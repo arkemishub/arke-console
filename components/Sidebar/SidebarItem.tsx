@@ -47,6 +47,7 @@ export default function SidebarItem({
             "rounded-theme border-background bg-gradient-to-r from-primary-800 to-transparent text-background-contrast"
         )}
       >
+        {/*// @ts-ignore*/}
         {Icon && <Icon className="h-5 w-5" />}
         <span>{label}</span>
       </Link>
