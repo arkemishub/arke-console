@@ -29,7 +29,7 @@ type FileDropzoneProps = {
 const FileDropzone = (props: FileDropzoneProps) => {
   const { onChange } = props;
   const client = useClient();
-  const [value, setValue] = useState<TFile>(props.value);
+  const [value, setValue] = useState<TFile | null>(props.value);
 
   useEffect(() => {
     if (value) {
@@ -47,9 +47,14 @@ const FileDropzone = (props: FileDropzoneProps) => {
   return (
     <Dropzone
       {...props}
-      value={value}
+      value={value as TFile}
       onChange={(files) => {
-        onChange(files?.[0] ?? null);
+        if (files?.length > 0) {
+          onChange(files?.[0]);
+        } else {
+          setValue(null);
+          onChange(null);
+        }
       }}
     />
   );
