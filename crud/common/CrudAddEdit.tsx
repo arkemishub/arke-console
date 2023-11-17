@@ -51,6 +51,7 @@ export function CrudAddEdit(props: CrudProps) {
   const onFormSubmit = useCallback(
     (data: Record<string, unknown>) => {
       const formData = new FormData();
+      delete data.id;
       if (containsFile(data)) {
         Object.keys(data).map((key) => {
           if (data[key]) formData.append(key, data[key] as Blob);
@@ -62,10 +63,15 @@ export function CrudAddEdit(props: CrudProps) {
         : client.unit.edit(arkeId, unitId as string, payload);
       promise.then(
         (res) => onSubmit(res),
-        (err) =>
-          err.response.data.messages.forEach((item: { message: string }) =>
-            console.error(item.message)
-          )
+        (err) => {
+          try {
+            err.response.data.messages.forEach((item: { message: string }) =>
+              console.error(item.message)
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        }
       );
     },
     [arkeId, client, unitId]

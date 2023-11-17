@@ -95,7 +95,16 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
         ),
         link: ({ field }: any) =>
           field?.link_ref?.id === "arke_file" ? (
-            <FileDropzone {...field} />
+            <>
+              <FileDropzone {...field} />
+              {!field.value?.path && (
+                <Input
+                  {...field}
+                  label=""
+                  helperText="If you already known the file ID use this input"
+                />
+              )}
+            </>
           ) : (
             <AutocompleteLink {...field} onChange={field.onChange} />
           ),
