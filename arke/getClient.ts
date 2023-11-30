@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-import { Client, HTTPStatusCode, TToken } from "@arkejs/client";
+import { Client, TToken } from "@arkejs/client";
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import { getToken } from "next-auth/jwt";
 import { getCookie } from "cookies-next";
 import { getCookieName } from "@/utils/auth";
-import toast from "react-hot-toast";
 import { NextParsedUrlQuery } from "next/dist/server/request-meta";
 
 const getServerUrl = () => {
@@ -75,21 +74,13 @@ export const getClient = (context?: {
           return config;
         },
         (err) => {
-          if (err.response) {
-            if (err.response.status === HTTPStatusCode.Forbidden) {
-              toast.error(`You've not permission`, {
-                id: "permission_error",
-              });
-            }
-            if (err.response.status === HTTPStatusCode.InternalServerError) {
-              toast.error(
-                `${err.message}: ${err.response.data?.errors?.detail}`
-              );
-            }
-            return Promise.reject(err);
-          } else {
-            toast.error(`Something went wrong. The Server is unreachable.`);
+          if (window) {
+            const event = new CustomEvent("arke_client_reject", {
+              detail: err,
+            });
+            window.dispatchEvent(event);
           }
+          return Promise.reject(err);
         }
       );
       return api;

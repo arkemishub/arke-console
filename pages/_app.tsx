@@ -23,6 +23,7 @@ import { NextPage } from "next";
 import AppFormConfigProvider from "@/components/AppFormConfigProvider/AppFormConfigProvider";
 import dynamic from "next/dynamic";
 import AppTableConfigProvider from "@/components/Table/AppTableConfigProvider";
+import ApiToast from "@/components/ApiToast/ApiToast";
 
 const Toaster = dynamic(
   () => import("react-hot-toast").then((mod) => mod.Toaster),
@@ -61,13 +62,15 @@ export default function App({
           },
         }}
       />
-      <SessionProvider session={session} basePath="/next/api/auth">
-        <AppTableConfigProvider>
-          <AppFormConfigProvider>
-            <Component {...pageProps} />
-          </AppFormConfigProvider>
-        </AppTableConfigProvider>
-      </SessionProvider>
+      <ApiToast>
+        <SessionProvider session={session} basePath="/next/api/auth">
+          <AppTableConfigProvider>
+            <AppFormConfigProvider>
+              <Component {...pageProps} />
+            </AppFormConfigProvider>
+          </AppTableConfigProvider>
+        </SessionProvider>
+      </ApiToast>
     </main>
   );
 }
