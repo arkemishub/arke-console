@@ -57,8 +57,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
               username: credentials.username,
               password: credentials.password,
             },
-            "credentials",
-            { headers: { "Arke-Project-Key": "daikin-develop" } }
+            "credentials"
           );
 
           // If no error and we have user data, return it
