@@ -40,22 +40,6 @@ export const columns = (project: string): Column[] => [
   },
 ];
 
-export const arkeUnitsColumns = (project: string): Column[] => [
-  {
-    label: "ID",
-    id: "id",
-    type: ColumnType.String,
-    render: (rowData) => (
-      <Link
-        className="underline"
-        href={`/${project}/arke/${rowData.arke_id}/${rowData.id}`}
-      >
-        {rowData.id as string}
-      </Link>
-    ),
-  },
-];
-
 export const linkedParametersColumns: Column[] = [
   {
     label: "ID",

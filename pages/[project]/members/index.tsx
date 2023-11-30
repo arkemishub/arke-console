@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Column, Filter, Sort, useTable } from "@arkejs/table";
-import {
-  BanknotesIcon,
-  PencilIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
 import { CrudState } from "@/types/crud";
 import { TUnit } from "@arkejs/client";
 import { GetServerSideProps } from "next";
@@ -38,7 +33,6 @@ import {
   MemberCrud as MemberAdd,
   MemberCrud as MemberEdit,
 } from "@/crud/member/MemberCrud";
-import { CrudDelete as MemberDelete } from "@/crud/common";
 import { columns } from "@/crud/member";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/router";
@@ -64,6 +58,17 @@ export default function Members(props: {
     edit: false,
     delete: false,
   });
+  const [columns, setColumns] = useState<Column[]>([]);
+  useEffect(() => {
+    getTableColumns({
+      client,
+      arkeOrGroup: "group",
+      arkeOrGroupId: "arke_auth_member",
+      // include: ["id"],
+    }).then((res) => {
+      setColumns(res.data.content.parameters as Column[]);
+    });
+  }, []);
   const {
     setFilters,
     tableProps,
