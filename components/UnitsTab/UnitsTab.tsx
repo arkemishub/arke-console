@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Column, Filter, Sort, useTable } from "@arkejs/table";
-import React, { useCallback, useEffect, useState } from "react";
+import { Column } from "@arkejs/table";
+import React, { useEffect, useState } from "react";
 import useClient from "@/arke/useClient";
 import { TUnit } from "@arkejs/client";
 import { CrudState } from "@/types/crud";
-import { Button, Spinner } from "@arkejs/ui";
+import { Button } from "@arkejs/ui";
 import {
   CrudAddEdit as UnitEdit,
   CrudAddEdit as UnitAdd,
@@ -29,17 +29,17 @@ import { AddIcon } from "@/components/Icon";
 import { Table } from "@/components/Table";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
-import {
-  getTableColumns,
-  getTableConfig,
-  getTableData,
-} from "@/utils/tableUtils";
 import EmptyState from "@/components/Table/EmptyState";
 import {
   DocumentMagnifyingGlassIcon,
   PencilIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import useArkeTable from "@/hooks/useArkeTable";
+import {
+  buildStructClientConfig,
+  STRUCT_DEFAULT_EXCLUDE,
+} from "@/utils/client";
 
 function UnitsTab({ arke }: { arke: TUnit }) {
   const [crud, setCrud] = useState<CrudState>({
@@ -47,58 +47,35 @@ function UnitsTab({ arke }: { arke: TUnit }) {
     edit: false,
     delete: false,
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<TUnit[] | undefined>(undefined);
   const [columns, setColumns] = useState<Column[]>([]);
-  const [count, setCount] = useState<number | undefined>(undefined);
   const client = useClient();
   const router = useRouter();
   const { project } = router.query;
-  useEffect(() => {
-    getTableColumns({
-      client,
-      arkeOrGroupId: arke.id as string,
-      arkeOrGroup: "arke",
-      include: ["id"],
-    }).then((res) => {
-      const idColumn = res.data.content.parameters.filter(
-        (item) => item.id === "id"
-      );
-      const columnsWithoutId = res.data.content.parameters.filter(
-        (item) => item.id !== "id"
-      );
-      setColumns([...idColumn, ...columnsWithoutId] as Column[]);
-    });
-  }, []);
-  const {
-    setFilters,
-    tableProps,
-    sort,
-    setSort,
-    filters,
-    goToPage,
-    currentPage,
-  } = useTable(getTableConfig(columns as Column[], count ?? 0));
 
-  const loadData = useCallback(
-    (page?: number, filters?: Filter[], sort?: Sort[]) => {
-      setIsLoading(true);
-      getTableData({
-        client,
-        arkeOrGroupId: arke.id,
-        page,
-        filters,
-        sort,
-      }).then((res) => {
-        setData(res.data.content.items);
-        setCount(res.data.content.count);
-        setIsLoading(false);
-      });
-    },
-    [arke.id]
+  const { data, isLoading, filters, loadData, tableProps } = useArkeTable(
+    "arke",
+    arke.id as string,
+    columns
   );
 
   useEffect(() => {
+    const structExclude = STRUCT_DEFAULT_EXCLUDE.filter(
+      (item) => item !== "id"
+    );
+    client.arke
+      .struct(
+        arke.id as string,
+        buildStructClientConfig({ exclude: structExclude })
+      )
+      .then((res) => {
+        const idColumn = res.data.content.parameters.filter(
+          (item) => item.id === "id"
+        );
+        const columnsWithoutId = res.data.content.parameters.filter(
+          (item) => item.id !== "id"
+        );
+        setColumns([...idColumn, ...columnsWithoutId] as Column[]);
+      });
     loadData();
   }, []);
 
@@ -144,18 +121,6 @@ function UnitsTab({ arke }: { arke: TUnit }) {
                   router.push(`/${project}/arke/${arke.id}/${rowData.id}`),
               },
             ],
-          }}
-          goToPage={(page) => {
-            goToPage(page);
-            loadData(page, filters, sort);
-          }}
-          onFiltersChange={(filters) => {
-            setFilters(filters);
-            loadData(currentPage, filters, sort);
-          }}
-          onSortChange={(sort) => {
-            setSort(sort);
-            loadData(currentPage, filters, sort);
           }}
           noResult={
             data?.length === 0 && filters.length === 0 ? (

@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { TUnit } from "@arkejs/client";
-import useClient from "@/arke/useClient";
 import { CrudState } from "@/types/crud";
-import { Filter, Sort, useTable } from "@arkejs/table";
 import { columns } from "@/crud/group";
 import {
   CrudAddEdit as GroupAdd,
@@ -36,14 +34,10 @@ import { Table } from "@/components/Table";
 import { AddIcon, EditIcon, TrashIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
-import { getTableConfig, getTableData } from "@/utils/tableUtils";
 import EmptyState from "@/components/Table/EmptyState";
+import useArkeTable from "@/hooks/useArkeTable";
 
 function Groups(props: { groups: TUnit[]; count: number }) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [groups, setGroups] = useState<TUnit[]>(props.groups);
-  const [count, setCount] = useState<number>(props.count);
-  const client = useClient();
   const [crud, setCrud] = useState<CrudState>({
     add: false,
     edit: false,
@@ -51,33 +45,15 @@ function Groups(props: { groups: TUnit[]; count: number }) {
   });
 
   const {
-    setFilters,
-    tableProps,
-    sort,
-    setSort,
+    data: groups,
+    isLoading,
     filters,
-    goToPage,
-    currentPage,
-  } = useTable(getTableConfig(columns, count));
-
-  const loadData = useCallback(
-    (page?: number, filters?: Filter[], sort?: Sort[]) => {
-      setIsLoading(true);
-      getTableData({
-        client,
-        arkeOrGroup: "arke",
-        arkeOrGroupId: "group",
-        page,
-        filters,
-        sort,
-      }).then((res) => {
-        setGroups(res.data.content.items);
-        setCount(res.data.content.count);
-        setIsLoading(false);
-      });
-    },
-    []
-  );
+    loadData,
+    tableProps,
+  } = useArkeTable("arke", "group", columns, {
+    data: props.groups,
+    count: props.count,
+  });
 
   return (
     <ProjectLayout>
@@ -126,20 +102,8 @@ function Groups(props: { groups: TUnit[]; count: number }) {
           ],
         }}
         {...tableProps}
-        goToPage={(page) => {
-          goToPage(page);
-          loadData(page, filters, sort);
-        }}
-        onFiltersChange={(filters) => {
-          setFilters(filters);
-          loadData(currentPage, filters, sort);
-        }}
-        onSortChange={(sort) => {
-          setSort(sort);
-          loadData(currentPage, filters, sort);
-        }}
         noResult={
-          groups.length === 0 && filters.length === 0 ? (
+          !groups || (groups.length === 0 && filters.length === 0) ? (
             <EmptyState
               name="Group"
               onCreate={() =>
@@ -227,11 +191,7 @@ export const getServerSideProps: GetServerSideProps = withAuth(
     const client = getClient(context);
 
     try {
-      const response = await getTableData({
-        client,
-        arkeOrGroup: "arke",
-        arkeOrGroupId: "group",
-      });
+      const response = await client.group.getAll();
       return {
         props: {
           groups: response.data.content.items,
