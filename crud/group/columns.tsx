@@ -31,9 +31,9 @@ export const columns: Column[] = [
     type: ColumnType.String,
     render: (rowData) => (
       <div className="flex gap-1">
-        {(rowData.arke_list as TUnit[]).map((item, index) => (
+        {(rowData.arke_list as string[]).map((item, index) => (
           <Chip key={index} className="bg-primary p-1 text-black">
-            {item.id}
+            {item}
           </Chip>
         ))}
       </div>

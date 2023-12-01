@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-import { useCallback, useState } from "react";
-import { Client, TUnit } from "@arkejs/client";
-import useClient from "@/arke/useClient";
+import { useState } from "react";
+import { TUnit } from "@arkejs/client";
 import { CrudState } from "@/types/crud";
-import { Filter, Sort, useTable } from "@arkejs/table";
 import { ParameterAdd, columns } from "@/crud/parameter";
 import {
   CrudAddEdit as ParameterEdit,
@@ -35,14 +33,9 @@ import { Table } from "@/components/Table";
 import { AddIcon, EditIcon, TrashIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
-import { getTableConfig, getTableData } from "@/utils/tableUtils";
+import useArkeTable from "@/hooks/useArkeTable";
 
 function Parameters(props: { parameters: TUnit[]; count: number }) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [parameters, setParameters] = useState<TUnit[]>(props.parameters);
-  const [count, setCount] = useState<number>(props.count);
-  const client = useClient();
-
   const [crud, setCrud] = useState<CrudState>({
     add: false,
     edit: false,
@@ -50,33 +43,14 @@ function Parameters(props: { parameters: TUnit[]; count: number }) {
   });
 
   const {
-    setFilters,
+    data: parameters,
+    loadData,
+    isLoading,
     tableProps,
-    sort,
-    setSort,
-    filters,
-    goToPage,
-    currentPage,
-  } = useTable(getTableConfig(columns, count));
-
-  const loadData = useCallback(
-    (page?: number, filters?: Filter[], sort?: Sort[]) => {
-      setIsLoading(true);
-      getTableData({
-        client,
-        arkeOrGroup: "group",
-        arkeOrGroupId: "parameter",
-        page,
-        filters,
-        sort,
-      }).then((res) => {
-        setParameters(res.data.content.items);
-        setCount(res.data.content.count);
-        setIsLoading(false);
-      });
-    },
-    []
-  );
+  } = useArkeTable("group", "parameter", columns, {
+    data: props.parameters,
+    count: props.count,
+  });
 
   return (
     <ProjectLayout>
@@ -125,18 +99,6 @@ function Parameters(props: { parameters: TUnit[]; count: number }) {
           ],
         }}
         {...tableProps}
-        goToPage={(page) => {
-          goToPage(page);
-          loadData(page, filters, sort);
-        }}
-        onFiltersChange={(filters) => {
-          setFilters(filters);
-          loadData(currentPage, filters, sort);
-        }}
-        onSortChange={(sort) => {
-          setSort(sort);
-          loadData(currentPage, filters, sort);
-        }}
         noResult={
           <div className="flex flex-col items-center p-4 py-8 text-center">
             <div className="rounded-full bg-background-400 p-6">
@@ -231,11 +193,7 @@ export const getServerSideProps: GetServerSideProps = withAuth(
     const client = getClient(context);
 
     try {
-      const response = await getTableData({
-        client,
-        arkeOrGroup: "group",
-        arkeOrGroupId: "parameter",
-      });
+      const response = await client.group.getAllUnits("parameter");
 
       return {
         props: {

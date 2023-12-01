@@ -14,94 +14,47 @@
  * limitations under the License.
  */
 
-import { useCallback, useEffect, useState } from "react";
-import { Column, Filter, Sort, useTable } from "@arkejs/table";
+import { useState } from "react";
 import { CrudState } from "@/types/crud";
 import { TUnit } from "@arkejs/client";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
 import { getClient } from "@/arke/getClient";
-import useClient from "@/arke/useClient";
-import {
-  getTableColumns,
-  getTableConfig,
-  getTableData,
-} from "@/utils/tableUtils";
 import { Table } from "@/components/Table";
-import { Button, Input } from "@arkejs/ui";
+import { Button } from "@arkejs/ui";
 import {
   MemberCrud as MemberAdd,
   MemberCrud as MemberEdit,
 } from "@/crud/member/MemberCrud";
-import { columns } from "@/crud/member";
 import { toast } from "react-hot-toast";
-import { useRouter } from "next/router";
 import { PageTitle } from "@/components/PageTitle";
 import { AddIcon } from "@/components/Icon";
 import { ProjectLayout } from "@/components/Layout";
 import serverErrorRedirect from "@/server/serverErrorRedirect";
 import { acceptedRoles } from "@/arke/config";
 import EmptyState from "@/components/Table/EmptyState";
+import useArkeTable from "@/hooks/useArkeTable";
+import { buildStructClientConfig } from "@/utils/client";
 
 export default function Members(props: {
   data: TUnit[];
   columns: TUnit[];
   count: number;
 }) {
-  const client = useClient();
-  const router = useRouter();
-  const [data, setData] = useState<TUnit[]>(props.data);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [count, setCount] = useState<number>(props.count);
   const [crud, setCrud] = useState<CrudState>({
     add: false,
     edit: false,
     delete: false,
   });
-  const [columns, setColumns] = useState<Column[]>([]);
-  useEffect(() => {
-    getTableColumns({
-      client,
-      arkeOrGroup: "group",
-      arkeOrGroupId: "arke_auth_member",
-      // include: ["id"],
-    }).then((res) => {
-      setColumns(res.data.content.parameters as Column[]);
-    });
-  }, []);
-  const {
-    setFilters,
-    tableProps,
-    sort,
-    setSort,
-    filters,
-    goToPage,
-    currentPage,
-  } = useTable(getTableConfig(columns, count));
 
-  const loadData = useCallback(
-    (
-      page?: number,
-      filters?: Filter[],
-      sort?: Sort[],
-      operator?: "and" | "or"
-    ) => {
-      setIsLoading(true);
-      getTableData({
-        client,
-        arkeOrGroup: "group",
-        arkeOrGroupId: "arke_auth_member",
-        page,
-        filters,
-        sort,
-        operator,
-      }).then((res) => {
-        setData(res.data.content.items);
-        setCount(res.data.content.count);
-        setIsLoading(false);
-      });
-    },
-    []
+  const { data, filters, isLoading, loadData, tableProps } = useArkeTable(
+    "group",
+    "arke_auth_member",
+    props.columns,
+    {
+      data: props.data,
+      count: props.count,
+    }
   );
 
   return (
@@ -120,14 +73,13 @@ export default function Members(props: {
         }
       />
 
-      <>
-        <Table
-          data={data}
-          loading={isLoading}
-          actions={{
-            label: "",
-            actions: [
-              /*{
+      <Table
+        data={data}
+        loading={isLoading}
+        actions={{
+          label: "",
+          actions: [
+            /*{
                 content: <PencilIcon className="h-4 w-4" />,
                 onClick: (rowData) => {
                   setCrud((prevState) => ({
@@ -145,38 +97,25 @@ export default function Members(props: {
                   }));
                 },
               },*/
-            ],
-          }}
-          {...tableProps}
-          goToPage={(page: number) => {
-            goToPage(page);
-            loadData(page, filters, sort);
-          }}
-          onFiltersChange={(filters) => {
-            setFilters(filters);
-            loadData(currentPage, filters, sort);
-          }}
-          onSortChange={(sort) => {
-            setSort(sort);
-            loadData(currentPage, filters, sort);
-          }}
-          noResult={
-            data.length === 0 && filters.length === 0 ? (
-              <EmptyState
-                name="Member"
-                onCreate={() =>
-                  setCrud((prevState) => ({ ...prevState, add: true }))
-                }
-              />
-            ) : (
-              <div className="flex h-20 items-center justify-center">
-                No result found
-              </div>
-            )
-          }
-          filterable={false}
-        />
-      </>
+          ],
+        }}
+        {...tableProps}
+        noResult={
+          !data || (data.length === 0 && filters.length === 0) ? (
+            <EmptyState
+              name="Member"
+              onCreate={() =>
+                setCrud((prevState) => ({ ...prevState, add: true }))
+              }
+            />
+          ) : (
+            <div className="flex h-20 items-center justify-center">
+              No result found
+            </div>
+          )
+        }
+        filterable={false}
+      />
 
       <MemberAdd
         title={
@@ -219,16 +158,11 @@ export const getServerSideProps: GetServerSideProps = withAuth(
     const client = getClient(context);
 
     try {
-      const responseStruct = await getTableColumns({
-        client,
-        arkeOrGroup: "group",
-        arkeOrGroupId: "arke_auth_member",
-      });
-      const responseGetAll = await getTableData({
-        client,
-        arkeOrGroup: "group",
-        arkeOrGroupId: "arke_auth_member",
-      });
+      const responseStruct = await client.group.struct(
+        "arke_auth_member",
+        buildStructClientConfig()
+      );
+      const responseGetAll = await client.group.getAllUnits("arke_auth_member");
 
       return {
         props: {
