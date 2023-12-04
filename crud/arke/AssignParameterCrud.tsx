@@ -23,7 +23,22 @@ import { AddIcon, LinkIcon, TrashIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { ParameterAdd } from "@/crud/parameter";
 import { CrudState } from "@/types/crud";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon, PencilIcon } from "@heroicons/react/24/outline";
+import { Field, Form, useForm } from "@arkejs/form";
+
+const EDIT_PARAMETERS_EXCLUDE = [
+  "id",
+  "type",
+  "arke_id",
+  "inserted_at",
+  "updated_at",
+  "label",
+  "metadata",
+  "persistence",
+  "helper_text",
+  "only_run_time",
+  "format",
+];
 
 function AssignParameterAdd({
   open,
@@ -215,4 +230,84 @@ function AssignParameterDelete({
   );
 }
 
-export { AssignParameterAdd, AssignParameterDelete };
+function AssignParameterEdit({
+  onClose,
+  arkeId,
+  onEdit,
+  parameter,
+  open,
+}: {
+  parameter: TBaseParameter;
+  onClose(): void;
+  arkeId: string;
+  onEdit: () => void;
+  open: string | boolean | undefined;
+}) {
+  const [fields, setFields] = useState<Field[] | undefined>(undefined);
+  const client = useClient();
+  const { formProps } = useForm(
+    fields
+      ? {
+          fields,
+          getFieldDefaultValue: (field) => parameter[field.id],
+        }
+      : undefined
+  );
+
+  const handleOnSubmit = (data: Record<string, unknown>) => {
+    client.arke
+      .editParameter(arkeId, parameter.id as string, { metadata: data })
+      .then(() => {
+        setFields([]);
+        onEdit();
+      });
+  };
+
+  const handleClose = () => {
+    setFields(undefined);
+    onClose();
+  };
+
+  useEffect(() => {
+    if (open) {
+      client.arke
+        .struct(parameter.type as string, {
+          params: {
+            exclude: EDIT_PARAMETERS_EXCLUDE,
+          },
+        })
+        .then((res) => setFields(res.data.content.parameters as Field[]));
+    }
+  }, [open]);
+
+  return (
+    <Dialog
+      open={!!open}
+      title={
+        <div className="flex items-center gap-4">
+          <PencilIcon className="h-4 w-4 text-primary" />
+          Edit Parameter
+        </div>
+      }
+      onClose={onClose}
+    >
+      <Form {...formProps} onSubmit={handleOnSubmit} style={{ height: "100%" }}>
+        <div className="grid gap-4">
+          {fields?.map((field: any) => (
+            <Form.Field key={field.id} id={field.id} />
+          ))}
+        </div>
+        <div className="mt-4 flex gap-4">
+          <Button className="w-full bg-neutral" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button color="primary" className="w-full" type="submit">
+            Edit
+          </Button>
+        </div>
+      </Form>
+    </Dialog>
+  );
+}
+
+export { AssignParameterAdd, AssignParameterDelete, AssignParameterEdit };

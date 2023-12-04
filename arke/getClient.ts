@@ -74,7 +74,7 @@ export const getClient = (context?: {
           return config;
         },
         (err) => {
-          if (window) {
+          if (typeof window !== "undefined") {
             const event = new CustomEvent("arke_client_reject", {
               detail: err,
             });

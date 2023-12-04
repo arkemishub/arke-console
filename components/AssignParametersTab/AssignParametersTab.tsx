@@ -20,9 +20,13 @@ import useClient from "@/arke/useClient";
 import { TBaseParameter, TUnit } from "@arkejs/client";
 import { Table } from "@/components/Table";
 import { Button } from "@arkejs/ui";
-import { AssignParameterDelete, linkedParametersColumns } from "@/crud/arke";
+import {
+  AssignParameterDelete,
+  AssignParameterEdit,
+  linkedParametersColumns,
+} from "@/crud/arke";
 import { AssignParameterAdd } from "@/crud/arke/AssignParameterCrud";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 import { DEFAULT_PAGE_SIZE } from "@/utils/table";
 
@@ -96,6 +100,14 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
                     delete: rowData as TBaseParameter,
                   })),
               },
+              {
+                content: <PencilIcon className="h-4 w-4" />,
+                onClick: (rowData) =>
+                  setCrud((prevState) => ({
+                    ...prevState,
+                    edit: rowData as TBaseParameter,
+                  })),
+              },
             ],
           }}
           filterable={false}
@@ -126,6 +138,19 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
             setCrud((prevState) => ({ ...prevState, delete: false }));
           }}
           open={!!crud.delete}
+        />
+        <AssignParameterEdit
+          parameter={crud.edit as TBaseParameter}
+          onClose={() =>
+            setCrud((prevState) => ({ ...prevState, edit: false }))
+          }
+          arkeId={arke.id}
+          onEdit={() => {
+            loadData();
+            toast.success(`Parameter edited successfully`);
+            setCrud((prevState) => ({ ...prevState, edit: false }));
+          }}
+          open={!!crud.edit}
         />
       </>
     </>
