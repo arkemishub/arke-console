@@ -14,23 +14,46 @@
  * limitations under the License.
  */
 
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { TableConfigProvider } from "@arkejs/table";
 import { isImage } from "@/utils/file";
 import Image from "next/image";
+import { Checkbox, Json } from "@arkejs/ui";
 
 const AppTableConfigProvider = ({ children }: { children: ReactNode }) => {
   return (
     <TableConfigProvider
       components={{
-        string: (value) =>
-          value?.value && value?.label ? (
-            <p>
-              {value?.value} ({value?.label})
-            </p>
-          ) : (
-            <p>{value}</p>
-          ),
+        boolean: (value) => (
+          <Checkbox
+            color="primary"
+            checked={value}
+            onChange={() => undefined}
+          />
+        ),
+        // @ts-ignore
+        dict: (value) => <Json value={JSON.stringify(value)} />,
+        string: (value) => {
+          return (
+            <>
+              {Array.isArray(value) ? (
+                <div className="max-w-[320px] truncate">
+                  {value.map((item) => item.value).join(",")}
+                </div>
+              ) : (
+                <div>
+                  {value?.value && value?.label ? (
+                    <p>
+                      {value?.value} ({value?.label})
+                    </p>
+                  ) : (
+                    <p>{value?.toString() ?? "-"}</p>
+                  )}
+                </div>
+              )}
+            </>
+          );
+        },
         // TODO: we have to extend table with link
         // @ts-ignore
         link: (value) => (
