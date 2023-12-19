@@ -57,7 +57,12 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
               username: credentials.username,
               password: credentials.password,
             },
-            "credentials"
+            "credentials",
+            {
+              headers: {
+                "Arke-Project-Key": process.env.NEXT_PUBLIC_ARKE_PROJECT,
+              },
+            }
           );
 
           // If no error and we have user data, return it
