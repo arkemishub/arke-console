@@ -143,7 +143,11 @@ function InlineFilterInput({ column, filters, ...props }: InlineFilterProps) {
     );
   }
 
-  return <div className="h-[40px]" />;
+  return (
+    <div className="h-[40px]">
+      <Input placeholder="No filter available" readOnly disabled />
+    </div>
+  );
 }
 
 export default InlineFilter;

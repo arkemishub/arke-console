@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-import { useCallback, useState } from "react";
-import { Client, TUnit } from "@arkejs/client";
-import useClient from "@/arke/useClient";
+import { useState } from "react";
+import { TUnit } from "@arkejs/client";
 import { CrudState } from "@/types/crud";
-import { Filter, Sort, useTable } from "@arkejs/table";
-import { columns } from "@/crud/group";
+import { ParameterAdd, columns } from "@/crud/parameter";
 import {
-  CrudAddEdit as GroupAdd,
-  CrudAddEdit as GroupEdit,
+  CrudAddEdit as ParameterEdit,
   CrudDelete as ParameterDelete,
 } from "@/crud/common";
 import { PageTitle } from "@/components/PageTitle";
@@ -31,40 +28,14 @@ import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
 import { getClient } from "@/arke/getClient";
-import { Layout } from "@/components/Layout";
+import { ProjectLayout } from "@/components/Layout";
 import { Table } from "@/components/Table";
 import { AddIcon, EditIcon, TrashIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
+import useArkeTable from "@/hooks/useArkeTable";
 
-const PAGE_SIZE = 10;
-
-const fetchGroups = async (
-  client: Client,
-  page?: number,
-  filters?: Filter[],
-  sort?: Sort[]
-) =>
-  client.unit.getAll("group", {
-    params: {
-      filter:
-        filters && filters?.length > 0
-          ? `and(${filters.map(
-              (f) => `${f.operator}(${f.columnId},${f.value})`
-            )})`
-          : null,
-      offset: (page ?? 0) * PAGE_SIZE,
-      limit: PAGE_SIZE,
-      order: sort?.map((sort) => `${sort.columnId};${sort.type}`),
-    },
-  });
-
-function Groups(props: { groups: TUnit[]; count: number }) {
-  const [isLoading, setIsLoading] = useState(false);
-  const [groups, setGroups] = useState<TUnit[]>(props.groups);
-  const [count, setCount] = useState<number>(props.count);
-  const client = useClient();
-
+function Parameters(props: { parameters: TUnit[]; count: number }) {
   const [crud, setCrud] = useState<CrudState>({
     add: false,
     edit: false,
@@ -72,46 +43,19 @@ function Groups(props: { groups: TUnit[]; count: number }) {
   });
 
   const {
-    setFilters,
+    data: parameters,
+    loadData,
+    isLoading,
     tableProps,
-    sort,
-    setSort,
-    filters,
-    goToPage,
-    currentPage,
-  } = useTable(
-    typeof count !== "undefined"
-      ? {
-          pagination: {
-            totalCount: count,
-            type: "custom",
-            pageSize: PAGE_SIZE,
-          },
-          columns,
-          sorting: {
-            type: "custom",
-            sortable: true,
-          },
-        }
-      : null
-  );
-
-  const loadData = useCallback(
-    (page?: number, filters?: Filter[], sort?: Sort[]) => {
-      setIsLoading(true);
-      fetchGroups(client, page, filters, sort).then((res) => {
-        setGroups(res.data.content.items);
-        setCount(res.data.content.count);
-        setIsLoading(false);
-      });
-    },
-    []
-  );
+  } = useArkeTable("group", "parameter", columns, {
+    data: props.parameters,
+    count: props.count,
+  });
 
   return (
-    <Layout>
+    <ProjectLayout>
       <PageTitle
-        title="Groups"
+        title="Parameters"
         action={
           <Button
             color="primary"
@@ -119,12 +63,12 @@ function Groups(props: { groups: TUnit[]; count: number }) {
               setCrud((prevState) => ({ ...prevState, add: true }))
             }
           >
-            Add Group
+            Add Parameter
           </Button>
         }
       />
       <Table
-        data={groups}
+        data={parameters}
         loading={isLoading}
         actions={{
           label: "",
@@ -155,25 +99,13 @@ function Groups(props: { groups: TUnit[]; count: number }) {
           ],
         }}
         {...tableProps}
-        goToPage={(page) => {
-          goToPage(page);
-          loadData(page, filters, sort);
-        }}
-        onFiltersChange={(filters) => {
-          setFilters(filters);
-          loadData(currentPage, filters, sort);
-        }}
-        onSortChange={(sort) => {
-          setSort(sort);
-          loadData(currentPage, filters, sort);
-        }}
         noResult={
           <div className="flex flex-col items-center p-4 py-8 text-center">
             <div className="rounded-full bg-background-400 p-6">
               <AddIcon className="h-12 w-12 text-primary" />
             </div>
             <span className="mt-4 text-xl">
-              Create your first Group to get started.
+              Create your first Parameter to get started.
             </span>
             Do you need a hand? Check out our documentation.
             <div className="mt-4 flex">
@@ -183,35 +115,33 @@ function Groups(props: { groups: TUnit[]; count: number }) {
                   setCrud((prevState) => ({ ...prevState, add: true }))
                 }
               >
-                Add Group
+                Add Parameter
               </Button>
             </div>
           </div>
         }
       />
 
-      <GroupAdd
-        arkeId="group"
-        include={["id"]}
+      <ParameterAdd
         title={
           <div className="flex items-center gap-4">
             <AddIcon className="text-primary" />
-            Add Group
+            Add Parameter
           </div>
         }
         open={crud.add}
         onClose={() => setCrud((p) => ({ ...p, add: false }))}
         onSubmit={(res) => {
           loadData();
-          toast.success(`Group ${res.data.content.id} created correctly`);
+          toast.success(`Parameter ${res.data.content.id} created correctly`);
           setCrud((p) => ({ ...p, add: false }));
         }}
       />
-      <GroupEdit
+      <ParameterEdit
         title={
           <div className="flex items-center gap-4">
             <EditIcon className="text-primary" />
-            Edit Group
+            Edit Parameter
           </div>
         }
         open={!!crud.edit}
@@ -224,7 +154,7 @@ function Groups(props: { groups: TUnit[]; count: number }) {
         onClose={() => setCrud((p) => ({ ...p, edit: false }))}
         onSubmit={(res) => {
           loadData();
-          toast.success(`Group ${res.data.content.id} edited correctly`);
+          toast.success(`Parameter ${res.data.content.id} edited correctly`);
           setCrud((p) => ({ ...p, edit: false }));
         }}
       />
@@ -232,7 +162,7 @@ function Groups(props: { groups: TUnit[]; count: number }) {
         title={
           <div className="flex items-center gap-4">
             <TrashIcon className="text-error" />
-            Delete Group
+            Delete Parameter
           </div>
         }
         open={!!crud.delete}
@@ -249,11 +179,11 @@ function Groups(props: { groups: TUnit[]; count: number }) {
         }
         onSubmit={() => {
           loadData();
-          toast.success(`Group deleted correctly`);
+          toast.success(`Parameter deleted correctly`);
           setCrud((p) => ({ ...p, delete: false }));
         }}
       />
-    </Layout>
+    </ProjectLayout>
   );
 }
 
@@ -263,11 +193,11 @@ export const getServerSideProps: GetServerSideProps = withAuth(
     const client = getClient(context);
 
     try {
-      const response = await fetchGroups(client);
+      const response = await client.group.getAllUnits("parameter");
 
       return {
         props: {
-          groups: response.data.content.items,
+          parameters: response.data.content.items,
           count: response.data.content.count,
         },
       };
@@ -282,4 +212,4 @@ export const getServerSideProps: GetServerSideProps = withAuth(
   }
 );
 
-export default Groups;
+export default Parameters;

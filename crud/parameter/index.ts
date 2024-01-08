@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-export * from './columns';
-export * from './ParameterCrud';
+export * from "./columns";
+export * from "./ParameterCrud";

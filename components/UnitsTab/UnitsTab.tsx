@@ -14,19 +14,32 @@
  * limitations under the License.
  */
 
-import { Filter, Sort, useTable } from "@arkejs/table";
-import { useCallback, useEffect, useState } from "react";
+import { Column } from "@arkejs/table";
+import React, { useEffect, useState } from "react";
 import useClient from "@/arke/useClient";
 import { TUnit } from "@arkejs/client";
 import { CrudState } from "@/types/crud";
 import { Button } from "@arkejs/ui";
-import { CrudAddEdit as UnitAdd } from "@/crud/common";
-import { arkeUnitsColumns } from "@/crud/arke";
+import {
+  CrudAddEdit as UnitEdit,
+  CrudAddEdit as UnitAdd,
+  CrudDelete as UnitDelete,
+} from "@/crud/common";
 import { AddIcon } from "@/components/Icon";
 import { Table } from "@/components/Table";
 import toast from "react-hot-toast";
-
-const PAGE_SIZE = 10;
+import { useRouter } from "next/router";
+import EmptyState from "@/components/Table/EmptyState";
+import {
+  DocumentMagnifyingGlassIcon,
+  PencilIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import useArkeTable from "@/hooks/useArkeTable";
+import {
+  buildStructClientConfig,
+  STRUCT_DEFAULT_EXCLUDE,
+} from "@/utils/client";
 
 function UnitsTab({ arke }: { arke: TUnit }) {
   const [crud, setCrud] = useState<CrudState>({
@@ -34,142 +47,141 @@ function UnitsTab({ arke }: { arke: TUnit }) {
     edit: false,
     delete: false,
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState<TUnit[] | undefined>(undefined);
-  const [count, setCount] = useState<number | undefined>(undefined);
+  const [columns, setColumns] = useState<Column[]>([]);
   const client = useClient();
-  const {
-    setFilters,
-    tableProps,
-    sort,
-    setSort,
-    filters,
-    goToPage,
-    currentPage,
-  } = useTable(
-    typeof count !== "undefined"
-      ? {
-          pagination: {
-            totalCount: count,
-            type: "custom",
-            pageSize: PAGE_SIZE,
-          },
-          columns: arkeUnitsColumns,
-          sorting: {
-            sortable: true,
-            type: "custom",
-          },
-        }
-      : null
-  );
+  const router = useRouter();
+  const { project } = router.query;
 
-  const loadData = useCallback(
-    (page?: number, filters?: Filter[], sort?: Sort[]) => {
-      setIsLoading(true);
-      client.unit
-        .getAll(arke.id, {
-          params: {
-            filter:
-              filters && filters?.length > 0
-                ? `and(${filters.map(
-                    (f) => `${f.operator}(${f.columnId},${f.value})`
-                  )})`
-                : null,
-            offset: (page ?? 0) * PAGE_SIZE,
-            limit: PAGE_SIZE,
-            order: sort?.map((sort) => `${sort.columnId};${sort.type}`),
-          },
-        })
-        .then((res) => {
-          setData(res.data.content.items);
-          setCount(res.data.content.count);
-          setIsLoading(false);
-        })
-        .catch((err) => {
-          if (err.response.status === 403) {
-            toast.error(`You've not permission to get units`, {
-              id: "permission_error",
-            });
-          }
-        });
-    },
-    [arke.id]
+  const { data, isLoading, filters, loadData, tableProps } = useArkeTable(
+    "arke",
+    arke.id as string,
+    columns
   );
 
   useEffect(() => {
+    const structExclude = STRUCT_DEFAULT_EXCLUDE.filter(
+      (item) => item !== "id"
+    );
+    client.arke
+      .struct(
+        arke.id as string,
+        buildStructClientConfig({ exclude: structExclude })
+      )
+      .then((res) => {
+        const idColumn = res.data.content.parameters.filter(
+          (item) => item.id === "id"
+        );
+        const columnsWithoutId = res.data.content.parameters.filter(
+          (item) => item.id !== "id"
+        );
+        setColumns([...idColumn, ...columnsWithoutId] as Column[]);
+      });
     loadData();
   }, []);
 
   return (
     <>
-      {data && (
-        <>
-          <div className="flex justify-end">
-            <Button
-              color="primary"
-              onClick={() =>
-                setCrud((prevState) => ({ ...prevState, add: true }))
-              }
-            >
+      <>
+        <div className="flex justify-end">
+          <Button
+            color="primary"
+            onClick={() =>
+              setCrud((prevState) => ({ ...prevState, add: true }))
+            }
+          >
+            Add {arke.label}
+          </Button>
+        </div>
+        <Table
+          data={data ?? []}
+          loading={isLoading}
+          {...tableProps}
+          actions={{
+            label: "",
+            actions: [
+              {
+                content: <PencilIcon className="h-4 w-4" />,
+                onClick: (rowData) =>
+                  setCrud((prevState) => ({
+                    ...prevState,
+                    edit: rowData?.id as string,
+                  })),
+              },
+              {
+                content: <XMarkIcon className="h-4 w-4" />,
+                onClick: (rowData) =>
+                  setCrud((prevState) => ({
+                    ...prevState,
+                    delete: rowData?.id as string,
+                  })),
+              },
+              {
+                content: <DocumentMagnifyingGlassIcon className="h-4 w-4" />,
+                onClick: (rowData) =>
+                  router.push(`/${project}/arke/${arke.id}/${rowData.id}`),
+              },
+            ],
+          }}
+          noResult={
+            data?.length === 0 && filters.length === 0 ? (
+              <EmptyState
+                name={arke.label}
+                onCreate={() =>
+                  setCrud((prevState) => ({ ...prevState, add: true }))
+                }
+              />
+            ) : (
+              <div className="flex h-20 items-center justify-center">
+                No result found
+              </div>
+            )
+          }
+        />
+        <UnitAdd
+          title={
+            <div className="flex items-center gap-4">
+              <AddIcon className="text-primary" />
               Add {arke.label}
-            </Button>
-          </div>
-          <Table
-            data={data}
-            loading={isLoading}
-            {...tableProps}
-            goToPage={(page) => {
-              goToPage(page);
-              loadData(page, filters, sort);
-            }}
-            onFiltersChange={(filters) => {
-              setFilters(filters);
-              loadData(currentPage, filters, sort);
-            }}
-            onSortChange={(sort) => {
-              setSort(sort);
-              loadData(currentPage, filters, sort);
-            }}
-            noResult={
-              <div className="flex flex-col items-center p-4 py-8 text-center">
-                <div className="rounded-full bg-background-400 p-6">
-                  <AddIcon className="h-12 w-12 text-primary" />
-                </div>
-                <span className="mt-4 text-xl">
-                  Create your first {arke.label} to get started.
-                </span>
-                <div className="mt-4 flex">
-                  <Button
-                    className="border"
-                    onClick={() =>
-                      setCrud((prevState) => ({ ...prevState, add: true }))
-                    }
-                  >
-                    Add {arke.label}
-                  </Button>
-                </div>
-              </div>
-            }
-          />
-
-          <UnitAdd
-            title={
-              <div className="flex items-center gap-4">
-                <AddIcon className="text-primary" />
-                Add {arke.label}
-              </div>
-            }
-            open={!!crud.add}
-            arkeId={arke.id}
-            onClose={() => setCrud((p) => ({ ...p, add: false }))}
-            onSubmit={(res) => {
-              loadData();
-              toast.success(`${res.data.content.id} created correctly`);
-              setCrud((p) => ({ ...p, add: false }));
-            }}
-          />
-        </>
-      )}
+            </div>
+          }
+          open={!!crud.add}
+          arkeId={arke.id}
+          onClose={() => setCrud((p) => ({ ...p, add: false }))}
+          onSubmit={(res) => {
+            loadData();
+            toast.success(`${res.data.content.id} created correctly`);
+            setCrud((p) => ({ ...p, add: false }));
+          }}
+        />
+        <UnitEdit
+          arkeId={arke.id}
+          unitId={crud?.edit as string}
+          open={!!crud.edit}
+          title="Edit"
+          onClose={() =>
+            setCrud((prevState) => ({ ...prevState, edit: false }))
+          }
+          onSubmit={() => {
+            loadData();
+            toast.success(`Unit edited correctly`);
+            setCrud((prevState) => ({ ...prevState, edit: false }));
+          }}
+        />
+        <UnitDelete
+          arkeId={arke.id}
+          unitId={crud?.delete as string}
+          open={!!crud.delete}
+          title="Delete"
+          onClose={() =>
+            setCrud((prevState) => ({ ...prevState, delete: false }))
+          }
+          onSubmit={() => {
+            loadData();
+            toast.success(`Unit deleted correctly`);
+            setCrud((prevState) => ({ ...prevState, delete: false }));
+          }}
+        />
+      </>
     </>
   );
 }

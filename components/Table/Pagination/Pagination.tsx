@@ -34,7 +34,7 @@ function Pagination({
   totalCount: number;
 }) {
   return (
-    <div className="mt-auto flex justify-between px-2 pt-4">
+    <div className="absolute mt-auto flex w-full justify-between px-2 pt-4">
       {totalCount ? <p className="text-sm">Total: {totalCount}</p> : null}
 
       <div className="ml-auto flex">

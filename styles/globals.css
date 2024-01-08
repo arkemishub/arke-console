@@ -48,7 +48,7 @@
     }
 
     .arke__table__actions {
-        @apply flex
+        @apply flex h-16
     }
 
     .arke__table .arke__table__actions button {
@@ -159,10 +159,10 @@
 }
 
 html {
-    background: #000;
+    background: #0b0c11;
 }
 
-/*Change text in autofill textbox*/
+/* Change text in autofill textbook */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

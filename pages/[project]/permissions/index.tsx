@@ -14,22 +14,17 @@
  * limitations under the License.
  */
 
-import React, { useCallback, useEffect, useState } from "react";
-import { Client, LinkDirection, TUnit } from "@arkejs/client";
+import React, { useState } from "react";
+import { LinkDirection, TUnit } from "@arkejs/client";
 import { CrudState } from "@/types/crud";
 import { PageTitle } from "@/components/PageTitle";
 import { Accordion, Button } from "@arkejs/ui";
 import { getClient } from "@/arke/getClient";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
-import { Layout } from "@/components/Layout";
+import { ProjectLayout } from "@/components/Layout";
 import { acceptedRoles } from "@/arke/config";
-import { Filter, Sort, useTable } from "@arkejs/table";
-import { columns } from "@/crud/permission/columns";
 import { ExpandIcon } from "@/components/Icon/ExpandIcon";
-import useClient from "@/arke/useClient";
-import { AddIcon } from "@/components/Icon";
-import { Table } from "@/components/Table";
 import { PermissionTable } from "@/components/Permissions/PermissionTable";
 
 function Permissions(props: { data: TUnit[]; count: number }) {
@@ -46,7 +41,7 @@ function Permissions(props: { data: TUnit[]; count: number }) {
   );
 
   return (
-    <Layout>
+    <ProjectLayout>
       <PageTitle title="Permissions" />
       {data.map((item) => (
         <div key={item.id}>
@@ -71,13 +66,15 @@ function Permissions(props: { data: TUnit[]; count: number }) {
                   Add Permission
                 </Button>
               </div>
-              <PermissionTable role={item.id} />
+              <div className="pb-12">
+                <PermissionTable role={item.id} />
+              </div>
             </Accordion.Detail>
           </Accordion>
           <hr className="my-2 opacity-20" />
         </div>
       ))}
-    </Layout>
+    </ProjectLayout>
   );
 }
 

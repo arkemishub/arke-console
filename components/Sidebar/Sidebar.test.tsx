@@ -15,15 +15,14 @@
  */
 
 import { render } from "@testing-library/react";
-import { Sidebar } from "@/components/Sidebar";
+import Sidebar from "@/components/Sidebar/Sidebar";
 
 describe("Sidebar", () => {
   test("should render", () => {
     const { getByText } = render(<Sidebar />);
     expect(getByText("Dashboard")).toBeInTheDocument();
-    expect(getByText("Arke")).toBeInTheDocument();
-    expect(getByText("Parameters")).toBeInTheDocument();
-    expect(getByText("Users")).toBeInTheDocument();
-    expect(getByText("Logout")).toBeInTheDocument();
+    expect(getByText("Guide")).toBeInTheDocument();
+    expect(getByText("Report a problem")).toBeInTheDocument();
+    expect(getByText("Support chat")).toBeInTheDocument();
   });
 });

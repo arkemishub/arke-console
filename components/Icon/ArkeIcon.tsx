@@ -14,11 +14,17 @@
  * limitations under the License.
  */
 
-export function ArkeIcon({ className }: { className?: string }) {
+export function ArkeIcon({
+  className,
+  size = 18,
+}: {
+  className?: string;
+  size?: number;
+}) {
   return (
     <svg
-      width="14"
-      height="18"
+      width={size}
+      height={size}
       viewBox="0 0 14 18"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

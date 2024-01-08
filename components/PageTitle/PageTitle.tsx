@@ -20,6 +20,7 @@ import { Breadcrumb } from "@arkejs/ui";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { HomeIcon } from "@/components/Icon";
+import Divider from "@/components/Divider/Divider";
 
 function PageTitle({
   title,
@@ -36,7 +37,7 @@ function PageTitle({
   const routes = router.asPath.split("/");
 
   return (
-    <div className="relative mb-8 py-4">
+    <div className="sticky top-0 z-50 bg-background py-4 pt-10">
       <div className={twMerge("flex items-center justify-between ", className)}>
         {title && <h1 className="text-4xl">{title}</h1>}
         {action ?? null}
@@ -70,7 +71,9 @@ function PageTitle({
               </Breadcrumb.Crumb>
             ))}
           </Breadcrumb>
-          <div className="absolute bottom-0 h-[1px] w-full bg-gradient-to-r from-transparent via-primary to-transparent" />
+          <div className="mt-4">
+            <Divider />
+          </div>
         </>
       )}
     </div>

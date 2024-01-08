@@ -18,13 +18,13 @@ import { Column, ColumnType } from "@arkejs/table";
 import Link from "next/link";
 import { Switch } from "@arkejs/ui";
 
-export const columns: Column[] = [
+export const columns = (project: string): Column[] => [
   {
     label: "ID",
     id: "id",
     type: ColumnType.String,
     render: (data) => (
-      <Link href={`/arke/${data.id}`} className="underline">
+      <Link href={`/${project}/arke/${data.id}`} className="underline">
         {data.id as string}
       </Link>
     ),
@@ -36,22 +36,6 @@ export const columns: Column[] = [
     type: ColumnType.Bool,
     render: (data) => (
       <Switch checked={!!data.active} color="primary" disabled />
-    ),
-  },
-];
-
-export const arkeUnitsColumns: Column[] = [
-  {
-    label: "ID",
-    id: "id",
-    type: ColumnType.String,
-    render: (rowData) => (
-      <Link
-        className="underline"
-        href={`/arke/${rowData.arke_id}/${rowData.id}`}
-      >
-        {rowData.id as string}
-      </Link>
     ),
   },
 ];

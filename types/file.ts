@@ -13,5 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { TUnit } from "@arkejs/client";
 
-export { default as Sidebar } from "./Sidebar";
+export interface TFile extends TUnit {
+  size: number;
+  path: string;
+  name: string;
+  extension: string;
+  signed_url: string;
+}

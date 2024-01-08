@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-import { Filter, Sort, useTable } from "@arkejs/table";
+import { Column, Filter, Sort, useTable } from "@arkejs/table";
 import { useCallback, useEffect, useState } from "react";
 import useClient from "@/arke/useClient";
 import { TBaseParameter, TUnit } from "@arkejs/client";
 import { Table } from "@/components/Table";
 import { Button } from "@arkejs/ui";
-import { AssignParameterDelete, linkedParametersColumns } from "@/crud/arke";
+import {
+  AssignParameterDelete,
+  AssignParameterEdit,
+  linkedParametersColumns,
+} from "@/crud/arke";
 import { AssignParameterAdd } from "@/crud/arke/AssignParameterCrud";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
+import { DEFAULT_PAGE_SIZE } from "@/utils/table";
 
 const PAGE_SIZE = 10;
 
@@ -39,123 +44,115 @@ function AssignParametersTab({ arke }: { arke: TUnit }) {
   });
   const [data, setData] = useState<TBaseParameter[] | undefined>(undefined);
   const client = useClient();
-  const { filters, tableProps, setSort, setFilters, goToPage, currentPage } =
-    useTable(
-      data
-        ? {
-            pagination: {
-              totalCount: data.length,
-              type: "custom",
-              pageSize: PAGE_SIZE,
-            },
-            columns: linkedParametersColumns,
-          }
-        : null
-    );
-
-  const loadData = useCallback(
-    (page?: number, filters?: Filter[], sort?: Sort[]) => {
-      client.arke
-        .struct(arke.id, {
-          params: {
-            filter:
-              filters && filters?.length > 0
-                ? `and(${filters.map(
-                    (f) => `${f.operator}(${f.columnId},${f.value})`
-                  )})`
-                : null,
-            offset: (page ?? 0) * PAGE_SIZE,
-            limit: PAGE_SIZE,
-            order: sort?.map((sort) => `${sort.columnId};${sort.type}`),
-          },
-        })
-        .then((res) => {
-          setData(
-            res.data.content.parameters.map((item) => {
-              item.refLink = item.ref;
-              return item;
-            })
-          );
-        });
+  const { tableProps, goToPage, currentPage } = useTable({
+    pagination: {
+      totalCount: data?.length ?? 0,
+      type: "custom",
+      pageSize: DEFAULT_PAGE_SIZE,
     },
-    [arke.id]
-  );
+    columns: linkedParametersColumns,
+    sorting: {
+      sortable: false,
+    },
+  });
+
+  const loadData = useCallback(() => {
+    client.arke.struct(arke.id).then((res) => {
+      setData(
+        res.data.content.parameters.map((item) => {
+          item.refLink = item.ref;
+          return item;
+        })
+      );
+    });
+  }, [arke.id]);
 
   useEffect(() => {
     loadData();
   }, []);
 
+  const pagedData =
+    data?.slice(currentPage * PAGE_SIZE, (currentPage + 1) * PAGE_SIZE) ?? [];
+
   return (
     <>
-      {data && (
-        <>
-          <div className="flex justify-end">
-            <Button
-              color="primary"
-              onClick={() =>
-                setCrud((prevState) => ({ ...prevState, add: true }))
-              }
-            >
-              Assign Parameters
-            </Button>
-          </div>
-          <Table
-            actions={{
-              label: "",
-              actions: [
-                {
-                  content: <XMarkIcon className="h-4 w-4" />,
-                  onClick: (rowData) =>
-                    setCrud((prevState) => ({
-                      ...prevState,
-                      delete: rowData as TBaseParameter,
-                    })),
-                },
-              ],
-            }}
-            filterable={false}
-            data={data}
-            {...tableProps}
-            goToPage={(page) => {
-              goToPage(page);
-              loadData(page);
-            }}
-            onFiltersChange={(filters) => {
-              setFilters(filters);
-              loadData(currentPage, filters);
-            }}
-            onSortChange={(sort) => {
-              setSort(sort);
-              loadData(currentPage, filters, sort);
-            }}
-          />
-          <AssignParameterAdd
-            arkeId={arke.id}
-            linkedParameters={data as TUnit[]}
-            open={crud.add}
-            onClose={() =>
-              setCrud((prevState) => ({ ...prevState, add: false }))
+      <>
+        <div className="flex justify-end">
+          <Button
+            color="primary"
+            onClick={() =>
+              setCrud((prevState) => ({ ...prevState, add: true }))
             }
-            onSubmit={() => {
-              loadData();
-              toast.success(`Parameters assigned correctly`);
-              setCrud((prevState) => ({ ...prevState, add: false }));
-            }}
-          />
-          <AssignParameterDelete
-            parameter={crud.delete as TBaseParameter}
-            onClose={() =>
-              setCrud((prevState) => ({ ...prevState, delete: false }))
-            }
-            arkeId={arke.id}
-            onDelete={() => {
-              loadData();
-              setCrud((prevState) => ({ ...prevState, delete: false }));
-            }}
-            open={!!crud.delete}
-          />
-        </>
-      )}
+          >
+            Assign Parameters
+          </Button>
+        </div>
+        <Table
+          {...tableProps}
+          actions={{
+            label: "",
+            actions: [
+              {
+                content: <XMarkIcon className="h-4 w-4" />,
+                onClick: (rowData) =>
+                  setCrud((prevState) => ({
+                    ...prevState,
+                    delete: rowData as TBaseParameter,
+                  })),
+              },
+              {
+                content: <PencilIcon className="h-4 w-4" />,
+                onClick: (rowData) =>
+                  setCrud((prevState) => ({
+                    ...prevState,
+                    edit: rowData as TBaseParameter,
+                  })),
+              },
+            ],
+          }}
+          filterable={false}
+          data={pagedData}
+          goToPage={(page: number) => {
+            goToPage(page);
+          }}
+        />
+        <AssignParameterAdd
+          arkeId={arke.id}
+          linkedParameters={data as TUnit[]}
+          open={crud.add}
+          onClose={() => setCrud((prevState) => ({ ...prevState, add: false }))}
+          onSubmit={() => {
+            loadData();
+            toast.success(`Parameters assigned correctly`);
+            setCrud((prevState) => ({ ...prevState, add: false }));
+          }}
+        />
+        <AssignParameterDelete
+          parameter={crud.delete as TBaseParameter}
+          onClose={() =>
+            setCrud((prevState) => ({ ...prevState, delete: false }))
+          }
+          arkeId={arke.id}
+          onDelete={() => {
+            loadData();
+            setCrud((prevState) => ({ ...prevState, delete: false }));
+          }}
+          open={!!crud.delete}
+        />
+        <AssignParameterEdit
+          parameter={crud.edit as TBaseParameter}
+          onClose={() =>
+            setCrud((prevState) => ({ ...prevState, edit: false }))
+          }
+          arkeId={arke.id}
+          onEdit={() => {
+            loadData();
+            toast.success(`Parameter edited successfully`);
+            setCrud((prevState) => ({ ...prevState, edit: false }));
+          }}
+          open={!!crud.edit}
+        />
+      </>
     </>
   );
 }

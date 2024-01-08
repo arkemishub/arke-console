@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { FormConfigProvider as FCProvider } from "@arkejs/form";
 import { Autocomplete, Checkbox, Input, Json } from "@arkejs/ui";
 import AutocompleteLink from "@/components/AppFormConfigProvider/components/AutocompleteLink";
-import Dropzone from "@/components/Dropzone/Dropzone";
+import FileDropzone from "@/components/AppFormConfigProvider/components/FileDropzone";
 
 export default function AppFormConfigProvider(props: { children: ReactNode }) {
   return (
@@ -96,12 +96,14 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
         link: ({ field }: any) =>
           field?.link_ref?.id === "arke_file" ? (
             <>
-              <Dropzone
-                {...field}
-                onChange={(files) => {
-                  field?.onChange(files?.[0] ?? null);
-                }}
-              />
+              <FileDropzone {...field} />
+              {!field.value?.path && (
+                <Input
+                  {...field}
+                  label=""
+                  helperText="If you already known the file ID use this input"
+                />
+              )}
             </>
           ) : (
             <AutocompleteLink {...field} onChange={field.onChange} />

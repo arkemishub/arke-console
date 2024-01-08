@@ -48,7 +48,7 @@ function DocsTabContent({ doc }: { doc: Doc }) {
   return (
     <div className="api__docs__content">
       <h3 className="text-xl">{doc.title}</h3>
-      <p className="pt-2 pb-4">{doc.description}</p>
+      <p className="pb-4 pt-2">{doc.description}</p>
       <Tabs>
         {doc.code.map(({ language }, index) => (
           <Tabs.Tab key={index}>

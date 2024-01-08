@@ -21,6 +21,9 @@ const nextConfig = {
     return [{ source: "/next/api/:path*", destination: "/api/:path*" }];
   },
   output: "standalone",
+  images: {
+    domains: ["storage.googleapis.com"],
+  },
 };
 
 module.exports = nextConfig;

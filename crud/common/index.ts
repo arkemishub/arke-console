@@ -14,5 +14,5 @@
  * limitations under the License.
  */
 
-export * from './CrudAddEdit';
-export * from './CrudDelete';
+export * from "./CrudAddEdit";
+export * from "./CrudDelete";

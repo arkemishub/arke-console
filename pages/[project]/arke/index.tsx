@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-import { Filter, Sort, useTable } from "@arkejs/table";
-import useClient from "@/arke/useClient";
-import { useCallback, useState } from "react";
-import { Client, TUnit } from "@arkejs/client";
+import { useState } from "react";
+import { TUnit } from "@arkejs/client";
 import {
   ArkeCrud as ArkeAdd,
   ArkeCrud as ArkeEdit,
@@ -31,87 +29,31 @@ import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { getClient } from "@/arke/getClient";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
-import { Layout } from "@/components/Layout";
+import { ProjectLayout } from "@/components/Layout";
 import { Table } from "@/components/Table";
 import { AddIcon, EditIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
-
-const PAGE_SIZE = 10;
-
-const fetchArke = async (
-  client: Client,
-  page?: number,
-  filters?: Filter[],
-  sort?: Sort[]
-) => {
-  return client.arke.getAll({
-    params: {
-      filter:
-        filters && filters?.length > 0
-          ? `and(${filters.map(
-              (f) => `${f.operator}(${f.columnId},${f.value})`
-            )})`
-          : null,
-      offset: (page ?? 0) * PAGE_SIZE,
-      limit: PAGE_SIZE,
-      order: sort?.map((sort) => `${sort.columnId};${sort.type}`),
-    },
-  });
-};
+import { useRouter } from "next/router";
+import EmptyState from "@/components/Table/EmptyState";
+import useArkeTable from "@/hooks/useArkeTable";
 
 function Arke(props: { data: TUnit[]; count: number }) {
-  const [data, setData] = useState<TUnit[] | undefined>(props.data);
-  const [isLoading, setIsLoading] = useState(false);
-  const [count, setCount] = useState<number | undefined>(props.count);
-  const client = useClient();
-
   const [crud, setCrud] = useState<CrudState>({
     add: false,
     edit: false,
     delete: false,
   });
-
-  const {
-    sort,
-    setFilters,
-    tableProps,
-    totalCount,
-    setSort,
-    filters,
-    goToPage,
-    currentPage,
-  } = useTable(
-    typeof count !== "undefined"
-      ? {
-          pagination: {
-            totalCount: count,
-            type: "custom",
-            pageSize: PAGE_SIZE,
-          },
-          columns,
-          sorting: {
-            sortable: true,
-            type: "custom",
-          },
-        }
-      : null
-  );
-
-  const loadData = useCallback(
-    (page?: number, filters?: Filter[], sort?: Sort[]) => {
-      setIsLoading(true);
-      fetchArke(client, page, filters, sort).then((res) => {
-        setData(res.data.content.items);
-        setCount(res.data.content.count);
-        setIsLoading(false);
-      });
-    },
-    []
-  );
+  const router = useRouter();
+  const { project } = router.query;
+  const { data, isLoading, filters, count, loadData, tableProps } =
+    useArkeTable("arke", "arke", columns(project as string), {
+      data: props.data,
+      count: props.count,
+    });
 
   return (
-    <Layout>
+    <ProjectLayout>
       <PageTitle
         title="Arke"
         action={
@@ -151,40 +93,21 @@ function Arke(props: { data: TUnit[]; count: number }) {
             ],
           }}
           {...tableProps}
-          goToPage={(page) => {
-            goToPage(page);
-            loadData(page, filters, sort);
-          }}
-          onFiltersChange={(filters) => {
-            setFilters(filters);
-            loadData(currentPage, filters, sort);
-          }}
-          onSortChange={(sort) => {
-            setSort(sort);
-            loadData(currentPage, filters, sort);
-          }}
           noResult={
-            <div className="flex flex-col items-center p-4 py-8 text-center">
-              <div className="rounded-full bg-background-400 p-6">
-                <AddIcon className="h-12 w-12 text-primary" />
+            data.length === 0 && filters.length === 0 ? (
+              <EmptyState
+                name="Arke"
+                onCreate={() =>
+                  setCrud((prevState) => ({ ...prevState, add: true }))
+                }
+              />
+            ) : (
+              <div className="flex h-20 items-center justify-center">
+                No result found
               </div>
-              <span className="mt-4 text-xl">
-                Create your first Arke to get started.
-              </span>
-              Do you need a hand? Check out our documentation.
-              <div className="mt-4 flex">
-                <Button
-                  className="border"
-                  onClick={() =>
-                    setCrud((prevState) => ({ ...prevState, add: true }))
-                  }
-                >
-                  Add Arke
-                </Button>
-              </div>
-            </div>
+            )
           }
-          totalCount={totalCount}
+          totalCount={count}
         />
       )}
       <ArkeAdd
@@ -228,7 +151,7 @@ function Arke(props: { data: TUnit[]; count: number }) {
           setCrud((p) => ({ ...p, delete: false }));
         }}
       />
-    </Layout>
+    </ProjectLayout>
   );
 }
 
@@ -236,7 +159,7 @@ export const getServerSideProps: GetServerSideProps = withAuth(
   acceptedRoles,
   async (context) => {
     const client = getClient(context);
-    const response = await fetchArke(client);
+    const response = await client.arke.getAll();
 
     return {
       props: {

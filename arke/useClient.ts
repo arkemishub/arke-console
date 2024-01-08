@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
-import { getClient } from '@/arke/getClient';
+import { getClient } from "@/arke/getClient";
+import { useRouter } from "next/router";
 
 export default function useClient() {
-  return getClient();
+  const { query } = useRouter();
+  // TODO: fix query type
+  // @ts-ignore
+  return getClient({ query });
 }
