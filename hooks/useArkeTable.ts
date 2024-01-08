@@ -32,7 +32,7 @@ type UseArkeTableReturn = {
   count: number;
   isLoading: boolean;
   loadData: (params?: any) => void;
-} & IUseTableData<any, any>;
+} & IUseTableData<any, any, any>;
 
 export default function useArkeTable(
   kind: "arke" | "group",
@@ -46,6 +46,7 @@ export default function useArkeTable(
   const [isLoading, setIsLoading] = useState(false);
   const [count, setCount] = useState<number>(fallback?.count ?? 0);
 
+  // @ts-ignore
   const { tableProps, ...tableConfig } = useTable(
     getTableDefaultConfig(columns, count)
   );
@@ -85,11 +86,12 @@ export default function useArkeTable(
 
   const onSortChange = (sort: Sort[]) => {
     tableConfig.setSort(sort);
-    loadData({ sort });
+    void loadData({ sort });
   };
 
   return {
     ...tableConfig,
+    // @ts-ignore
     tableProps: { ...tableProps, goToPage, onFiltersChange, onSortChange },
     count,
     data,

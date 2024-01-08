@@ -26,7 +26,7 @@ import { TUnit } from "@arkejs/client";
 export const DEFAULT_PAGE_SIZE = 10;
 
 type BuildClientConfigParams = Pick<
-  IUseTableData<any, any>,
+  IUseTableData<any, any, any>,
   "filters" | "currentPage" | "sort"
 > & {
   operator?: "and" | "or";
@@ -60,7 +60,7 @@ function buildGetAllClientConfig({
 function getTableDefaultConfig(
   columns: TUnit[] | Column[],
   count: number
-): IUseTableConfig<IPaginationConfig, ISortConfig> | null {
+): IUseTableConfig<IPaginationConfig, ISortConfig, false> | null {
   if (typeof count === "undefined") return null;
 
   return {
