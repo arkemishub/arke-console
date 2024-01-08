@@ -31,6 +31,7 @@ import toast from "react-hot-toast";
 import { CompassIcon } from "@/components/Icon/CompassIcon";
 import { ArkeIcon } from "@/components/Icon/ArkeIcon";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
+import { isMultiProjectConsole } from "@/utils/system";
 
 function ProjectSidebar() {
   const { query } = useRouter();
@@ -78,9 +79,15 @@ function ProjectSidebar() {
             />
           </li>
 
-          <div>
-            <SidebarItem icon={HomeIcon} label="Return to Dashboard" href="/" />
-          </div>
+          {isMultiProjectConsole() && (
+            <div>
+              <SidebarItem
+                icon={HomeIcon}
+                label="Return to Dashboard"
+                href="/"
+              />
+            </div>
+          )}
 
           <p className="p-4">Elements</p>
           <div className="ml-4 border-l border-gray-500 pl-2">

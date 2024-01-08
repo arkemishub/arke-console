@@ -42,6 +42,7 @@ import {
   CrudAddEdit as ProjectEdit,
   CrudDelete as ProjectDelete,
 } from "@/crud/common";
+import { isMultiProjectConsole } from "@/utils/system";
 
 export default function Home(props: { projects: TProject[] }) {
   const client = useClient();
@@ -157,10 +158,19 @@ export const getServerSideProps: GetServerSideProps = withAuth(
   async (context) => {
     const client = getClient(context);
     const projects = await client.unit.getAll("arke_project");
-    return {
-      props: {
-        projects: projects.data.content.items,
-      },
-    };
+    if (isMultiProjectConsole()) {
+      return {
+        props: {
+          projects: projects.data.content.items,
+        },
+      };
+    } else {
+      return {
+        redirect: {
+          destination: `/${process.env.NEXT_PUBLIC_ARKE_PROJECT}`,
+          permanent: false,
+        },
+      };
+    }
   }
 );
