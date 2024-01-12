@@ -51,7 +51,9 @@ export function CrudAddEdit(props: CrudProps) {
   const onFormSubmit = useCallback(
     (data: Record<string, unknown>) => {
       const formData = new FormData();
-      delete data.id;
+      if (!data.id) {
+        delete data.id;
+      }
       if (containsFile(data)) {
         Object.keys(data).map((key) => {
           if (data[key]) formData.append(key, data[key] as Blob);
