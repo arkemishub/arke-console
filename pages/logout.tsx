@@ -17,6 +17,7 @@
 import React, { useEffect } from "react";
 import { signOut } from "next-auth/react";
 import { deleteCookie } from "cookies-next";
+import Image from "next/image";
 
 export default function Logout() {
   useEffect(() => {
@@ -25,14 +26,8 @@ export default function Logout() {
   }, []);
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <div className="flex h-screen flex-col items-center justify-center gap-6">
+      <Image src="/arke_logo.svg" alt="logo" height={60} width={140} />
       You are being logged out...
     </div>
   );

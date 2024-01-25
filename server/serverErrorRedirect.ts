@@ -15,11 +15,12 @@
  */
 
 import type { GetServerSidePropsResult } from "next";
+import { HTTPStatusCode } from "@arkejs/client";
 
 export default function serverErrorRedirect(
   error: any
 ): GetServerSidePropsResult<any> {
-  if (error?.response?.status === 401) {
+  if (error?.response?.status === HTTPStatusCode.Unauthorized) {
     return {
       redirect: {
         destination: "/logout",

@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import { Client, TToken } from "@arkejs/client";
+import { Client, HTTPStatusCode, TToken } from "@arkejs/client";
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import { getToken } from "next-auth/jwt";
 import { getCookie } from "cookies-next";
 import { getCookieName } from "@/utils/auth";
 import { NextParsedUrlQuery } from "next/dist/server/request-meta";
+import { redirect } from "next/navigation";
 
 const getServerUrl = () => {
   if (

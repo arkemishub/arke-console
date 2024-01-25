@@ -34,6 +34,7 @@ import { TFile } from "@/types/file";
 import dynamic from "next/dynamic";
 import { isImage } from "@/utils/file";
 import Image from "next/image";
+import serverErrorRedirect from "@/server/serverErrorRedirect";
 
 const Json = dynamic(() => import("@arkejs/ui").then((module) => module.Json), {
   ssr: false,
@@ -169,12 +170,7 @@ export const getServerSideProps: GetServerSideProps = withAuth(
 
       return { props: { detail: response.data.content } };
     } catch (e) {
-      return {
-        redirect: {
-          destination: "/404",
-          permanent: false,
-        },
-      };
+      return serverErrorRedirect(e);
     }
   }
 );

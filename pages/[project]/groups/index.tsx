@@ -36,6 +36,7 @@ import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
 import EmptyState from "@/components/Table/EmptyState";
 import useArkeTable from "@/hooks/useArkeTable";
+import serverErrorRedirect from "@/server/serverErrorRedirect";
 
 function Groups(props: { groups: TUnit[]; count: number }) {
   const [crud, setCrud] = useState<CrudState>({
@@ -199,12 +200,7 @@ export const getServerSideProps: GetServerSideProps = withAuth(
         },
       };
     } catch (e) {
-      return {
-        redirect: {
-          destination: "/404",
-          permanent: false,
-        },
-      };
+      return serverErrorRedirect(e);
     }
   }
 );

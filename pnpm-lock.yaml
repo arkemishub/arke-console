@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@arkejs/client':
-    specifier: 2.9.1
-    version: 2.9.1
+    specifier: 2.9.4
+    version: 2.9.4
   '@arkejs/form':
     specifier: 1.6.2
     version: 1.6.2(react-dom@18.2.0)(react@18.2.0)
@@ -138,10 +138,10 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
 
-  /@arkejs/client@2.9.1:
-    resolution: {integrity: sha512-Dj6hPZVUhJ726AS9N9QpuiL2QIwkMYbPEY1zQUKbdUa6ZTN1//DP0AJ2oZnVkkvfTjr716BPmVsyS7FTdtS4yg==}
+  /@arkejs/client@2.9.4:
+    resolution: {integrity: sha512-VOHOC7/Vc0k36j/+SeZBscQRZnAfKi8PZ4sDJL6YsvUg9s3gmsU8xmTjiwi75v089EcIV6YH5ZnAggjQn+PXfg==}
     dependencies:
-      axios: 1.4.0
+      axios: 1.6.0
     transitivePeerDependencies:
       - debug
     dev: false
@@ -1954,8 +1954,8 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
-  /axios@1.4.0:
-    resolution: {integrity: sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==}
+  /axios@1.6.0:
+    resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
     dependencies:
       follow-redirects: 1.15.2
       form-data: 4.0.0

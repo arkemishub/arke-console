@@ -37,6 +37,7 @@ import { AddIcon, EditIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { acceptedRoles } from "@/arke/config";
 import EmptyState from "@/components/Table/EmptyState";
+import serverErrorRedirect from "@/server/serverErrorRedirect";
 
 const PAGE_SIZE = 10;
 
@@ -233,14 +234,18 @@ export const getServerSideProps: GetServerSideProps = withAuth(
   acceptedRoles,
   async (context) => {
     const client = getClient(context);
-    const response = await fetchArke(client);
+    try {
+      const response = await fetchArke(client);
 
-    return {
-      props: {
-        data: response.data.content.items,
-        count: response.data.content.count,
-      },
-    };
+      return {
+        props: {
+          data: response.data.content.items,
+          count: response.data.content.count,
+        },
+      };
+    } catch (e) {
+      return serverErrorRedirect(e);
+    }
   }
 );
 

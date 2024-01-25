@@ -26,6 +26,7 @@ import { ProjectLayout } from "@/components/Layout";
 import { acceptedRoles } from "@/arke/config";
 import { ExpandIcon } from "@/components/Icon/ExpandIcon";
 import { PermissionTable } from "@/components/Permissions/PermissionTable";
+import serverErrorRedirect from "@/server/serverErrorRedirect";
 
 function Permissions(props: { data: TUnit[]; count: number }) {
   const { data } = props;
@@ -95,13 +96,17 @@ export const getServerSideProps: GetServerSideProps = withAuth(
       );
     };
 
-    const response = await fetchMembers();
-    return {
-      props: {
-        data: response.data.content.items,
-        count: response.data.content.count,
-      },
-    };
+    try {
+      const response = await fetchMembers();
+      return {
+        props: {
+          data: response.data.content.items,
+          count: response.data.content.count,
+        },
+      };
+    } catch (e) {
+      return serverErrorRedirect(e);
+    }
   }
 );
 
