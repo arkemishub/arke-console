@@ -11,7 +11,7 @@
     "test": "jest --silent"
   },
   "dependencies": {
-    "@arkejs/client": "2.9.4",
+    "@arkejs/client": "2.9.5",
     "@arkejs/form": "1.6.2",
     "@arkejs/table": "0.8.0",
     "@arkejs/ui": "0.29.0",

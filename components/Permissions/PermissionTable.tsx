@@ -19,7 +19,7 @@ import { Client, LinkDirection, TUnit } from "@arkejs/client";
 import useClient from "@/arke/useClient";
 import { CrudState } from "@/types/crud";
 import { Filter, Sort, useTable } from "@arkejs/table";
-import { columns } from "@/crud/permission/columns";
+import { getColumns } from "@/crud/permission/columns";
 import { Table } from "@/components/Table";
 import { AddIcon } from "@/components/Icon";
 import { Button } from "@arkejs/ui";
@@ -53,12 +53,24 @@ const fetchArkePermission = async (
   );
 };
 
-export function PermissionTable(props: { role: string }) {
-  const { role } = props;
+export function PermissionTable({ role }: { role: string }) {
   const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState<TUnit[] | undefined>([]);
   const [count, setCount] = useState<number | undefined>(0);
   const client = useClient();
+
+  const loadData = useCallback(
+    (page?: number, filters?: Filter[], sort?: Sort[]) => {
+      setIsLoading(true);
+      fetchArkePermission(role, client, page, filters, sort).then((res) => {
+        setData(res.data.content.items);
+        setCount(res.data.content.count);
+        setIsLoading(false);
+      });
+    },
+    []
+  );
+  const columns = getColumns(role);
 
   const [crud, setCrud] = useState<CrudState>({
     add: false,
@@ -90,18 +102,6 @@ export function PermissionTable(props: { role: string }) {
           },
         }
       : null
-  );
-
-  const loadData = useCallback(
-    (page?: number, filters?: Filter[], sort?: Sort[]) => {
-      setIsLoading(true);
-      fetchArkePermission(role, client, page, filters, sort).then((res) => {
-        setData(res.data.content.items);
-        setCount(res.data.content.count);
-        setIsLoading(false);
-      });
-    },
-    []
   );
 
   useEffect(() => {

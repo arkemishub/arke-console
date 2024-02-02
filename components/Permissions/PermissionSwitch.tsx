@@ -17,23 +17,35 @@ import useClient from "@/arke/useClient";
 import { Switch } from "@arkejs/ui";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { TUnit } from "@arkejs/client";
 
-interface PermissionSwitchProps {
-  role: string;
+type PermissionSwitchProps = {
+  roleID: string;
+  unitID: string;
   method: string;
-  checked: boolean;
-}
+} & TUnit<true>;
 
-export function PermissionSwitch(props: PermissionSwitchProps) {
+export function PermissionSwitch({
+  roleID,
+  unitID,
+  method,
+  link: { metadata },
+}: PermissionSwitchProps) {
+  const [checked, setChecked] = useState(!!metadata[method]);
   const client = useClient();
-  const { role, method } = props;
-  const [checked, setChecked] = useState(props.checked);
-  function onChange(status: boolean) {
-    console.log(role, method, status);
-    /*client.unit.edit("arke", role, {}).then((res) => console.log(res.data));
-    setChecked(!checked);
-    toast.success(`Permission ${role} (${method.toUpperCase()}) updated`);*/
-    // TODO: reset check if api call failed
+  async function onChange(value: boolean) {
+    try {
+      await client.unit.topology.editLink(
+        { arkeId: "arke", id: roleID },
+        "permission",
+        { arkeId: "arke", id: unitID },
+        { metadata: { ...metadata, [method]: value } }
+      );
+      setChecked(value);
+      toast.success(`Permission ${roleID} (${method.toUpperCase()}) updated`);
+    } catch (err) {
+      toast.error("Something went wrong");
+    }
   }
 
   return (

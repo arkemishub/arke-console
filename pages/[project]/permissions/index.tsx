@@ -27,19 +27,21 @@ import { acceptedRoles } from "@/arke/config";
 import { ExpandIcon } from "@/components/Icon/ExpandIcon";
 import { PermissionTable } from "@/components/Permissions/PermissionTable";
 import serverErrorRedirect from "@/server/serverErrorRedirect";
+import AddPermissionDialog from "@/components/Permissions/AddPermissionDialog";
 
 function Permissions(props: { data: TUnit[]; count: number }) {
   const { data } = props;
-  const [crud, setCrud] = useState<CrudState>({
-    add: false,
-    edit: false,
-    delete: false,
-  });
+  const [activeRole, setActiveRole] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<Record<string, boolean>>(
     data.reduce((accumulator, value) => {
       return { ...accumulator, [value.id]: false };
     }, {})
   );
+
+  const onAddPermission = (role: string) => {
+    setExpanded((prevState) => ({ ...prevState, [role]: false }));
+    setActiveRole(null);
+  };
 
   return (
     <ProjectLayout>
@@ -60,9 +62,7 @@ function Permissions(props: { data: TUnit[]; count: number }) {
                 <Button
                   className="mt-4"
                   color="primary"
-                  onClick={() =>
-                    setCrud((prevState) => ({ ...prevState, add: true }))
-                  }
+                  onClick={() => setActiveRole(item.id)}
                 >
                   Add Permission
                 </Button>
@@ -75,6 +75,12 @@ function Permissions(props: { data: TUnit[]; count: number }) {
           <hr className="my-2 opacity-20" />
         </div>
       ))}
+      <AddPermissionDialog
+        roleID={activeRole}
+        open={!!activeRole}
+        onClose={() => setActiveRole(null)}
+        onSubmit={onAddPermission}
+      />
     </ProjectLayout>
   );
 }
