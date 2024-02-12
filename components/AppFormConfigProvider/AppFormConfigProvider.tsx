@@ -58,6 +58,14 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
             onChange={(e) => field.onChange(e.target.value)}
           />
         ),
+        datetime: ({ field }) => (
+          <Input
+            {...field}
+            type="datetime"
+            fullWidth
+            onChange={(e) => field.onChange(e.target.value)}
+          />
+        ),
         string: ({ field }) => {
           if (field.values && field.values.length > 0)
             return (
