@@ -14,34 +14,56 @@
  * limitations under the License.
  */
 import useClient from "@/arke/useClient";
-import { Input } from "@arkejs/ui";
-import { useRef, useState } from "react";
-import useOnClickOutside from "@/hooks/useOnClickOutside";
+import { Form, useForm } from "@arkejs/form";
+import { Button } from "@arkejs/ui";
+import { CheckIcon } from "@heroicons/react/20/solid";
+import toast from "react-hot-toast";
+import { TUnit } from "@arkejs/client";
 
-interface PermissionInputProps {
-  role: string;
+type PermissionInputProps = {
+  roleID: string;
   value: string;
-}
-export function PermissionInput(props: PermissionInputProps) {
+  unitID: string;
+} & TUnit<true>;
+
+export function PermissionInput({
+  roleID,
+  unitID,
+  value,
+  link,
+}: PermissionInputProps) {
   const client = useClient();
-  const [value, setValue] = useState(props.value);
-  const inputRef = useRef<HTMLDivElement>(null);
+  const {
+    formProps,
+    methods: { handleSubmit },
+  } = useForm({
+    fields: [{ id: "filter", type: "string", value: value }],
+  });
 
-  function onUpdateData() {
-    console.log(value);
-  }
+  const onSubmit = async (data: Record<string, unknown>) => {
+    try {
+      await client.unit.topology.editLink(
+        { arkeId: "arke", id: roleID },
+        "permission",
+        { arkeId: "arke", id: unitID },
+        { metadata: { ...link?.metadata, filter: data.filter } }
+      );
+      toast.success(`Filter updated`);
+    } catch (err) {
+      toast.error("Something went wrong");
+    }
+  };
 
-  useOnClickOutside(inputRef, onUpdateData);
   return (
-    <Input
-      {...props}
-      label=""
-      // @ts-ignore
-      itemRef={inputRef}
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      onKeyDown={(e) => e.key === "Enter" && onUpdateData()}
-      onBlur={onUpdateData}
-    />
+    <Form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex items-center gap-2"
+      {...formProps}
+    >
+      <Form.Field id="filter" />
+      <Button type="submit" color="primary" className="h-full">
+        <CheckIcon className="h-5 w-5" />
+      </Button>
+    </Form>
   );
 }

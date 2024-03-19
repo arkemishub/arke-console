@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@arkejs/client':
-    specifier: 2.9.4
-    version: 2.9.4
+    specifier: 2.9.5
+    version: 2.9.5
   '@arkejs/form':
     specifier: 1.6.2
     version: 1.6.2(react-dom@18.2.0)(react@18.2.0)
@@ -138,8 +138,8 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
 
-  /@arkejs/client@2.9.4:
-    resolution: {integrity: sha512-VOHOC7/Vc0k36j/+SeZBscQRZnAfKi8PZ4sDJL6YsvUg9s3gmsU8xmTjiwi75v089EcIV6YH5ZnAggjQn+PXfg==}
+  /@arkejs/client@2.9.5:
+    resolution: {integrity: sha512-2TmaE5wCMuBLue0ew+4/IuETRF/EfKwT3JfEHyiOXas4b/o72smqRFX83kameqVqhOpOG+LkrLCyKCn/olYgTA==}
     dependencies:
       axios: 1.6.0
     transitivePeerDependencies:

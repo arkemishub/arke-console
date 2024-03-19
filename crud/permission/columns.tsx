@@ -19,7 +19,7 @@ import { PermissionSwitch } from "@/components/Permissions/PermissionSwitch";
 import { PermissionInput } from "@/components/Permissions/PermissionInput";
 import { TUnit } from "@arkejs/client";
 
-export const columns: Column[] = [
+export const getColumns = (roleID: string): Column[] => [
   {
     id: "id",
     label: "Arke ID",
@@ -33,9 +33,10 @@ export const columns: Column[] = [
     label: "Get",
     render: (rowData: any) => (
       <PermissionSwitch
-        role={rowData.id as string}
+        {...rowData}
+        roleID={roleID}
+        unitID={rowData.id as string}
         method="get"
-        checked={rowData.metadata?.get}
       />
     ),
   },
@@ -44,9 +45,10 @@ export const columns: Column[] = [
     label: "Post",
     render: (rowData: any) => (
       <PermissionSwitch
-        role={rowData.id as string}
+        {...rowData}
+        roleID={roleID}
+        unitID={rowData.id as string}
         method="post"
-        checked={rowData.metadata?.post}
       />
     ),
   },
@@ -55,9 +57,10 @@ export const columns: Column[] = [
     label: "Put",
     render: (rowData: any) => (
       <PermissionSwitch
-        role={rowData.id as string}
+        {...rowData}
+        roleID={roleID}
+        unitID={rowData.id as string}
         method="put"
-        checked={rowData.metadata?.put}
       />
     ),
   },
@@ -66,9 +69,10 @@ export const columns: Column[] = [
     label: "Delete",
     render: (rowData: any) => (
       <PermissionSwitch
-        role={rowData.id as string}
+        {...rowData}
+        roleID={roleID}
+        unitID={rowData.id as string}
         method="delete"
-        checked={rowData.metadata?.delete}
       />
     ),
   },
@@ -78,8 +82,9 @@ export const columns: Column[] = [
     render: (rowData: any) => (
       <PermissionInput
         {...rowData}
-        role={rowData.id as string}
-        value={rowData.metadata?.filter}
+        unitID={rowData.id as string}
+        roleID={roleID}
+        value={rowData.link?.metadata?.filter}
       />
     ),
   },
