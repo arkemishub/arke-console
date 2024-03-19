@@ -84,7 +84,7 @@ export const getColumns = (roleID: string): Column[] => [
         {...rowData}
         unitID={rowData.id as string}
         roleID={roleID}
-        value={rowData.link.metadata?.filter}
+        value={rowData.link?.metadata?.filter}
       />
     ),
   },

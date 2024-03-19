@@ -30,7 +30,7 @@ export function PermissionInput({
   roleID,
   unitID,
   value,
-  link: { metadata },
+  link,
 }: PermissionInputProps) {
   const client = useClient();
   const {
@@ -46,7 +46,7 @@ export function PermissionInput({
         { arkeId: "arke", id: roleID },
         "permission",
         { arkeId: "arke", id: unitID },
-        { metadata: { ...metadata, filter: data.filter } }
+        { metadata: { ...link?.metadata, filter: data.filter } }
       );
       toast.success(`Filter updated`);
     } catch (err) {

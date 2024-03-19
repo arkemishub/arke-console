@@ -29,9 +29,9 @@ export function PermissionSwitch({
   roleID,
   unitID,
   method,
-  link: { metadata },
+  link,
 }: PermissionSwitchProps) {
-  const [checked, setChecked] = useState(!!metadata[method]);
+  const [checked, setChecked] = useState(link?.metadata[method]);
   const client = useClient();
   async function onChange(value: boolean) {
     try {
@@ -39,7 +39,7 @@ export function PermissionSwitch({
         { arkeId: "arke", id: roleID },
         "permission",
         { arkeId: "arke", id: unitID },
-        { metadata: { ...metadata, [method]: value } }
+        { metadata: { ...link?.metadata, [method]: value } }
       );
       setChecked(value);
       toast.success(`Permission ${roleID} (${method.toUpperCase()}) updated`);
@@ -50,7 +50,7 @@ export function PermissionSwitch({
 
   return (
     <Switch
-      checked={checked}
+      checked={checked as boolean}
       onChange={() => onChange(!checked)}
       color="primary"
     />
