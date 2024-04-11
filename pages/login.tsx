@@ -29,6 +29,7 @@ import {
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import InputPassword from "@/components/InputPassword/InputPassword";
 
 export default function Login({ csrfToken }: { csrfToken: string }) {
   const [username, setUsername] = useState("");
@@ -76,27 +77,9 @@ export default function Login({ csrfToken }: { csrfToken: string }) {
           }
           fullWidth
         />
-        <Input
+        <InputPassword
           value={password}
-          type={!showPassword ? "password" : "text"}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          fullWidth
-          startAdornment={
-            <LockClosedIcon className="h-5 w-5 stroke-white/50" />
-          }
-          endAdornment={
-            <span
-              role="presentation"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {!showPassword ? (
-                <EyeIcon className="h-5 w-5 stroke-white/50" />
-              ) : (
-                <EyeSlashIcon className="h-5 w-5 stroke-white/50" />
-              )}
-            </span>
-          }
         />
         <Button color="primary" type="submit">
           {loading ? (

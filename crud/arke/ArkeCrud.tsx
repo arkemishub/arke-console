@@ -88,7 +88,7 @@ export function ArkeCrud({
   );
 
   return (
-    <Dialog open={!!open} title={title} onClose={onClose}>
+    <Dialog disableBackdropClose open={!!open} title={title} onClose={onClose}>
       <Form
         fields={fields as Field[]}
         onSubmit={onFormSubmit}
@@ -169,6 +169,7 @@ export function ArkeDelete({
 
   return (
     <Dialog
+      disableBackdropClose
       open={!!open}
       title={
         <div className="flex items-center gap-4">

@@ -15,8 +15,8 @@
  */
 
 import { Filter, Sort, useTable, IUseTableData, Column } from "@arkejs/table";
-import { TUnit } from "@arkejs/client";
-import { useState } from "react";
+import { TResponse, TUnit } from "@arkejs/client";
+import { useEffect, useState } from "react";
 import useClient from "@/arke/useClient";
 import { buildGetAllClientConfig, getTableDefaultConfig } from "@/utils/table";
 
@@ -32,13 +32,15 @@ type UseArkeTableReturn = {
   count: number;
   isLoading: boolean;
   loadData: (params?: any) => void;
+  transformData?(content: any): void;
 } & IUseTableData<any, any, any>;
 
 export default function useArkeTable(
   kind: "arke" | "group",
   id: string,
   columns: TUnit[] | Column[],
-  fallback?: Fallback
+  fallback?: Fallback,
+  transformData?: any
 ): UseArkeTableReturn {
   const client = useClient();
 
@@ -69,8 +71,12 @@ export default function useArkeTable(
         ? await client.unit.getAll(id, config)
         : await client.group.getAllUnits(id, config);
 
-    setData(response.data.content.items);
-    setCount(response.data.content.count);
+    let content = response.data.content;
+    if (transformData) {
+      content = (await transformData?.(content)) ?? content;
+    }
+    setData(content.items);
+    setCount(content.count);
     setIsLoading(false);
   };
 

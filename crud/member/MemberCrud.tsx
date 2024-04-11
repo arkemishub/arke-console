@@ -16,11 +16,21 @@
 
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { Form, useForm } from "@arkejs/form";
-import { Button, Dialog, Spinner, Input, Select, Alert } from "@arkejs/ui";
+import {
+  Button,
+  Dialog,
+  Spinner,
+  Input,
+  Select,
+  Alert,
+  Checkbox,
+} from "@arkejs/ui";
 import { TResponse, TUnit } from "@arkejs/client";
 import useStruct from "@/hooks/useStruct";
 import useClient from "@/arke/useClient";
 import toast from "react-hot-toast";
+import ArkeSearch from "@/components/ArkeSearch/ArkeSearch";
+import UnitSearch from "@/components/UnitSearch/UnitSearch";
 
 export function MemberCrud({
   open,
@@ -38,9 +48,56 @@ export function MemberCrud({
   onSubmit(data: TResponse<TUnit>): void;
 }) {
   const client = useClient();
-  const [memberType, setMemberType] = useState<string>(arkeId ?? "");
+  const [memberType, setMemberType] = useState<string>(arkeId ?? "super_admin");
   const [memberTypeList, setMemberTypeList] = useState<string[]>([]);
   const { parameters, loading } = useStruct(memberType, id);
+  const [existingUser, setExistingUser] = useState<boolean>(false);
+
+  const fields = [
+    ...parameters,
+    {
+      id: "member_type",
+      required: true,
+      values: memberTypeList.map((item) => ({
+        label: item,
+        value: item,
+      })),
+      type: "string",
+      label: "Member typology",
+      value: memberType ?? "super_admin",
+    },
+    ...(!id
+      ? [
+          {
+            id: "arke_system_user.email",
+            required: true,
+            type: "string",
+            label: "Email",
+          },
+          {
+            id: "arke_system_user",
+          },
+          {
+            id: "arke_system_user.password",
+            required: true,
+            type: "password",
+            label: "Password",
+          },
+          {
+            id: "arke_system_user.username",
+            required: true,
+            type: "string",
+            label: "Username",
+          },
+        ]
+      : []),
+  ];
+
+  const { formProps, methods } = useForm({
+    // @ts-ignore
+    fields,
+  });
+  const { setValue } = methods;
 
   useEffect(() => {
     client.group.get("arke_auth_member").then((res) => {
@@ -48,51 +105,14 @@ export function MemberCrud({
     });
   }, []);
 
-  const fields = [
-    ...parameters.map((item) => ({ ...item, id: `member.${item.id}` })),
-    {
-      id: "member_type",
-      required: true,
-      values: memberTypeList.map((item) => ({ label: item, value: item })),
-      type: "string",
-      label: "Tipologia di utente",
-      value: memberType,
-    },
-    !id && {
-      ...{
-        id: "member.password",
-        required: true,
-        type: "string",
-        label: "Password",
-        value: "",
-      },
-    },
-  ];
-
-  const { formProps } = useForm({
-    // @ts-ignore
-    fields,
-  });
-
   async function handleOnSubmit(data: Record<string, any>) {
     const arkeId = data.member_type;
-    const password = data.member.password;
-    delete data.member.password;
     delete data.member_type;
-
-    const payload = {
-      ...data.member,
-      arke_system_user: {
-        password: password,
-        username: data.member.email,
-        email: data.member.email,
-      },
-    };
     // create or edit member
     try {
       const response = id
-        ? await client.unit.edit(arkeId as string, id, payload)
-        : await client.unit.create(arkeId as string, payload);
+        ? await client.unit.edit(arkeId as string, id, data)
+        : await client.unit.create(arkeId as string, data);
       onSubmit(response);
     } catch (e: any) {
       toast.error(`Something went wrong`);
@@ -106,10 +126,10 @@ export function MemberCrud({
 
   return (
     <Dialog
+      disableBackdropClose
       open={!!open}
       title={title}
       onClose={handleOnClose}
-      disableBackdropClose
     >
       <Form {...formProps} onSubmit={handleOnSubmit} style={{ height: "100%" }}>
         {loading ? (
@@ -136,15 +156,58 @@ export function MemberCrud({
                   />
                 )}
               />
-              {memberType && (
+              {memberType && !id && (
+                <Checkbox
+                  label="Existing user"
+                  checked={existingUser}
+                  onChange={() => {
+                    if (!existingUser) {
+                      setValue("arke_system_user", "");
+                    }
+                    setExistingUser(!existingUser);
+                  }}
+                />
+              )}
+
+              {!existingUser ? (
                 <>
-                  {fields
-                    // TODO: fix type
-                    .filter((item: any) => item.id !== "member_type")
-                    .map((field: any) => (
-                      <Form.Field key={field.id} id={field.id} />
-                    ))}
+                  {memberType && (
+                    <>
+                      {fields
+                        .filter((item: any) => item.id !== "member_type")
+                        .map((field: any) => (
+                          <Form.Field {...field} key={field.id} id={field.id} />
+                        ))}
+                    </>
+                  )}
                 </>
+              ) : (
+                <Form.Field
+                  id="arke_system_user"
+                  render={(renderProps) => (
+                    <UnitSearch
+                      {...renderProps}
+                      value={renderProps.field.value}
+                      arke="user"
+                      onChange={(selected) =>
+                        renderProps.field.onChange(selected.id)
+                      }
+                      label="User"
+                      placeholder="Search an user email"
+                      renderValue={(selected) => selected}
+                      renderOption={(selected) => selected.email}
+                      config={(searchValue: string) => ({
+                        headers: { "Arke-Project-Key": "arke_system" },
+                        params: {
+                          offset: 0,
+                          limit: 5,
+                          filter: `and(contains(email,${searchValue}))`,
+                          order: `email;asc`,
+                        },
+                      })}
+                    />
+                  )}
+                />
               )}
             </div>
             <div className="mt-4 flex gap-4">

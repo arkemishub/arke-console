@@ -192,7 +192,9 @@ export const getServerSideProps: GetServerSideProps = withAuth(
     const client = getClient(context);
 
     try {
-      const response = await client.group.getAll();
+      const response = await client.group.getAll({
+        params: { load_links: true },
+      });
       return {
         props: {
           groups: response.data.content.items,
