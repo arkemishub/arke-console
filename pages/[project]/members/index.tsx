@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CrudState } from "@/types/crud";
 import { TUnit } from "@arkejs/client";
 import { GetServerSideProps } from "next";
 import { withAuth } from "@/server/withAuth";
 import { getClient } from "@/arke/getClient";
 import { Table } from "@/components/Table";
-import { Button } from "@arkejs/ui";
+import { Button, Json } from "@arkejs/ui";
 import {
   MemberCrud as MemberAdd,
   MemberCrud as MemberEdit,
@@ -35,12 +35,15 @@ import { acceptedRoles } from "@/arke/config";
 import EmptyState from "@/components/Table/EmptyState";
 import useArkeTable from "@/hooks/useArkeTable";
 import { buildStructClientConfig } from "@/utils/client";
+import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { CrudDelete } from "@/crud/common";
 
 export default function Members(props: {
   data: TUnit[];
   columns: TUnit[];
   count: number;
 }) {
+  const client = getClient();
   const [crud, setCrud] = useState<CrudState>({
     add: false,
     edit: false,
@@ -54,8 +57,28 @@ export default function Members(props: {
     {
       data: props.data,
       count: props.count,
+    },
+    async (data: any) => {
+      const items = [];
+      for (const item of data.items) {
+        const userId: any = await item.arke_system_user;
+        const arkeSystemUserData = (
+          await client.unit.get("user", userId as string, {
+            headers: {
+              "Arke-Project-Key": "arke_system",
+            },
+          })
+        ).data.content;
+        items.push({ ...arkeSystemUserData, ...item });
+      }
+
+      return { ...data, items };
     }
   );
+
+  useEffect(() => {
+    loadData();
+  }, []);
 
   return (
     <ProjectLayout>
@@ -79,24 +102,30 @@ export default function Members(props: {
         actions={{
           label: "",
           actions: [
-            /*{
-                content: <PencilIcon className="h-4 w-4" />,
-                onClick: (rowData) => {
-                  setCrud((prevState) => ({
-                    ...prevState,
-                    edit: rowData?.id as string,
-                  }));
-                },
+            {
+              content: <PencilIcon className="h-4 w-4" />,
+              onClick: (rowData) => {
+                setCrud((prevState) => ({
+                  ...prevState,
+                  edit: {
+                    unitId: rowData?.id as string,
+                    arkeId: rowData.arke_id as string,
+                  },
+                }));
               },
-              {
-                content: <XMarkIcon className="h-4 w-4" />,
-                onClick: (rowData) => {
-                  setCrud((prevState) => ({
-                    ...prevState,
-                    delete: rowData?.id as string,
-                  }));
-                },
-              },*/
+            },
+            {
+              content: <XMarkIcon className="h-4 w-4" />,
+              onClick: (rowData) => {
+                setCrud((prevState) => ({
+                  ...prevState,
+                  delete: {
+                    unitId: rowData?.id as string,
+                    arkeId: rowData.arke_id as string,
+                  },
+                }));
+              },
+            },
           ],
         }}
         {...tableProps}
@@ -117,37 +146,62 @@ export default function Members(props: {
         filterable={false}
       />
 
-      <MemberAdd
-        title={
-          <div className="flex items-center gap-4">
-            <AddIcon className="text-primary" />
-            Add member
-          </div>
-        }
-        open={crud.add as boolean}
-        onClose={() => setCrud((p) => ({ ...p, add: false }))}
-        onSubmit={(res) => {
-          loadData();
-          toast.success(`Member created correctly`);
-          setCrud((p) => ({ ...p, add: false }));
-        }}
-      />
+      {Boolean(crud.add) && (
+        <MemberAdd
+          title={
+            <div className="flex items-center gap-4">
+              <AddIcon className="text-primary" />
+              Add member
+            </div>
+          }
+          open={Boolean(crud.add)}
+          onClose={() => setCrud((p) => ({ ...p, add: false }))}
+          onSubmit={(res) => {
+            loadData();
+            toast.success(`Member created correctly`);
+            setCrud((p) => ({ ...p, add: false }));
+          }}
+        />
+      )}
 
-      <MemberEdit
-        title={
-          <div className="flex items-center gap-4">
-            <AddIcon className="text-primary" />
-            Edit member
-          </div>
-        }
-        open={crud.edit as boolean}
-        onClose={() => setCrud((p) => ({ ...p, edit: false }))}
-        onSubmit={(res) => {
-          loadData();
-          toast.success(`Member edited correctly`);
-          setCrud((p) => ({ ...p, edit: false }));
-        }}
-      />
+      {Boolean(crud.edit) && (
+        <MemberEdit
+          title={
+            <div className="flex items-center gap-4">
+              <AddIcon className="text-primary" />
+              Edit member
+            </div>
+          }
+          // @ts-ignore
+          arkeId={crud.edit?.arkeId as string}
+          // @ts-ignore
+          id={crud.edit?.unitId as string}
+          open={Boolean(crud.edit)}
+          onClose={() => setCrud((p) => ({ ...p, edit: false }))}
+          onSubmit={(res) => {
+            loadData();
+            toast.success(`Member edited correctly`);
+            setCrud((p) => ({ ...p, edit: false }));
+          }}
+        />
+      )}
+
+      {Boolean(crud.delete) && (
+        <CrudDelete
+          // @ts-ignore
+          arkeId={crud.delete.arkeId}
+          // @ts-ignore
+          unitId={crud.delete.unitId}
+          open={Boolean(crud.delete)}
+          title="Elimina membro"
+          onClose={() => setCrud((p) => ({ ...p, delete: false }))}
+          onSubmit={() => {
+            loadData();
+            toast.success(`Member deleted correctly`);
+            setCrud((p) => ({ ...p, delete: false }));
+          }}
+        />
+      )}
     </ProjectLayout>
   );
 }
@@ -164,9 +218,15 @@ export const getServerSideProps: GetServerSideProps = withAuth(
       );
       const responseGetAll = await client.group.getAllUnits("arke_auth_member");
 
+      const columns = [
+        { id: "arke_id", label: "Type" },
+        { id: "email", label: "Email", sorting: false },
+        { id: "username", label: "Username", sorting: false },
+        ...responseStruct.data.content.parameters,
+      ];
       return {
         props: {
-          columns: responseStruct.data.content.parameters,
+          columns,
           data: responseGetAll.data.content.items,
           count: responseGetAll.data.content.count,
         },

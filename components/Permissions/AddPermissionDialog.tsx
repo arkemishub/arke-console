@@ -91,6 +91,7 @@ export default function AddPermissionDialog({
 
   return (
     <Dialog
+      disableBackdropClose
       open={open}
       onClose={handleClose}
       title={`Add permission to ${roleID}`}

@@ -18,7 +18,13 @@ import { Autocomplete, Button, Chip, Dialog } from "@arkejs/ui";
 import React, { useCallback, useEffect, useState } from "react";
 import useDebounce from "@/hooks/useDebounce";
 import useClient from "@/arke/useClient";
-import { TBaseParameter, TUnit } from "@arkejs/client";
+import {
+  ConditionalOperator,
+  Filter,
+  RelationalOperator,
+  TBaseParameter,
+  TUnit,
+} from "@arkejs/client";
 import { AddIcon, LinkIcon, TrashIcon } from "@/components/Icon";
 import toast from "react-hot-toast";
 import { ParameterAdd } from "@/crud/parameter";
@@ -60,31 +66,77 @@ function AssignParameterAdd({
   });
   const [inputValue, setInputValue] = useState("");
   const [values, setValues] = useState<TUnit[]>([]);
+  const [assigned, setAssigned] = useState<TBaseParameter[]>([]);
   const [selected, setSelected] = useState<TUnit[]>([]);
   const debouncedInputValue = useDebounce<string>(inputValue, 500);
 
   useEffect(() => {
     setInputValue("");
+    loadData();
     setValues([]);
     setSelected([]);
+
+    // Get already assigned
+    client.arke
+      .struct(arkeId)
+      .then((res) => setAssigned(res.data.content.parameters));
   }, [open]);
 
   useEffect(() => {
-    if (debouncedInputValue) {
-      client.group
-        .getAllUnits("parameter", {
-          params: {
-            offset: 0,
-            limit: 5,
-            filter: `and(contains(id,${debouncedInputValue}))`,
-            order: `label;asc`,
-          },
+    loadData();
+  }, [selected, debouncedInputValue]);
+
+  function loadData() {
+    let filters: any = [];
+    /**
+     * Create filter for assigned and selected
+     * @param item
+     */
+    function addFilter(item: TUnit) {
+      filters.push(
+        new Filter({
+          operator: RelationalOperator.NOT,
+          value: new Filter({
+            operator: RelationalOperator.EQ,
+            key: "id",
+            value: item.id,
+          }),
         })
-        .then((res) => {
-          setValues(res.data.content.items);
-        });
+      );
     }
-  }, [debouncedInputValue]);
+    if (debouncedInputValue) {
+      filters.push(
+        new Filter({
+          operator: RelationalOperator.ICONTAINS,
+          key: "id",
+          value: debouncedInputValue,
+        })
+      );
+    }
+    if (assigned.length > 0) {
+      assigned.forEach((item) => addFilter(item as any));
+    }
+    if (selected.length > 0) {
+      selected.forEach((item) => addFilter(item));
+    }
+    filters = new Filter({
+      operator: ConditionalOperator.AND,
+      filters: filters,
+    });
+
+    client.group
+      .getAllUnits("parameter", {
+        params: {
+          offset: 0,
+          limit: 5,
+          filter: filters.length > 0 ? filters.toString() : undefined,
+          order: `label;asc`,
+        },
+      })
+      .then((res) => {
+        setValues(res.data.content.items);
+      });
+  }
 
   const handleSubmit = useCallback(async () => {
     await Promise.all(
@@ -100,6 +152,7 @@ function AssignParameterAdd({
   return (
     <>
       <Dialog
+        disableBackdropClose
         open={open as boolean}
         title={
           <div className="flex items-center gap-4">
@@ -208,6 +261,7 @@ function AssignParameterDelete({
 
   return (
     <Dialog
+      disableBackdropClose
       open={!!open}
       title={
         <div className="flex items-center gap-4">
@@ -282,6 +336,7 @@ function AssignParameterEdit({
 
   return (
     <Dialog
+      disableBackdropClose
       open={!!open}
       title={
         <div className="flex items-center gap-4">

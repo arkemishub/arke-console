@@ -194,7 +194,6 @@ export const getServerSideProps: GetServerSideProps = withAuth(
 
     try {
       const response = await client.group.getAllUnits("parameter");
-
       return {
         props: {
           parameters: response.data.content.items,

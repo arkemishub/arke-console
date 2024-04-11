@@ -19,6 +19,7 @@ import { FormConfigProvider as FCProvider } from "@arkejs/form";
 import { Autocomplete, Checkbox, Input, Json } from "@arkejs/ui";
 import AutocompleteLink from "@/components/AppFormConfigProvider/components/AutocompleteLink";
 import FileDropzone from "@/components/AppFormConfigProvider/components/FileDropzone";
+import InputPassword from "@/components/InputPassword/InputPassword";
 
 export default function AppFormConfigProvider(props: { children: ReactNode }) {
   return (
@@ -87,6 +88,14 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
             />
           );
         },
+        // @ts-ignore
+        password: ({ field }) => (
+          <InputPassword
+            {...field}
+            fullWidth
+            onChange={(e) => field.onChange(e.target.value)}
+          />
+        ),
         boolean: ({ field }) => (
           <Checkbox
             {...field}

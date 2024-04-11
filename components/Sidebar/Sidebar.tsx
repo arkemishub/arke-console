@@ -22,7 +22,7 @@ import {
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { CopyIcon, HomeIcon } from "@/components/Icon";
-import { Button, Input } from "@arkejs/ui";
+import { Avatar, Button, Input } from "@arkejs/ui";
 import { getCookie } from "cookies-next";
 import toast from "react-hot-toast";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
@@ -31,9 +31,16 @@ import { SettingsIcon } from "@/components/Icon/SettingsIcon";
 import { BookOpenIcon } from "@/components/Icon/BookOpenIcon";
 import { AlertSquareIcon } from "@/components/Icon/AlertSquareIcon";
 import { MessageChatSquareIcon } from "@/components/Icon/MessageChatSquareIcon";
+import { getSession } from "next-auth/react";
+import { User } from "next-auth";
 
-function Sidebar() {
+interface SidebarProps {
+  user?: User;
+}
+
+function Sidebar(props: SidebarProps) {
   const { query } = useRouter();
+  const { user } = props;
   const project = query.project ?? getCookie("arke_project")?.toString();
 
   return (
@@ -53,6 +60,20 @@ function Sidebar() {
             </p>
           </div>
         </Link>
+
+        {user && (
+          <div className="m-4 flex items-center gap-4">
+            <Avatar
+              className="min-w-[32px] font-medium"
+              name={user?.first_name?.toUpperCase()}
+            />
+            <p className="text-sm">
+              {user?.first_name}
+              {user?.last_name}
+            </p>
+          </div>
+        )}
+
         <ul className="mt-8 flex h-full flex-col">
           <SidebarItem icon={HomeIcon} label="Dashboard" href="/" />
 

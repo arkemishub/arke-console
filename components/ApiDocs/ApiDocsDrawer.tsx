@@ -91,7 +91,7 @@ function ApiDocsDrawer({
     <Drawer
       title="API Docs"
       position="right"
-      className="max-w-[70vw]"
+      className="z-50 max-w-[70vw]"
       open={open}
       onClose={onClose}
     >

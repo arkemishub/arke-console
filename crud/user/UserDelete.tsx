@@ -58,7 +58,7 @@ function UserDelete(props: DeleteProps) {
   }
 
   return (
-    <Dialog open={!!open} title={title} onClose={onClose}>
+    <Dialog disableBackdropClose open={!!open} title={title} onClose={onClose}>
       <p className="text-sm">Do you really want to delete?</p>
       <div className="mt-4 flex gap-4">
         <Button className="w-full bg-neutral" onClick={onClose}>

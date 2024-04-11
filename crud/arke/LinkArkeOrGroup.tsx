@@ -91,6 +91,7 @@ function LinkArkeOrGroup({
   return (
     <>
       <Dialog
+        disableBackdropClose
         open={open as boolean}
         title={
           <div className="flex items-center gap-4">

@@ -130,7 +130,7 @@ export function CrudAddEdit(props: CrudProps) {
   const idField = fields.filter((item) => item.id === "id")?.[0];
   const filteredFields = fields.filter((item) => item.id !== "id");
   return (
-    <Dialog open={!!open} title={title} onClose={onClose}>
+    <Dialog disableBackdropClose open={!!open} title={title} onClose={onClose}>
       {fields.length > 0 ? (
         <Form
           fields={fields as Field[]}

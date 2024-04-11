@@ -26,21 +26,30 @@ export interface DeleteProps {
   onClose(): void;
   onBeforeSubmit?(): Promise<any>;
   onSubmit(data: any): void;
+  config?: any;
 }
 
 function CrudDelete(props: DeleteProps) {
   const client = useClient();
-  const { arkeId, unitId, open, title, onClose, onBeforeSubmit, onSubmit } =
-    props;
+  const {
+    arkeId,
+    unitId,
+    open,
+    title,
+    onClose,
+    onBeforeSubmit,
+    onSubmit,
+    config,
+  } = props;
 
   function onDelete() {
     function onSubmitCallback() {
       let promise;
 
       if (unitId) {
-        promise = client.unit.delete(arkeId, unitId as string);
+        promise = client.unit.delete(arkeId, unitId as string, config);
       } else {
-        promise = client.arke.delete(arkeId);
+        promise = client.arke.delete(arkeId, config);
       }
 
       promise.then((res) => {
@@ -56,7 +65,7 @@ function CrudDelete(props: DeleteProps) {
   }
 
   return (
-    <Dialog open={!!open} title={title} onClose={onClose}>
+    <Dialog disableBackdropClose open={!!open} title={title} onClose={onClose}>
       <p className="text-sm">Do you really want to delete?</p>
       <div className="mt-4 flex gap-4">
         <Button className="w-full bg-neutral" onClick={onClose}>

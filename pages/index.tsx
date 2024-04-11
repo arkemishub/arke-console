@@ -44,8 +44,10 @@ import {
 } from "@/crud/common";
 import { isMultiProjectConsole } from "@/utils/system";
 import serverErrorRedirect from "@/server/serverErrorRedirect";
+import { getSession } from "next-auth/react";
+import { User } from "next-auth";
 
-export default function Home(props: { projects: TProject[] }) {
+export default function Home(props: { projects: TProject[]; user: User }) {
   const client = useClient();
   const [projects, setProjects] = useState<TProject[]>(props.projects);
   const [crud, setCrud] = useState<CrudState>({
@@ -66,7 +68,7 @@ export default function Home(props: { projects: TProject[] }) {
         <title>Arke Console</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>
+      <Layout user={props.user}>
         <PageTitle showBreadcrumb={false} title="Dashboard" />
         <div className="grid grid-cols-3 gap-4">
           <HomepageCard
@@ -158,12 +160,14 @@ export const getServerSideProps: GetServerSideProps = withAuth(
   acceptedRoles,
   async (context) => {
     const client = getClient(context);
+    const session = await getSession(context);
     try {
       const projects = await client.unit.getAll("arke_project");
       if (isMultiProjectConsole()) {
         return {
           props: {
             projects: projects.data.content.items,
+            user: session?.user,
           },
         };
       } else {
