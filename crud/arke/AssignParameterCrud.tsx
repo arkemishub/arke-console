@@ -119,7 +119,6 @@ function AssignParameterAdd({
     if (selected.length > 0) {
       selected.forEach((item) => addFilter(item));
     }
-    console.log(filters);
     filters = new Filter({
       operator: ConditionalOperator.AND,
       filters: filters,
@@ -130,7 +129,7 @@ function AssignParameterAdd({
         params: {
           offset: 0,
           limit: 5,
-          filter: filters ? filters.toString() : undefined,
+          filter: filters.length > 0 ? filters.toString() : undefined,
           order: `label;asc`,
         },
       })

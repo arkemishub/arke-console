@@ -64,7 +64,7 @@ function Sidebar(props: SidebarProps) {
         {user && (
           <div className="m-4 flex items-center gap-4">
             <Avatar
-              className="min-w-[32px]"
+              className="min-w-[32px] font-medium"
               name={user?.first_name?.toUpperCase()}
             />
             <p className="text-sm">
