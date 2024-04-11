@@ -68,7 +68,7 @@ function AssignParameterAdd({
   const [values, setValues] = useState<TUnit[]>([]);
   const [assigned, setAssigned] = useState<TBaseParameter[]>([]);
   const [selected, setSelected] = useState<TUnit[]>([]);
-  const debouncedInputValue = useDebounce<string>(inputValue, 500);
+  const debouncedInputValue = useDebounce<string>(inputValue, 200);
 
   useEffect(() => {
     setInputValue("");
@@ -119,17 +119,17 @@ function AssignParameterAdd({
     if (selected.length > 0) {
       selected.forEach((item) => addFilter(item));
     }
-    filters = new Filter({
+    const filter = new Filter({
       operator: ConditionalOperator.AND,
       filters: filters,
-    });
+    })?.toString();
 
     client.group
       .getAllUnits("parameter", {
         params: {
           offset: 0,
           limit: 5,
-          filter: filters.length > 0 ? filters.toString() : undefined,
+          filter: filters.length > 0 ? filter : undefined,
           order: `label;asc`,
         },
       })

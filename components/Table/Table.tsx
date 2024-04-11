@@ -24,6 +24,7 @@ import {
 import Pagination from "./Pagination/Pagination";
 import InlineFilter from "@/components/Table/Filters/InlineFilter";
 import { Spinner } from "@arkejs/ui";
+import { twMerge } from "tailwind-merge";
 
 function Table(
   props: Pick<ITableProps, "columns" | "data" | "actions" | "noResult"> &
@@ -37,7 +38,12 @@ function Table(
   return (
     <div className="relative min-h-[400px]">
       {props.loading && (
-        <div className="absolute top-[110px] z-20 flex h-[calc(100%-110px)] w-full flex-col items-center justify-center gap-4 bg-background">
+        <div
+          className={twMerge(
+            "absolute z-20 flex h-full w-full flex-col items-center justify-center gap-4 bg-background",
+            props.filterable ? "top-[110px]" : "top[90px]"
+          )}
+        >
           <p>Loading...</p>
           <Spinner />
         </div>

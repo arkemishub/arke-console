@@ -68,8 +68,7 @@ function Sidebar(props: SidebarProps) {
               name={user?.first_name?.toUpperCase()}
             />
             <p className="text-sm">
-              {user?.first_name}
-              {user?.last_name}
+              {user?.first_name} {user?.last_name}
             </p>
           </div>
         )}

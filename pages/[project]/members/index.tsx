@@ -37,6 +37,7 @@ import useArkeTable from "@/hooks/useArkeTable";
 import { buildStructClientConfig } from "@/utils/client";
 import { PencilIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { CrudDelete } from "@/crud/common";
+import { DEFAULT_PAGE_SIZE } from "@/utils/table";
 
 export default function Members(props: {
   data: TUnit[];
@@ -216,7 +217,10 @@ export const getServerSideProps: GetServerSideProps = withAuth(
         "arke_auth_member",
         buildStructClientConfig()
       );
-      const responseGetAll = await client.group.getAllUnits("arke_auth_member");
+      const responseGetAll = await client.group.getAllUnits(
+        "arke_auth_member",
+        { params: { offset: 0, limit: DEFAULT_PAGE_SIZE } }
+      );
 
       const columns = [
         { id: "arke_id", label: "Type" },
