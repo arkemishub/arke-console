@@ -96,7 +96,7 @@ function Sidebar(props: SidebarProps) {
             <SidebarItem
               icon={BookOpenIcon}
               label="Guide"
-              href="https://arkemishub.github.io/docs"
+              href="https://docs.arkehub.com"
               target="_blank"
             />
           </div>
