@@ -83,7 +83,7 @@ export default function Home(props: { projects: TProject[]; user: User }) {
             category="Docs"
             title="Documentation"
             content="Discover Arke’s official technical documentation."
-            href="https://arkemishub.github.io/docs"
+            href="https://docs.arkehub.com"
             linkText="Learn More"
             icon={<DocumentationIcon />}
           />
