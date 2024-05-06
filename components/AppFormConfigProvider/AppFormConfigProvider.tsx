@@ -110,6 +110,13 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
             onChange={(value) => field.onChange(JSON.parse(value))}
           />
         ),
+        dynamic: ({ field }) => (
+          <Json
+            label={field.label}
+            value={JSON.stringify(field.value)}
+            onChange={(value) => field.onChange(JSON.parse(value))}
+          />
+        ),
         link: ({ field }: any) =>
           field?.link_ref?.id === "arke_file" ? (
             <>

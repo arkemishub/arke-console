@@ -56,6 +56,7 @@ const AppTableConfigProvider = ({ children }: { children: ReactNode }) => {
         },
         // TODO: types
         list: (value: any) => <Json value={JSON.stringify(value)} />,
+        dynamic: (value: any) => <Json value={JSON.stringify(value)} />,
         // TODO: we have to extend table with link
         // @ts-ignore
         link: (value) => (
