@@ -90,37 +90,43 @@ function ArkeNode(props: ArkeNodeProps) {
         </div>
 
         {parameters.map((item: TUnit & any) => (
-          <div
-            key={item.id}
-            className={twMerge(
-              "flex items-center",
-              defaults.includes(item.id) && "text-neutral-400"
-            )}
-          >
+          <>
             <div
-              className="cursor-pointer"
-              onClick={() => onUnassignParameter(arke, item)}
+              key={item.id}
+              className={twMerge(
+                "flex items-center",
+                defaults.includes(item.id) && "text-neutral-400"
+              )}
             >
-              <RemoveIcon
-                className={twMerge(
-                  "mr-1 w-3 stroke-white",
-                  defaults.includes(item.id) && "invisible"
-                )}
-              />
-            </div>
-
-            {!item.ref ? (
-              <>
-                <div className="mr-1">{item.label}</div>
-                <div>({item.type})</div>
-              </>
-            ) : (
-              <div className="flex text-primary">
-                <div className="mr-1">{item.ref.label}</div>
-                <div>({item.ref.type ?? item.ref.arke_id})</div>
+              <div
+                className="cursor-pointer"
+                onClick={() => onUnassignParameter(arke, item)}
+              >
+                <RemoveIcon
+                  className={twMerge(
+                    "mr-1 w-3 stroke-white",
+                    defaults.includes(item.id) && "invisible"
+                  )}
+                />
               </div>
-            )}
-          </div>
+
+              {!item.ref ? (
+                <>
+                  <div className="mx-1 mb-2 flex-1">
+                    <div>{item.label}</div>
+                    <div className="text-[7px] text-neutral-400">{item.id}</div>
+                  </div>
+                  <div className="text-[9px]">({item.type})</div>
+                </>
+              ) : (
+                <div className="flex text-primary">
+                  <div className="mr-1">{item.ref.label}</div>
+                  <div>({item.ref.type ?? item.ref.arke_id})</div>
+                </div>
+              )}
+            </div>
+            <div className="mb-1 h-[1px] w-full bg-neutral-400 opacity-20" />
+          </>
         ))}
       </div>
 
