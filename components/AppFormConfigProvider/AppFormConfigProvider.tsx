@@ -110,7 +110,7 @@ export default function AppFormConfigProvider(props: { children: ReactNode }) {
             onChange={(value) => field.onChange(JSON.parse(value))}
           />
         ),
-        dynamic: ({ field }) => (
+        dynamic: ({ field }: any) => (
           <Json
             label={field.label}
             value={JSON.stringify(field.value)}
